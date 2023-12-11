@@ -6,13 +6,8 @@ import classes from './style.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
-const NoMatch = () => {
-    return (
-        <div className={cx('noMatch')}>
-            <h1>404</h1>
-            <h2>Sorry, Page Not Found</h2>
-        </div>
-    );
+const Footer = () => {
+    return <div className={cx('footer')}>版權所有 ©2023財團法人資訊工業策進會，未經允許，請勿轉載</div>;
 };
 
-export default NoMatch;
+export default Footer;

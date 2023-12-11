@@ -1,0 +1,14 @@
+.App {
+    display: flex;
+    .main {
+        width: -webkit-calc(100% - 248px);
+        width: -moz-calc(100% - 248px);
+        width: calc(100% - 248px);
+        height: 100vh;
+        z-index: 200;
+        display: block;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background-color: rgb(227, 232, 235);
+    }
+}
