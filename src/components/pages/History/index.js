@@ -1,9 +1,9 @@
 import React, {Fragment, Suspense, useState, useEffect, useContext} from 'react';
 
-const Admin = () => {
+const History = () => {
   return (
-    <>Admin</>
+    <>History</>
   );
 }
 
-export default Admin;
+export default History;

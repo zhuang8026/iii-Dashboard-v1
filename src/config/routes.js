@@ -2,7 +2,7 @@ import React, { lazy } from 'react';
 // import { getBooleanFromENV } from 'components/utils';
 
 import Home from 'components/pages/Home';
-import Admin from 'components/pages/Admin';
+import History from 'components/pages/History';
 
 const routes = [
     {
@@ -14,9 +14,9 @@ const routes = [
         layouts: ['NavLeft'],
     },
     {
-        path: '/admin',
-        title: 'Admin',
-        component: Admin,
+        path: '/history',
+        title: 'History',
+        component: History,
         exact: true,
         authRequired: false,
         layouts: [''],

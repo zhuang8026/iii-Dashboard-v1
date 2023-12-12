@@ -1,2 +1,10 @@
 .home {
+    margin: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    .editable-row .ant-form-item-explain {
+        position: absolute;
+        top: 100%;
+        font-size: 12px;
+    }
 }

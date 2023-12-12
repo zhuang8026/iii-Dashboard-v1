@@ -29,7 +29,7 @@ const Menu = ({ match, location, history }) => {
             },
             {
                 name: '歷史資料',
-                path: '/admin',
+                path: '/history',
                 icon: ''
             }
         ];
@@ -50,6 +50,8 @@ const Menu = ({ match, location, history }) => {
                         <li
                             className={cx('link', index === isClick && 'menu_active')}
                             onClick={() => clickMenu(index, item.path)}
+                            key={index}
+                            index={index}
                         >
                             <Link to={item.path}>
                                 <span className={cx('menu_icon')}></span>

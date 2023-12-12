@@ -24,7 +24,7 @@ function App({ match, location, history }) {
                 exact={route.exact}
                 sensitive
                 render={() => {
-                    document.title = `${route.title} | Zscss`;
+                    document.title = `III | ${route.title}`;
                     return <route.component localeMatch={match} routeData={route} />;
                 }}
             />
