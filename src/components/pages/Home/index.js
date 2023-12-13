@@ -1,27 +1,36 @@
-import React, { Fragment, Suspense, useState, useEffect, useContext } from 'react';
-import { Input, InputNumber, Select, DatePicker, Popconfirm, Form, Table, Typography } from 'antd';
+import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
+import { Input, InputNumber, Select, DatePicker, Tag, Spin, Alert, Popconfirm, Form, Table, Typography } from 'antd';
+// import { LoadingOutlined } from '@ant-design/icons';
 
 import moment from 'moment';
+// import { from } from 'rxjs';
+// import axios from 'axios';
 
-import MOCK_DATA from './mock.json';
+// DesignSystem
+import { FullWindowAnimateStorage } from 'components/DesignSystem/FullWindow';
+import Loading from 'components/DesignSystem/Loading';
+
+// API
+import { test001API } from 'api/api';
+
 // css
 import classes from './style.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
-const originData = [];
-JSON.parse(JSON.stringify(MOCK_DATA)).forEach((val, i) => {
-    originData.push({
-        key: i.toString(),
-        name: val.name,
-        user_id: val.user_id,
-        detected_date: val.detected_date,
-        problem: val.problem,
-        status: val.status,
-        status_update_time: val.status_update_time,
-        note: val.note
-    });
-});
+// const originData = [];
+// JSON.parse(JSON.stringify(MOCK_DATA)).forEach((val, i) => {
+//     originData.push({
+//         key: i.toString(),
+//         name: val.name,
+//         user_id: val.user_id,
+//         detected_date: val.detected_date,
+//         problem: val.problem,
+//         status: val.status,
+//         status_update_time: val.status_update_time,
+//         note: val.note
+//     });
+// });
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
     // const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
@@ -33,11 +42,12 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
     ];
 
     let status = [
-        { label: '已通知', value: '已通知' },
-        { label: '未通知', value: '未通知' },
-        { label: '已拆除', value: '已拆除' },
-        { label: '等待維護', value: '等待維護' },
-        { label: '不想被打擾', value: '不想被打擾' }
+        { label: '已完成', value: '已完成' }, // green icon
+        { label: '未通知', value: '未通知' }, // red icon
+        { label: '已通知', value: '已通知' }, // oragnge icon
+        { label: '已拆除', value: '已拆除' }, // oragnge icon
+        { label: '等待維護', value: '等待維護' }, // oragnge icon
+        { label: '不想被打擾', value: '不想被打擾' } // oragnge icon
     ];
 
     const inputNode =
@@ -74,8 +84,12 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
 
 const Home = () => {
     const [form] = Form.useForm();
-    const [data, setData] = useState(originData);
+    const [data, setData] = useState();
     const [editingKey, setEditingKey] = useState('');
+    const fetchListener = useRef();
+
+    const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
+
     const isEditing = record => record.key === editingKey;
     const edit = record => {
         form.setFieldsValue({
@@ -147,18 +161,9 @@ const Home = () => {
             width: '9%',
             editable: true,
             filters: [
-                {
-                    text: '斷線',
-                    value: '斷線'
-                },
-                {
-                    text: '資料過少',
-                    value: '資料過少'
-                },
-                {
-                    text: '負值',
-                    value: '負值'
-                }
+                { text: '斷線', value: '斷線' },
+                { text: '資料過少', value: '資料過少' },
+                { text: '負值', value: '負值' }
             ],
             // filterMode: 'tree',
             // filterSearch: true,
@@ -173,30 +178,36 @@ const Home = () => {
             width: '9%',
             editable: true,
             filters: [
-                {
-                    text: '已通知',
-                    value: '已通知'
-                },
-                {
-                    text: '未通知',
-                    value: '未通知'
-                },
-                {
-                    text: '已拆除',
-                    value: '已拆除'
-                },
-                {
-                    text: '等待維護',
-                    value: '等待維護'
-                },
-                {
-                    text: '不想被打擾',
-                    value: '不想被打擾'
-                }
+                { text: '已完成', value: '已完成' },
+                { text: '未通知', value: '未通知' },
+                { text: '已通知', value: '已通知' },
+                { text: '已拆除', value: '已拆除' },
+                { text: '等待維護', value: '等待維護' },
+                { text: '不想被打擾', value: '不想被打擾' }
             ],
             // filterMode: 'tree',
             // filterSearch: true,
-            onFilter: (value, record) => record.status.startsWith(value)
+            onFilter: (value, record) => record.status.startsWith(value),
+            render: tags => {
+                return (
+                    <span>
+                        {[tags].map(tag => {
+                            {
+                                /* let color = tag.length > 5 ? 'red' : 'green'; */
+                            }
+                            let color = tag == '已完成' ? 'green' : tag == '未通知' ? 'red' : 'orange';
+                            if (tag === 'loser') {
+                                color = 'volcano';
+                            }
+                            return (
+                                <Tag color={color} key={tag}>
+                                    {tag.toUpperCase()}
+                                </Tag>
+                            );
+                        })}
+                    </span>
+                );
+            }
         },
         {
             title: '處理時間',
@@ -264,10 +275,53 @@ const Home = () => {
         };
     });
 
+    const openLoading = () => {
+        openAnimate({
+            component: <Loading />
+        });
+    };
+
+    const closeLoading = () => closeAnimate();
+
+    // allpens001
+    const apiDemo = async () => {
+        openLoading();
+        const res = await test001API();
+        console.log('api:', res);
+        if (res.code === 200) {
+            let tableItem = res.data.map((val, i) => {
+                return {
+                    key: i.toString(),
+                    name: val.name,
+                    user_id: val.user_id,
+                    detected_date: val.detected_date,
+                    problem: val.problem,
+                    status: val.status,
+                    status_update_time: val.status_update_time,
+                    note: val.note
+                };
+            });
+            setData([...tableItem]);
+            setTimeout(() => {
+                closeLoading();
+            }, 3000);
+        } else {
+            console.log('error');
+        }
+    };
+
+    useEffect(() => {
+        apiDemo();
+    }, []);
+
     return (
         <div className={cx('home')}>
             <Form form={form} component={false}>
                 <Table
+                    // loading={{
+                    //     indicator: <Spin size="large" style={{ marginLeft: '20px' }} />,  // 在這裡設定 loading icon
+                    //     spinning: loading // 控制是否顯示 loading icon，可以根據需要設定為 true 或 false
+                    // }}
                     components={{
                         body: {
                             cell: EditableCell
@@ -281,6 +335,17 @@ const Home = () => {
                     pagination={{
                         defaultPageSize: 13, // 默认每页显示的数量
                         onChange: cancel
+                    }}
+                    onRow={record => {
+                        return {
+                            onClick: event => {
+                                console.log('row click', record);
+                            }, // 点击行
+                            onDoubleClick: event => {},
+                            onContextMenu: event => {},
+                            onMouseEnter: event => {}, // 鼠标移入行
+                            onMouseLeave: event => {}
+                        };
                     }}
                 />
             </Form>

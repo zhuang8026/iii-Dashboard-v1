@@ -1,0 +1,23 @@
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.popAnimateContainer {
+    position: fixed;
+    background: rgba(64, 64, 64, 0.1);
+    width: 100vw;
+    height: 100vh;
+    height: -webkit-fill-available;
+    left: 0;
+    top: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.5s;
+}

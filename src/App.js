@@ -5,6 +5,7 @@ import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import NoMatch from 'components/DesignSystem/NoMatch';
 import Menu from 'components/DesignSystem/LeftMenu';
 import Footer from 'components/DesignSystem/Footer';
+import { withFullWindowProvider, FullPopWindow } from 'components/DesignSystem/FullWindow';
 
 // config
 import routes from 'config/routes';
@@ -51,7 +52,12 @@ function App({ match, location, history }) {
                     <Footer />
                 </Suspense>
             </div>
+
+            {/**
+             * 可隨意添加 comment
+             */}
+            <FullPopWindow />
         </div>
     );
 }
-export default withRouter(App);
+export default withRouter(withFullWindowProvider(App));

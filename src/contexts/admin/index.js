@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 // API
 import axios from 'axios';
 import { postAdminSignIinAPI, postAdminSignOutAPI, getVerifyTokenAPI } from 'api/admin';
-import { detailPenAPI } from 'api/products';
+import { detailPenAPI } from 'api/api';
 
 // DesignSystem
 import WebsocketNotification from 'components/DesignSystem/Socket/WebsocketNotification';
@@ -29,22 +29,22 @@ const AdminContainer = props => {
     const { publicAdmin } = WebsocketNotification(); // admin online
 
     // 登入
-    const setLoggedInMember = res => {   
+    const setLoggedInMember = res => {
         setIsLoggedIn(true);
         // 设置Cookie的过期时间为2分钟
         const eightHoursInMilliseconds = 9 * 60 * 60 * 1000; // 9小时的毫秒数
         const expirationTime = new Date(Date.now() + eightHoursInMilliseconds);
         Cookies.set('_token', res.data.token, { expires: expirationTime, path: '' });
 
-        let _admin = { 
-            sid: res.data.sid, 
+        let _admin = {
+            sid: res.data.sid,
             nickname: res.data.nickname,
             account: res.data.body.account,
             password: res.data.body.password,
             userimg: res.data.userimg,
-            loginStatus: res.data.loginStatus,
-        }
-        localStorage.setItem("_admin", JSON.stringify(_admin));
+            loginStatus: res.data.loginStatus
+        };
+        localStorage.setItem('_admin', JSON.stringify(_admin));
 
         const IsAdmin = [];
         IsAdmin.push(_admin);
@@ -57,11 +57,11 @@ const AdminContainer = props => {
 
     // 登出
     const unsetLoggedInMember = () => {
-        let admin_token = JSON.parse(localStorage.getItem("_admin"));
+        let admin_token = JSON.parse(localStorage.getItem('_admin'));
 
         const data = {
             account: admin_token.account,
-            password: admin_token.password,
+            password: admin_token.password
         };
         fetchListener.current = from(axios(postAdminSignOutAPI(data))).subscribe(res => {
             if (res.status === 200) {
@@ -100,7 +100,7 @@ const AdminContainer = props => {
     // 登入監控 (令牌時效 1min)
     const ListenAdminSignIn = () => {
         let token = Cookies.get('_token') || '';
-        let admin_token = JSON.parse(localStorage.getItem("_admin"))
+        let admin_token = JSON.parse(localStorage.getItem('_admin'));
 
         fetchListener.current = from(axios(getVerifyTokenAPI(token))).subscribe(res => {
             if (res.status == 200) {
@@ -109,7 +109,6 @@ const AdminContainer = props => {
                     const IsAdmin = [];
                     IsAdmin.push(admin_token);
                     setAdminData(IsAdmin);
-
                 } else {
                     console.log('admin verify token failed');
                     if (admin_token) {

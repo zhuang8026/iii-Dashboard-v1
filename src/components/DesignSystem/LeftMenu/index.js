@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, Route, Switch, Redirect, withRouter } from 'react-router-dom';
+
+import { AreaChartOutlined, HistoryOutlined } from '@ant-design/icons';
+
 // config
 import { III_VERSION } from 'config';
 
@@ -7,6 +10,20 @@ import { III_VERSION } from 'config';
 import classes from './style.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
+
+const CreateIcon = name => {
+    let icon;
+    switch (name) {
+        case 'AreaChartOutlined':
+            icon = <AreaChartOutlined />;
+            break;
+        case 'HistoryOutlined':
+            icon = <HistoryOutlined />;
+            break;
+        default:
+    }
+    return icon;
+};
 
 const Menu = ({ match, location, history }) => {
     const [list, setList] = useState([]);
@@ -25,12 +42,12 @@ const Menu = ({ match, location, history }) => {
             {
                 name: '即時數據分析',
                 path: '/',
-                icon: ''
+                icon: 'AreaChartOutlined'
             },
             {
                 name: '歷史資料',
                 path: '/history',
-                icon: ''
+                icon: 'HistoryOutlined'
             }
         ];
         setList(menuList);
@@ -39,7 +56,7 @@ const Menu = ({ match, location, history }) => {
     return (
         <div className={cx('menu')}>
             <div className={cx('menu_Logo')}>
-                <h1>LOGO</h1>
+                <img src={require(`images/iii.png`)} alt="logo" />
                 <p>III Software Platform</p>
                 <span>v.{III_VERSION}</span>
             </div>
@@ -54,6 +71,7 @@ const Menu = ({ match, location, history }) => {
                             index={index}
                         >
                             <Link to={item.path}>
+                                {CreateIcon(item.icon)}
                                 <span className={cx('menu_icon')}></span>
                                 <span>{item.name}</span>
                             </Link>
