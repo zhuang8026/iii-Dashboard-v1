@@ -2,16 +2,25 @@ import React, { lazy } from 'react';
 // import { getBooleanFromENV } from 'components/utils';
 
 import Home from 'components/pages/Home';
+import EventDetail from 'components/pages/EventDetail';
 import History from 'components/pages/History';
 
 const routes = [
     {
-        path: '/',
+        path: '/main',
         title: 'Home',
         component: Home,
         exact: true,
         authRequired: false,
-        layouts: ['NavLeft'],
+        layouts: ['NavLeft']
+    },
+    {
+        path: '/main/event-detail/:id?',
+        title: 'Event Detail',
+        component: EventDetail,
+        exact: true,
+        authRequired: false,
+        layouts: ['NavLeft']
     },
     {
         path: '/history',
@@ -19,8 +28,8 @@ const routes = [
         component: History,
         exact: true,
         authRequired: false,
-        layouts: [''],
-    },
+        layouts: ['']
+    }
 ];
 
 export default routes;

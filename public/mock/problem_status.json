@@ -1,5 +1,6 @@
 {
     "code": 200,
+    "message": "操作成功 (Operation successfully.)",
     "data": [
         {
             "serialNumber": 2,
@@ -10,7 +11,7 @@
             "problem": "資料過少",
             "status": "已通知",
             "statusUpdateTime": "2023-12-11T00:00:00.000+08:00",
-            "note": "通知用戶少開冰箱"
+            "note": null
         },
         {
             "serialNumber": 4,
@@ -32,7 +33,7 @@
             "problem": "資料過少",
             "status": "已通知",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
-            "note": "通知用戶少開冰箱"
+            "note": null
         },
         {
             "serialNumber": 6,
@@ -43,7 +44,7 @@
             "problem": "斷線",
             "status": "等待維護",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
-            "note": "通知用戶少開冰箱"
+            "note": null
         },
         {
             "serialNumber": 3,

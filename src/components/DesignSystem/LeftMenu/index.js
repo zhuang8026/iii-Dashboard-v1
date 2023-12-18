@@ -41,7 +41,7 @@ const Menu = ({ match, location, history }) => {
         let menuList = [
             {
                 name: '即時數據分析',
-                path: '/',
+                path: '/main',
                 icon: 'AreaChartOutlined'
             },
             {

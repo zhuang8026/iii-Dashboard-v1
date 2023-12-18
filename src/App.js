@@ -44,6 +44,9 @@ function App({ match, location, history }) {
             <div className={cx('main')}>
                 <Suspense fallback={<></>}>
                     <Switch>
+                        <Route exact path="/">
+                            <Redirect to="/main" />
+                        </Route>
                         {Routes()}
                         <Route component={NoMatch} />
                     </Switch>

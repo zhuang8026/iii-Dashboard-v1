@@ -6,8 +6,8 @@ import classes from './style.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
-const Footer = () => {
-    return <div className={cx('footer')}>版權所有 ©2024財團法人資訊工業策進會，未經允許，請勿轉載</div>;
+const EventDetail = () => {
+    return <div className={cx('eventDetail')}>EventDetail</div>;
 };
 
-export default Footer;
+export default EventDetail;
