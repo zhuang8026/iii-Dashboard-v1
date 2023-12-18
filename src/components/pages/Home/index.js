@@ -323,6 +323,7 @@ const Home = () => {
                 val
             }));
 
+            // 綠色開發區塊（2塊）
             card.push(
                 {
                     type: 'table',
