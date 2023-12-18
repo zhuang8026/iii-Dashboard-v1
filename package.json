@@ -36,8 +36,8 @@
     "swr": "^0.5.6"
   },
   "scripts": {
-    "start": "cross-env REACT_APP_ENV=dev react-scripts start",
-    "mock": "cross-env REACT_APP_ENV=mock react-scripts start",
+    "start": "cross-env REACT_APP_ENV=prod react-scripts start",
+    "dev-mock": "cross-env REACT_APP_ENV=development react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

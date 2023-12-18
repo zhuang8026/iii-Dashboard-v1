@@ -24,15 +24,21 @@ export const apiRequest = async (method, url, params, auth) => {
     if (auth) {
         // const { token } = window.$nuxt.$store.state.user;
         // const USER_TOKEN = getCookie('iii_token'); // cookie testing
-        // const USER_TOKEN = 'WILLIAM_testing_12345678900987654321234567890987654321';
-        // headers.Authorization = `Bearer ${USER_TOKEN}`;
+        const USER_TOKEN = 'WILLIAM_testing_12345678900987654321234567890987654321';
+        headers.Authorization = `Bearer ${USER_TOKEN}`;
     }
+
+    let env = process.env;
+    let domain = env.REACT_APP_ENV === 'prod' ? env.REACT_APP_API_DOMAIN : env.REACT_APP_API_DOMAIN_MOCK;
+
+    console.log(env.REACT_APP_ENV);
+    console.log(env.REACT_APP_API_DOMAIN);
 
     try {
         const response = await axios({
             headers,
             method,
-            url: process.env.REACT_APP_API_DOMAIN + url,
+            url: domain + url,
             data: params
         });
         const { status, data } = response;

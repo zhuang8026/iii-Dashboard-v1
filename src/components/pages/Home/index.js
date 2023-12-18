@@ -337,11 +337,9 @@ const Home = () => {
                 }
             );
             setCard([...card]);
-            setTimeout(() => {
-                closeLoading();
-            }, 3000);
+            closeLoading();
         } else {
-            console.log('error');
+            console.log('apiDemo error');
         }
     };
 
@@ -410,7 +408,7 @@ const Home = () => {
             card.push(...demo);
             setCard([...card]);
         } else {
-            console.log('error');
+            console.log('apiDemo2 error');
         }
     };
 
@@ -433,8 +431,8 @@ const Home = () => {
             <div className={cx('top_card')}>
                 {card.length > 0
                     ? card.map((item, index) => (
-                            <UiCard type={item.type} title={item.title} content={item.content} key={index} />
-                        ))
+                          <UiCard type={item.type} title={item.title} content={item.content} key={index} />
+                      ))
                     : ''}
             </div>
             <div className={cx('home')}>

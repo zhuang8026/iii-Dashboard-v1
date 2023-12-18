@@ -1,6 +1,6 @@
 import { apiRequest } from 'api/apiRequest.js';
 // 模拟开发环境
-const isMockEnvironment = process.env.REACT_APP_ENV === 'mock';
+const isMockEnvironment = process.env.REACT_APP_ENV === 'development';
 
 const ad_dashboard = 'ad_dashboard';
 // test001 獲取分頁資料
