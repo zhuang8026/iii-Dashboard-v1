@@ -45,7 +45,9 @@ const Menu = ({ match, location, history, menuList }) => {
         <div className={cx('menu')}>
             <div className={cx('menu_Logo')}>
                 <img src={require(`images/iii.png`)} alt="logo" />
-                <p>III Software Platform</p>
+                <p className={cx('logo_name')}>財團法人資訊工業策進會</p>
+                <p className={cx('line')}/>
+                <p>數轉院能源數據預測系統</p>
                 <span>v.{III_VERSION}</span>
             </div>
             <ul>

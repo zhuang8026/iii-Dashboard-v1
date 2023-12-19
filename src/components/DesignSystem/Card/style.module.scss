@@ -1,6 +1,7 @@
 @import 'src/styles/_variables';
 .card {
     min-width: 180px;
+    max-width: 360px;
     min-height: 150px;
     border-radius: 10px;
     padding: 10px;
@@ -22,20 +23,22 @@
             background-color: $white;
         }
         .cardContent {
-            // font-size: 14px;
+            width: 100%;
+            
+            font-size: 14px;
             .cardRow {
                 border-bottom: 1px dashed $menu_color_1;
-                padding: 3px 0;
+                padding: 3px 10px 3px 0;
                 display: flex;
                 justify-content: space-between;
                 p {
                     margin: 0;
                     // font-weight: bold;
                 }
-                &:last-child {
-                    /* 最后一行的 border-bottom 设置为透明或与背景颜色相同 */
-                    border-bottom: 1px solid transparent; /* 或使用与背景颜色相同的颜色 */
-                }
+                // &:last-child {
+                //     /* 最后一行的 border-bottom 设置为透明或与背景颜色相同 */
+                //     border-bottom: 1px solid transparent; /* 或使用与背景颜色相同的颜色 */
+                // }
             }
             .cardCompare {
                 display: flex;
@@ -56,6 +59,13 @@
                 .all_user {
                     font-size: 24px;
                 }
+            }
+        }
+        .card-width-50 {
+            display: flex;
+            flex-wrap: wrap;
+            .cardRow {
+                width: 50%;
             }
         }
     }

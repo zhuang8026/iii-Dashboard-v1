@@ -15,6 +15,8 @@ import { FullWindowAnimateStorage } from 'components/DesignSystem/FullWindow';
 import Loading from 'components/DesignSystem/Loading';
 import UiCard from 'components/DesignSystem/Card';
 
+// Context
+import GlobalContainer, { GlobalContext } from 'contexts/global';
 // API
 import { test001API } from 'api/api';
 
@@ -93,7 +95,7 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
     );
 };
 
-const Home = ({match, history, location}) => {
+const Home = ({ match, history, location }) => {
     const [form] = Form.useForm();
     const [data, setData] = useState();
     const [card, setCard] = useState([]);
@@ -101,7 +103,7 @@ const Home = ({match, history, location}) => {
     const fetchListener = useRef();
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
-
+    const { REACT_APP_VERSION_2 } = useContext(GlobalContext);
     const isEditing = record => record.key === editingKey;
     const edit = record => {
         form.setFieldsValue({
@@ -258,12 +260,7 @@ const Home = ({match, history, location}) => {
                 const editable = isEditing(record);
                 return editable ? (
                     <span>
-                        <Typography.Link
-                            onClick={() => save(record.key)}
-                            style={{
-                                marginRight: 8
-                            }}
-                        >
+                        <Typography.Link onClick={() => save(record.key)} style={{ marginRight: 8 }}>
                             Save
                         </Typography.Link>
                         <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
@@ -271,9 +268,26 @@ const Home = ({match, history, location}) => {
                         </Popconfirm>
                     </span>
                 ) : (
-                    <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-                        Edit
-                    </Typography.Link>
+                    <span>
+                        <Typography.Link
+                            disabled={editingKey !== ''}
+                            style={{ marginRight: 8 }}
+                            onClick={() => edit(record)}
+                        >
+                            Edit
+                        </Typography.Link>
+                        <Typography.Link
+                            disabled={editingKey !== ''}
+                            onClick={() => {
+                                history.push({
+                                    ...location,
+                                    pathname: `/main/event-detail/${record.serialNumber}`
+                                });
+                            }}
+                        >
+                            Detail
+                        </Typography.Link>
+                    </span>
                 );
             }
         }
@@ -454,19 +468,21 @@ const Home = ({match, history, location}) => {
     useEffect(() => {
         // version 1
         apiDemo();
-
-        // version 2
-        // apiDemo2();
     }, []);
 
+    useEffect(() => {
+        // console.log('REACT_APP_VERSION_3:', REACT_APP_VERSION_3)
+        // version 2
+        if (REACT_APP_VERSION_2 === 'false') apiDemo2();
+    }, [REACT_APP_VERSION_2]);
     return (
         <>
             {/* 361戶:離線87,連線179； 400戶:離線63,連線265； 其他:離線55,連線96；總離線+總連線 = 205戶+540戶 = 745戶 */}
             <div className={cx('top_card')}>
                 {card.length > 0
                     ? card.map((item, index) => (
-                            <UiCard type={item.type} title={item.title} content={item.content} key={index} />
-                        ))
+                          <UiCard type={item.type} title={item.title} content={item.content} key={index} />
+                      ))
                     : ''}
             </div>
             <div className={cx('home')}>
@@ -491,12 +507,7 @@ const Home = ({match, history, location}) => {
                                 onClick: event => {
                                     // console.log('row click');
                                 }, // 点击行
-                                onDoubleClick: event => {
-                                    history.push({
-                                        ...location,
-                                        pathname: `/main/event-detail/${record.serialNumber}`
-                                    });
-                                },
+                                onDoubleClick: event => {},
                                 onContextMenu: event => {},
                                 onMouseEnter: event => {}, // 鼠标移入行
                                 onMouseLeave: event => {}

@@ -12,7 +12,7 @@ const Card = ({ type = 'table', title = 'TEST', content = [] }) => {
             <div className={cx('inner')}>
                 <div className={cx('cardTitle')}>{title}</div>
                 {type == 'table' ? (
-                    <div className={cx('cardContent')}>
+                    <div className={cx('cardContent', content.length > 3 && 'card-width-50')}>
                         {content.map((obj, index) => {
                             return (
                                 <div className={cx('cardRow')} key={index}>

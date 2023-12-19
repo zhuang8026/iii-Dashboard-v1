@@ -18,6 +18,15 @@
         p {
             margin: 0;
         }
+        .logo_name {
+            color: $iii_name;
+        }
+        .line {
+            width: 80%;
+            margin: 0 auto;
+            height: 1px;
+            background-color: $menu_color_1;
+        }
     }
     ul {
         li {
@@ -55,7 +64,7 @@
         }
         .menu_active {
             border-left: 8px solid #fff;
-            background-image: linear-gradient(to right,  $menu_color_1, transparent);
+            background-image: linear-gradient(to right, $menu_color_1, transparent);
         }
     }
 

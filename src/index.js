@@ -8,13 +8,18 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+// contexts
+import GlobalContainer from 'contexts/global';
+
 import 'styles/_all.scss';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
 ReactDOM.render(
     <React.StrictMode>
         <Router>
-            <App />
+            <GlobalContainer>
+                <App />
+            </GlobalContainer>
         </Router>
     </React.StrictMode>,
     document.getElementById('root')
