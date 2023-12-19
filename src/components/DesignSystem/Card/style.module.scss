@@ -32,6 +32,10 @@
                     margin: 0;
                     // font-weight: bold;
                 }
+                &:last-child {
+                    /* 最后一行的 border-bottom 设置为透明或与背景颜色相同 */
+                    border-bottom: 1px solid transparent; /* 或使用与背景颜色相同的颜色 */
+                }
             }
             .cardCompare {
                 display: flex;

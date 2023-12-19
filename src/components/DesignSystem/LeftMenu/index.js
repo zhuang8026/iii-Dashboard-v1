@@ -25,7 +25,7 @@ const CreateIcon = name => {
     return icon;
 };
 
-const Menu = ({ match, location, history }) => {
+const Menu = ({ match, location, history, menuList }) => {
     const [list, setList] = useState([]);
     const [isClick, setIsClick] = useState(0);
 
@@ -38,18 +38,6 @@ const Menu = ({ match, location, history }) => {
     };
 
     useEffect(() => {
-        let menuList = [
-            {
-                name: '即時數據分析',
-                path: '/main',
-                icon: 'AreaChartOutlined'
-            },
-            {
-                name: '歷史資料',
-                path: '/history',
-                icon: 'HistoryOutlined'
-            }
-        ];
         setList(menuList);
     }, []);
 

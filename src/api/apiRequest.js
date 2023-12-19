@@ -31,9 +31,6 @@ export const apiRequest = async (method, url, params, auth) => {
     let env = process.env;
     let domain = env.REACT_APP_ENV === 'prod' ? env.REACT_APP_API_DOMAIN : env.REACT_APP_API_DOMAIN_MOCK;
 
-    console.log(env.REACT_APP_ENV);
-    console.log(env.REACT_APP_API_DOMAIN);
-
     try {
         const response = await axios({
             headers,

@@ -1,6 +1,9 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
-import { Input, InputNumber, Select, DatePicker, Tag, Alert, Popconfirm, Form, Table, Typography } from 'antd';
+import { Input, InputNumber, Select, Tag, Alert, Popconfirm, Form, Table, Typography } from 'antd';
 // import { LoadingOutlined } from '@ant-design/icons';
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import moment from 'moment';
 // import { from } from 'rxjs';
@@ -14,12 +17,15 @@ import UiCard from 'components/DesignSystem/Card';
 // API
 import { test001API } from 'api/api';
 
+// import { from } from 'rxjs';
 // css
+import './style.datepicker.scss';
 import classes from './style.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
+    const [startDate, setStartDate] = useState(new Date());
     // const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
 
     let problem = [
@@ -41,24 +47,41 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
         dataIndex == 'problem' || dataIndex == 'status' ? (
             <Select options={dataIndex == 'problem' ? problem : status} />
         ) : dataIndex == 'statusUpdateTime' ? (
-            <Input placeholder="1990/01/01 00:00" />
+            <DatePicker
+                className={cx('rdatePicker')}
+                selected={startDate}
+                onChange={date => {
+                    setStartDate(date);
+                }}
+                showTimeSelect
+                // showTimeInput
+                timeFormat="HH:mm"
+                dateFormat="yyyy/MM/dd HH:mm"
+                placeholderText="請選擇時間"
+            />
         ) : (
+            // <Input placeholder="1987/01/01 00:00" />
             <Input placeholder="Please fill in the remarks." />
         );
+    useEffect(() => {
+        if (editing) {
+            if (record.statusUpdateTime != '') {
+                setStartDate(new Date(record.statusUpdateTime));
+            }
+        }
+    }, [editing]);
     return (
         <td {...restProps}>
             {editing ? (
                 <Form.Item
                     name={dataIndex}
-                    style={{
-                        margin: 0
-                    }}
-                    rules={[
-                        {
-                            required: true,
-                            message: `請填寫 "${title}"`
-                        }
-                    ]}
+                    style={{ margin: 0 }}
+                    // rules={[
+                    //     {
+                    //         required: true,
+                    //         message: `請填寫 "${title}"`
+                    //     }
+                    // ]}
                 >
                     {inputNode}
                 </Form.Item>
@@ -102,10 +125,15 @@ const Home = () => {
                     ...item,
                     ...row
                 });
+                newData.forEach(ele => {
+                    ele.statusUpdateTime = moment(ele.statusUpdateTime).format('YYYY/MM/DD HH:mm');
+                    ele.detectedDate = moment(ele.detectedDate).format('YYYY/MM/DD HH:mm');
+                    return ele;
+                });
                 setData(newData);
                 setEditingKey('');
-
-                await apiDemo3(item);
+                console.log(newData);
+                await apiDemo3(newData[key]);
             } else {
                 newData.push(row);
                 setData(newData);
@@ -216,13 +244,13 @@ const Home = () => {
             }
         },
         {
-            title: '記事',
+            title: '備註',
             dataIndex: 'note',
             width: '16%',
             editable: true
         },
         {
-            title: 'operation',
+            title: '編輯',
             dataIndex: 'operation',
             width: '12%',
             render: (_, record) => {
@@ -337,7 +365,9 @@ const Home = () => {
                 }
             );
             setCard([...card]);
-            closeLoading();
+            setTimeout(() => {
+                closeLoading();
+            }, 1000);
         } else {
             console.log('apiDemo error');
         }
@@ -415,14 +445,16 @@ const Home = () => {
     // save API 003
     const apiDemo3 = async item => {
         // 将日期格式转换
-        item.detectedDate = moment(item.detectedDate, 'YYYY/MM/DD HH:mm').utcOffset('+08:00').toISOString();
-        item.statusUpdateTime = moment(item.statusUpdateTime, 'YYYY/MM/DD HH:mm').utcOffset('+08:00').toISOString();
-
-        console.log('save:', item);
+        // item.detectedDate = moment(item.detectedDate, 'YYYY/MM/DD HH:mm').utcOffset('+08:00').toISOString();
+        // item.statusUpdateTime = moment(item.statusUpdateTime, 'YYYY/MM/DD HH:mm').utcOffset('+08:00').toISOString();
+        // console.log('save:', item);
     };
     useEffect(() => {
+        // version 1
         apiDemo();
-        apiDemo2();
+
+        // version 2
+        // apiDemo2();
     }, []);
 
     return (

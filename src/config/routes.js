@@ -22,6 +22,8 @@ const routes = [
         authRequired: false,
         layouts: ['NavLeft']
     },
+
+    // version 2
     {
         path: '/history',
         title: 'History',

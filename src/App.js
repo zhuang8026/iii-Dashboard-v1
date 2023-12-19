@@ -16,6 +16,19 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
 function App({ match, location, history }) {
+    const [menuList, setMenuList] = useState([
+        {
+            name: '即時數據分析',
+            path: '/main',
+            icon: 'AreaChartOutlined'
+        },
+        // version 2
+        {
+            name: '歷史資料',
+            path: '/history',
+            icon: 'HistoryOutlined'
+        }
+    ]);
     // all route
     const Routes = () => {
         return routes.map((route, key) => (
@@ -37,7 +50,7 @@ function App({ match, location, history }) {
             {/* <header className="App-header"></header> */}
             {/* Menu */}
             <Suspense fallback={<></>}>
-                <Menu />
+                <Menu menuList={menuList} />
             </Suspense>
 
             {/* body */}
