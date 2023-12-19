@@ -59,8 +59,8 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
                 dateFormat="yyyy/MM/dd HH:mm"
                 placeholderText="請選擇時間"
             />
-        ) : (
             // <Input placeholder="1987/01/01 00:00" />
+        ) : (
             <Input placeholder="Please fill in the remarks." />
         );
     useEffect(() => {
@@ -463,8 +463,8 @@ const Home = () => {
             <div className={cx('top_card')}>
                 {card.length > 0
                     ? card.map((item, index) => (
-                          <UiCard type={item.type} title={item.title} content={item.content} key={index} />
-                      ))
+                            <UiCard type={item.type} title={item.title} content={item.content} key={index} />
+                        ))
                     : ''}
             </div>
             <div className={cx('home')}>
