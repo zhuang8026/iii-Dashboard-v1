@@ -1,6 +1,9 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import 'styles/transition.scss';
+
 // DesignSystem
 import NoMatch from 'components/DesignSystem/NoMatch';
 import Menu from 'components/DesignSystem/LeftMenu';
@@ -55,15 +58,21 @@ function App({ match, location, history }) {
 
             {/* body */}
             <div className={cx('main')}>
+                {/* 路由頁面 */}
                 <Suspense fallback={<></>}>
-                    <Switch>
-                        <Route exact path="/">
-                            <Redirect to="/main" />
-                        </Route>
-                        {Routes()}
-                        <Route component={NoMatch} />
-                    </Switch>
+                    <TransitionGroup>
+                        <CSSTransition key={location.key} timeout={300} classNames="fade">
+                            <Switch>
+                                <Route exact path="/">
+                                    <Redirect to="/main" />
+                                </Route>
+                                {Routes()}
+                                <Route component={NoMatch} />
+                            </Switch>
+                        </CSSTransition>
+                    </TransitionGroup>
                 </Suspense>
+                {/* Footer */}
                 <Suspense fallback={<></>}>
                     <Footer />
                 </Suspense>
