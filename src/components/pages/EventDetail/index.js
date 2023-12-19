@@ -7,7 +7,12 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
 const EventDetail = () => {
-    return <div className={cx('eventDetail')}>EventDetail</div>;
+    return (
+        <div className={cx('eventDetail')}>
+            <h1>VERSION 2.0</h1>
+            <h2>Sorry, Page Not Found - Event Detail</h2>
+        </div>
+    );
 };
 
 export default EventDetail;

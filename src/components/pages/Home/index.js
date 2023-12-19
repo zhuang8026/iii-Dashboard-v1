@@ -1,4 +1,5 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Input, InputNumber, Select, Tag, Alert, Popconfirm, Form, Table, Typography } from 'antd';
 // import { LoadingOutlined } from '@ant-design/icons';
 
@@ -59,8 +60,8 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
                 dateFormat="yyyy/MM/dd HH:mm"
                 placeholderText="請選擇時間"
             />
-            // <Input placeholder="1987/01/01 00:00" />
         ) : (
+            // <Input placeholder="1987/01/01 00:00" />
             <Input placeholder="Please fill in the remarks." />
         );
     useEffect(() => {
@@ -92,7 +93,7 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
     );
 };
 
-const Home = () => {
+const Home = ({match, history, location}) => {
     const [form] = Form.useForm();
     const [data, setData] = useState();
     const [card, setCard] = useState([]);
@@ -312,6 +313,7 @@ const Home = () => {
                 return {
                     key: i.toString(),
                     uuid: val.uuid,
+                    serialNumber: val.serialNumber,
                     name: val.name,
                     userId: val.userId,
                     detectedDate: moment(val.detectedDate).format('YYYY/MM/DD HH:mm'),
@@ -489,7 +491,12 @@ const Home = () => {
                                 onClick: event => {
                                     // console.log('row click');
                                 }, // 点击行
-                                onDoubleClick: event => {},
+                                onDoubleClick: event => {
+                                    history.push({
+                                        ...location,
+                                        pathname: `/main/event-detail/${record.serialNumber}`
+                                    });
+                                },
                                 onContextMenu: event => {},
                                 onMouseEnter: event => {}, // 鼠标移入行
                                 onMouseLeave: event => {}
@@ -502,4 +509,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default withRouter(Home);

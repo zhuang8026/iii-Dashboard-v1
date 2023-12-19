@@ -1,5 +1,13 @@
-.footer {
-    font-size: 12px;
-    width: 100%;
-    text-align: center;
+.eventDetail {
+    height: calc(100vh - 30px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    h1 {
+        font-size: 100px;
+        font-weight: bold;
+    }
+    h2 {
+    }
 }
