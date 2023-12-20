@@ -12,7 +12,8 @@ import * as serviceWorker from './serviceWorker';
 import GlobalContainer from 'contexts/global';
 
 import 'styles/_all.scss';
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+import 'styles/style.datepicker.scss'; // framework: "react-datepicker": "^4.24.0"
+import 'antd/dist/antd.css'; // or "antd": "^4.7.2"
 
 ReactDOM.render(
     <React.StrictMode>

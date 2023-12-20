@@ -1,8 +1,7 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import 'styles/transition.scss';
+import { AreaChartOutlined, HistoryOutlined } from '@ant-design/icons';
 
 // DesignSystem
 import NoMatch from 'components/DesignSystem/NoMatch';
@@ -24,13 +23,13 @@ function App({ match, location, history }) {
         {
             name: '即時數據分析',
             path: '/main',
-            icon: 'AreaChartOutlined'
+            icon: <AreaChartOutlined />
         },
         // version 2
         {
             name: '歷史資料',
             path: '/history',
-            icon: 'HistoryOutlined'
+            icon: <HistoryOutlined />
         }
     ]);
     // all route
@@ -61,19 +60,13 @@ function App({ match, location, history }) {
             <div className={cx('main')}>
                 {/* 路由頁面 */}
                 <Suspense fallback={<></>}>
-                    <TransitionGroup component={null}>
-                        <CSSTransition key={location.key} timeout={300} classNames="fade" nodeRef={nodeRef}>
-                            <div ref={nodeRef}>
-                                <Switch location={location}>
-                                    <Route exact path="/">
-                                        <Redirect to="/main" />
-                                    </Route>
-                                    {Routes()}
-                                    <Route component={NoMatch} />
-                                </Switch>
-                            </div>
-                        </CSSTransition>
-                    </TransitionGroup>
+                    <Switch location={location}>
+                        <Route exact path="/">
+                            <Redirect to="/main" />
+                        </Route>
+                        {Routes()}
+                        <Route component={NoMatch} />
+                    </Switch>
                 </Suspense>
                 {/* Footer */}
                 <Suspense fallback={<></>}>

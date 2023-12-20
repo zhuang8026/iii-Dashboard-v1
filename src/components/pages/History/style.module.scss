@@ -1,13 +1,16 @@
-.history {
-    height: calc(100vh - 30px);
+.top_card {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    h1 {
-        font-size: 100px;
-        font-weight: bold;
-    }
-    h2 {
+    margin: 20px 20px 0 20px;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+.history {
+    margin: 10px 20px 20px 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    .editable-row .ant-form-item-explain {
+        position: absolute;
+        top: 100%;
+        font-size: 12px;
     }
 }

@@ -1,3 +1,17 @@
+@import 'src/styles/_variables';
+
+.title {
+    font-size: 21px;
+    font-weight: bold;
+    margin: 20px 20px 0 20px;
+
+    span {
+        font-size: 12px;
+        font-weight: normal;
+        color: $menu_color_2;
+        // margin-left: 5px;
+    }
+}
 .top_card {
     display: flex;
     margin: 20px 20px 0 20px;
@@ -5,9 +19,15 @@
     overflow-x: auto;
 }
 .home {
-    margin: 10px 20px 20px 20px;
+    margin: 20px 20px 20px 20px;
     border-radius: 10px;
     overflow: hidden;
+    .table_title {
+        margin: 0;
+        padding: 15px;
+        background: $table_color;
+        font-weight: bold;
+    }
     .editable-row .ant-form-item-explain {
         position: absolute;
         top: 100%;

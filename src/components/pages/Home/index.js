@@ -22,7 +22,6 @@ import { test001API } from 'api/api';
 
 // import { from } from 'rxjs';
 // css
-import './style.datepicker.scss';
 import classes from './style.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
@@ -382,7 +381,7 @@ const Home = ({ match, history, location }) => {
             );
             setCard([...card]);
             // setTimeout(() => {
-                closeLoading();
+            closeLoading();
             // }, 1000);
         } else {
             console.log('apiDemo error');
@@ -473,7 +472,10 @@ const Home = ({ match, history, location }) => {
     }, []);
     return (
         <>
-            {/* 361戶:離線87,連線179； 400戶:離線63,連線265； 其他:離線55,連線96；總離線+總連線 = 205戶+540戶 = 745戶 */}
+            <h1 className={cx('title')}>
+                即時數據分析
+                <span> | 後一次更新 2023/12/20 14:41:29</span>
+            </h1>
             <div className={cx('top_card')}>
                 {card.length > 0
                     ? card.map((item, index) => (
@@ -482,6 +484,7 @@ const Home = ({ match, history, location }) => {
                     : ''}
             </div>
             <div className={cx('home')}>
+                <h1 className={cx('table_title')}>待處理異常紀錄</h1>
                 <Form form={form} component={false}>
                     <Table
                         components={{

@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
-import { AreaChartOutlined, HistoryOutlined } from '@ant-design/icons';
-
 // config
 import { III_VERSION } from 'config';
 
@@ -10,20 +8,6 @@ import { III_VERSION } from 'config';
 import classes from './style.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
-
-const CreateIcon = name => {
-    let icon;
-    switch (name) {
-        case 'AreaChartOutlined':
-            icon = <AreaChartOutlined />;
-            break;
-        case 'HistoryOutlined':
-            icon = <HistoryOutlined />;
-            break;
-        default:
-    }
-    return icon;
-};
 
 const Menu = ({ match, location, history, menuList }) => {
     const [list, setList] = useState([]);
@@ -61,7 +45,7 @@ const Menu = ({ match, location, history, menuList }) => {
                             index={index}
                         >
                             <Link to={item.path}>
-                                {CreateIcon(item.icon)}
+                                {item.icon}
                                 <span className={cx('menu_icon')}></span>
                                 <span>{item.name}</span>
                             </Link>
