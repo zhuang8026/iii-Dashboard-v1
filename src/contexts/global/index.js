@@ -9,7 +9,6 @@ export const GlobalContext = createContext();
 
 const GlobalContainer = props => {
     const { history, location, match } = props;
-    console.log( process.env)
     const REACT_APP_VERSION_1 = getBooleanFromENV('REACT_APP_VERSION_1', false);
     const REACT_APP_VERSION_2 = getBooleanFromENV('REACT_APP_VERSION_2', false);
     const REACT_APP_VERSION_3 = getBooleanFromENV('REACT_APP_VERSION_3', false);
@@ -19,7 +18,7 @@ const GlobalContainer = props => {
             value={{
                 REACT_APP_VERSION_1,
                 REACT_APP_VERSION_2,
-                REACT_APP_VERSION_3,
+                REACT_APP_VERSION_3
             }}
         >
             {props.children}

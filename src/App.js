@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense, useState, useEffect, useContext } from 'react';
+import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -19,6 +19,7 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
 function App({ match, location, history }) {
+    const nodeRef = useRef(null);
     const [menuList, setMenuList] = useState([
         {
             name: '即時數據分析',
@@ -60,15 +61,17 @@ function App({ match, location, history }) {
             <div className={cx('main')}>
                 {/* 路由頁面 */}
                 <Suspense fallback={<></>}>
-                    <TransitionGroup>
-                        <CSSTransition key={location.key} timeout={300} classNames="fade">
-                            <Switch>
-                                <Route exact path="/">
-                                    <Redirect to="/main" />
-                                </Route>
-                                {Routes()}
-                                <Route component={NoMatch} />
-                            </Switch>
+                    <TransitionGroup component={null}>
+                        <CSSTransition key={location.key} timeout={300} classNames="fade" nodeRef={nodeRef}>
+                            <div ref={nodeRef}>
+                                <Switch location={location}>
+                                    <Route exact path="/">
+                                        <Redirect to="/main" />
+                                    </Route>
+                                    {Routes()}
+                                    <Route component={NoMatch} />
+                                </Switch>
+                            </div>
                         </CSSTransition>
                     </TransitionGroup>
                 </Suspense>

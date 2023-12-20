@@ -381,9 +381,9 @@ const Home = ({ match, history, location }) => {
                 }
             );
             setCard([...card]);
-            setTimeout(() => {
+            // setTimeout(() => {
                 closeLoading();
-            }, 1000);
+            // }, 1000);
         } else {
             console.log('apiDemo error');
         }
@@ -468,13 +468,9 @@ const Home = ({ match, history, location }) => {
     useEffect(() => {
         // version 1
         apiDemo();
-    }, []);
-
-    useEffect(() => {
-        // console.log('REACT_APP_VERSION_3:', REACT_APP_VERSION_3)
         // version 2
-        if (REACT_APP_VERSION_2 === 'false') apiDemo2();
-    }, [REACT_APP_VERSION_2]);
+        if (REACT_APP_VERSION_2) apiDemo2();
+    }, []);
     return (
         <>
             {/* 361戶:離線87,連線179； 400戶:離線63,連線265； 其他:離線55,連線96；總離線+總連線 = 205戶+540戶 = 745戶 */}
