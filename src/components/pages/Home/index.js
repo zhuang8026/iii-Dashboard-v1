@@ -380,9 +380,9 @@ const Home = ({ match, history, location }) => {
                 }
             );
             setCard([...card]);
-            // setTimeout(() => {
-            closeLoading();
-            // }, 1000);
+            setTimeout(() => {
+                closeLoading();
+            }, 1000);
         } else {
             console.log('apiDemo error');
         }
