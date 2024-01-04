@@ -18,7 +18,7 @@ import UiCard from 'components/DesignSystem/Card';
 // Context
 import GlobalContainer, { GlobalContext } from 'contexts/global';
 // API
-import { test001API } from 'api/api';
+import { getProblemStatus001API } from 'api/api';
 
 // import { from } from 'rxjs';
 // css
@@ -320,7 +320,7 @@ const History = ({ match, history, location }) => {
     // get API 001
     const apiDemo = async () => {
         openLoading();
-        const res = await test001API();
+        const res = await getProblemStatus001API();
         if (res.code === 200) {
             let tableItem = res.data.map((val, i) => {
                 return {
@@ -390,7 +390,7 @@ const History = ({ match, history, location }) => {
 
     // get API 002
     const apiDemo2 = async () => {
-        const res = await test001API();
+        const res = await getProblemStatus001API();
         if (res.code === 200) {
             let demo = [
                 {

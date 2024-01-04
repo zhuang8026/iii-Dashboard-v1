@@ -16,9 +16,10 @@ import axios from 'axios';
  * auth: has token ?
  * isPythonVersion: java server or python server
  * */
-export const apiRequest = async (method, url, params, auth) => {
+export const apiRequest = async (method, url, auth, params = null) => {
     const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        // 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+        // 'Content-Type': 'application/json',
     };
 
     if (auth) {

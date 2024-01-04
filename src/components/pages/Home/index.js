@@ -18,7 +18,7 @@ import UiCard from 'components/DesignSystem/Card';
 // Context
 import GlobalContainer, { GlobalContext } from 'contexts/global';
 // API
-import { test001API } from 'api/api';
+import { getProblemStatus001API, getProblemStatus002API, postProblemStatus003API } from 'api/api';
 
 // import { from } from 'rxjs';
 // css
@@ -63,11 +63,11 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
             />
         ) : (
             // <Input placeholder="1987/01/01 00:00" />
-            <Input placeholder="Please fill in the remarks." />
+            <Input placeholder="請填寫備註(非必填)" />
         );
     useEffect(() => {
         if (editing) {
-            if (record.statusUpdateTime != '') {
+            if (record.statusUpdateTime != '' && record.statusUpdateTime != 'Invalid date') {
                 setStartDate(new Date(record.statusUpdateTime));
             }
         }
@@ -127,15 +127,19 @@ const Home = ({ match, history, location }) => {
                     ...item,
                     ...row
                 });
+
                 newData.forEach(ele => {
-                    ele.statusUpdateTime = moment(ele.statusUpdateTime).format('YYYY/MM/DD HH:mm');
+                    ele.statusUpdateTime = ele.statusUpdateTime
+                        ? moment(ele.statusUpdateTime).format('YYYY/MM/DD HH:mm')
+                        : null;
                     ele.detectedDate = moment(ele.detectedDate).format('YYYY/MM/DD HH:mm');
                     return ele;
                 });
                 setData(newData);
                 setEditingKey('');
-                console.log(newData);
                 await apiDemo3(newData[key]);
+                await apiDemo();
+                await apiDemo2();
             } else {
                 newData.push(row);
                 setData(newData);
@@ -188,7 +192,6 @@ const Home = ({ match, history, location }) => {
             // filterMode: 'tree',
             // filterSearch: true,
             onFilter: (value, record) => {
-                console.log(value, record);
                 return record.problem.startsWith(value);
             }
         },
@@ -320,9 +323,10 @@ const Home = ({ match, history, location }) => {
     // get API 001
     const apiDemo = async () => {
         openLoading();
-        const res = await test001API();
+        const res = await getProblemStatus001API();
         if (res.code === 200) {
             let tableItem = res.data.map((val, i) => {
+                let updateTime = val.statusUpdateTime ? moment(val.statusUpdateTime).format('YYYY/MM/DD HH:mm') : '';
                 return {
                     key: i.toString(),
                     uuid: val.uuid,
@@ -332,7 +336,7 @@ const Home = ({ match, history, location }) => {
                     detectedDate: moment(val.detectedDate).format('YYYY/MM/DD HH:mm'),
                     problem: val.problem,
                     status: val.status,
-                    statusUpdateTime: moment(val.statusUpdateTime).format('YYYY/MM/DD HH:mm'),
+                    statusUpdateTime: updateTime,
                     note: val.note
                 };
             });
@@ -361,13 +365,40 @@ const Home = ({ match, history, location }) => {
             }, {});
 
             // 將加總結果轉換為指定格式的陣列
-            const resultStatus = Object.entries(statusSummary).map(([type, val]) => ({
-                type,
-                val
-            }));
+            const resultStatus = Object.entries(statusSummary)
+                .map(([type, val]) => {
+                    let status;
+                    switch (type) {
+                        case '已完成':
+                            status = 'safe';
+                            break;
+                        case '已通知':
+                        case '已拆除':
+                        case '等待維護':
+                        case '不想被打擾':
+                            status = 'warning';
+                            break;
+                        case '未通知':
+                            status = 'dangerous';
+                            break;
+                    }
+                    return {
+                        type,
+                        val,
+                        status
+                    };
+                })
+                .sort((a, b) => {
+                    // 自訂排序邏輯，'已完成'排第一，'未通知'排第二，其餘按照字母順序排序
+                    if (a.type === '已完成') return -1;
+                    if (b.type === '已完成') return 1;
+                    if (a.type === '未通知') return -1;
+                    if (b.type === '未通知') return 1;
+                    return a.type.localeCompare(b.type);
+                });
 
             // 綠色開發區塊（2塊）
-            card.push(
+            let card = [
                 {
                     type: 'table',
                     title: '故障類別',
@@ -378,7 +409,7 @@ const Home = ({ match, history, location }) => {
                     title: '故障狀態',
                     content: resultStatus
                 }
-            );
+            ];
             setCard([...card]);
             setTimeout(() => {
                 closeLoading();
@@ -390,7 +421,7 @@ const Home = ({ match, history, location }) => {
 
     // get API 002
     const apiDemo2 = async () => {
-        const res = await test001API();
+        const res = await getProblemStatus002API();
         if (res.code === 200) {
             let demo = [
                 {
@@ -450,19 +481,34 @@ const Home = ({ match, history, location }) => {
                     ]
                 }
             ];
-            card.push(...demo);
-            setCard([...card]);
+            setCard(prev => {
+                return [...prev, ...demo];
+            });
         } else {
             console.log('apiDemo2 error');
         }
     };
 
-    // save API 003
+    // save POST API 003
     const apiDemo3 = async item => {
         // 将日期格式转换
         // item.detectedDate = moment(item.detectedDate, 'YYYY/MM/DD HH:mm').utcOffset('+08:00').toISOString();
-        // item.statusUpdateTime = moment(item.statusUpdateTime, 'YYYY/MM/DD HH:mm').utcOffset('+08:00').toISOString();
-        // console.log('save:', item);
+        let playload = {
+            userId: item.userId,
+            uuid: item.uuid,
+            serialNumber: item.serialNumber,
+            problem: item.problem,
+            status: item.status,
+            statusUpdateTime:  moment(item.statusUpdateTime, 'YYYY/MM/DD HH:mm').format('YYYY-MM-DDTHH:mm:ssZ'),
+            note: item.note
+        };
+        const res = await postProblemStatus003API(playload);
+
+        if (res.code === 200) {
+            console.log('apiDemo3 success');
+        } else {
+            console.log('apiDemo3 error');
+        }
     };
     useEffect(() => {
         // version 1
@@ -473,8 +519,7 @@ const Home = ({ match, history, location }) => {
     return (
         <>
             <h1 className={cx('title')}>
-                即時數據分析
-                <span> | 後一次更新 2023/12/20 14:41:29</span>
+                即時數據分析 <span> | 後一次更新 2023/12/20 14:41:29</span>
             </h1>
             <div className={cx('top_card')}>
                 {card.length > 0

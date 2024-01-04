@@ -15,7 +15,7 @@ const Card = ({ type = 'table', title = 'TEST', content = [] }) => {
                     <div className={cx('cardContent', content.length > 3 && 'card-width-50')}>
                         {content.map((obj, index) => {
                             return (
-                                <div className={cx('cardRow')} key={index}>
+                                <div className={cx('cardRow', obj.status)} key={index}>
                                     <p>{obj.type}</p>
                                     {obj.val}
                                 </div>
@@ -37,7 +37,6 @@ const Card = ({ type = 'table', title = 'TEST', content = [] }) => {
                                 <>
                                     <div className={cx('line')} />
                                     <div className={cx('all_user')}>
-
                                         {Number(content[0].val) + Number(content[1].val)}
                                         <span>{` 戶(總計)`}</span>
                                     </div>

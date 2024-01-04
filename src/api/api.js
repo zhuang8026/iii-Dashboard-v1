@@ -17,9 +17,24 @@ const ad_dashboard = 'ad_dashboard';
 //     };
 // };
 
-export const test001API = async () => {
+// test001 獲取即時資料
+export const getProblemStatus001API = async () => {
     // 如果是开发环境，直接返回模拟数据
     const url = isMockEnvironment ? `/mock/problem_status.json` : `/${ad_dashboard}/problem_status`;
-    const res = await apiRequest('GET', url, null, true);
+    const res = await apiRequest('GET', url, true);
+    return res;
+};
+
+export const getProblemStatus002API = async () => {
+    // 如果是开发环境，直接返回模拟数据
+    const url = isMockEnvironment ? `/mock/problem_status.json` : `/${ad_dashboard}/problem_status`;
+    const res = await apiRequest('GET', url, true);
+    return res;
+};
+
+export const postProblemStatus003API = async playload => {
+    // 如果是开发环境，直接返回模拟数据
+    const url = isMockEnvironment ? `/mock/problem_status.json` : `/${ad_dashboard}/problem_status`;
+    const res = await apiRequest('POST', url, true, playload);
     return res;
 };
