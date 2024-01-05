@@ -42,7 +42,7 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
         { label: '已通知', value: '已通知' }, // oragnge icon
         { label: '已拆除', value: '已拆除' }, // oragnge icon
         { label: '等待維護', value: '等待維護' }, // oragnge icon
-        { label: '不想被打擾', value: '不想被打擾' } // oragnge icon
+        { label: '不接受維護', value: '不接受維護' } // oragnge icon
     ];
 
     const inputNode =
@@ -203,7 +203,7 @@ const History = ({ match, history, location }) => {
                 { text: '已通知', value: '已通知' },
                 { text: '已拆除', value: '已拆除' },
                 { text: '等待維護', value: '等待維護' },
-                { text: '不想被打擾', value: '不想被打擾' }
+                { text: '不接受維護', value: '不接受維護' }
             ],
             // filterMode: 'tree',
             // filterSearch: true,

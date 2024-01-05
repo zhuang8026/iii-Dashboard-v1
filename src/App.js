@@ -8,6 +8,7 @@ import NoMatch from 'components/DesignSystem/NoMatch';
 import Menu from 'components/DesignSystem/LeftMenu';
 import Footer from 'components/DesignSystem/Footer';
 import { withFullWindowProvider, FullPopWindow } from 'components/DesignSystem/FullWindow';
+import { withPopWindowProvider, PopWindow } from 'components/DesignSystem/PopWindow';
 
 // config
 import routes from 'config/routes';
@@ -78,7 +79,8 @@ function App({ match, location, history }) {
              * 可隨意添加 comment
              */}
             <FullPopWindow />
+            <PopWindow />
         </div>
     );
 }
-export default withRouter(withFullWindowProvider(App));
+export default withRouter(withFullWindowProvider(withPopWindowProvider(App)));

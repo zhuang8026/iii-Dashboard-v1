@@ -1,0 +1,13 @@
+@import 'src/styles/_variables';
+
+.react-datepicker__header {
+    background-color: $bg_color_bottom;
+}
+
+.react-datepicker__day--selected {
+    background-color: $bg_color;
+}
+
+.react-datepicker__navigation-icon::before {
+    border-color: #fff !important;
+}

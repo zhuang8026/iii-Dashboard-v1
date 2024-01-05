@@ -12,7 +12,9 @@ import moment from 'moment';
 
 // DesignSystem
 import { FullWindowAnimateStorage } from 'components/DesignSystem/FullWindow';
+import { PopWindowAnimateStorage } from 'components/DesignSystem/PopWindow';
 import Loading from 'components/DesignSystem/Loading';
+import Message from 'components/DesignSystem/Message';
 import UiCard from 'components/DesignSystem/Card';
 
 // Context
@@ -22,9 +24,12 @@ import { getProblemStatus001API, getProblemStatus002API, postProblemStatus003API
 
 // import { from } from 'rxjs';
 // css
+import './style.datePicker.scss';
 import classes from './style.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
+
+
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
     const [startDate, setStartDate] = useState(new Date());
@@ -42,7 +47,7 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
         { label: '已通知', value: '已通知' }, // oragnge icon
         { label: '已拆除', value: '已拆除' }, // oragnge icon
         { label: '等待維護', value: '等待維護' }, // oragnge icon
-        { label: '不想被打擾', value: '不想被打擾' } // oragnge icon
+        { label: '不接受維護', value: '不接受維護' } // oragnge icon
     ];
 
     const inputNode =
@@ -50,7 +55,7 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
             <Select options={dataIndex == 'problem' ? problem : status} />
         ) : dataIndex == 'statusUpdateTime' ? (
             <DatePicker
-                className={cx('rdatePicker')}
+                className={cx('datePicker')}
                 selected={startDate}
                 onChange={date => {
                     setStartDate(date);
@@ -102,6 +107,7 @@ const Home = ({ match, history, location }) => {
     const fetchListener = useRef();
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
+    const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
     const { REACT_APP_VERSION_2 } = useContext(GlobalContext);
     const isEditing = record => record.key === editingKey;
     const edit = record => {
@@ -137,9 +143,10 @@ const Home = ({ match, history, location }) => {
                 });
                 setData(newData);
                 setEditingKey('');
-                await apiDemo3(newData[key]);
-                await apiDemo();
-                await apiDemo2();
+
+                await POST003API(newData[key]);
+                await GET001API();
+                await GET002API();
             } else {
                 newData.push(row);
                 setData(newData);
@@ -154,19 +161,19 @@ const Home = ({ match, history, location }) => {
             title: '姓名',
             dataIndex: 'name',
             width: '9%',
-            editable: false
+            editable: false // 編輯控制
         },
         {
             title: '帳號',
             dataIndex: 'userId',
             width: '12%',
-            editable: false
+            editable: false // 編輯控制
         },
         {
             title: '更新時間',
             dataIndex: 'detectedDate',
             width: '12%',
-            editable: false,
+            editable: false, // 編輯控制
             sorter: (a, b) => {
                 // 使用 Moment.js 解析日期字符串
                 const preTime = moment(a.detectedDate, 'YYYY/MM/DD HH:mm');
@@ -183,30 +190,30 @@ const Home = ({ match, history, location }) => {
             title: '故障類別',
             dataIndex: 'problem',
             width: '9%',
-            editable: true,
+            editable: false, // 編輯控制
             filters: [
                 { text: '斷線', value: '斷線' },
                 { text: '資料過少', value: '資料過少' },
                 { text: '負值', value: '負值' }
-            ],
+            ]
             // filterMode: 'tree',
             // filterSearch: true,
-            onFilter: (value, record) => {
-                return record.problem.startsWith(value);
-            }
+            // onFilter: (value, record) => {
+            //     return record.problem.startsWith(value);
+            // }
         },
         {
             title: '處理狀態',
             dataIndex: 'status',
             width: '9%',
-            editable: true,
+            editable: true, // 編輯控制
             filters: [
                 { text: '已完成', value: '已完成' },
                 { text: '未通知', value: '未通知' },
                 { text: '已通知', value: '已通知' },
                 { text: '已拆除', value: '已拆除' },
                 { text: '等待維護', value: '等待維護' },
-                { text: '不想被打擾', value: '不想被打擾' }
+                { text: '不接受維護', value: '不接受維護' }
             ],
             // filterMode: 'tree',
             // filterSearch: true,
@@ -236,7 +243,7 @@ const Home = ({ match, history, location }) => {
             title: '處理時間',
             dataIndex: 'statusUpdateTime',
             width: '12%',
-            editable: true,
+            editable: true, // 編輯控制
             sorter: (a, b) => {
                 const preTime = moment(a.statusUpdateTime, 'YYYY/MM/DD HH:mm');
                 const backTime = moment(b.statusUpdateTime, 'YYYY/MM/DD HH:mm');
@@ -252,7 +259,7 @@ const Home = ({ match, history, location }) => {
             title: '備註',
             dataIndex: 'note',
             width: '16%',
-            editable: true
+            editable: true // 編輯控制
         },
         {
             title: '編輯',
@@ -320,8 +327,16 @@ const Home = ({ match, history, location }) => {
     // close loading
     const closeLoading = () => closeAnimate();
 
+    const openMessage = (code, msg) => {
+        openDialog({
+            component: <Message code={code} msg={msg} closeMessage={closeMessage} />
+        });
+    };
+
+    const closeMessage = () => closeDialog();
+
     // get API 001
-    const apiDemo = async () => {
+    const GET001API = async () => {
         openLoading();
         const res = await getProblemStatus001API();
         if (res.code === 200) {
@@ -375,7 +390,7 @@ const Home = ({ match, history, location }) => {
                         case '已通知':
                         case '已拆除':
                         case '等待維護':
-                        case '不想被打擾':
+                        case '不接受維護':
                             status = 'warning';
                             break;
                         case '未通知':
@@ -415,12 +430,12 @@ const Home = ({ match, history, location }) => {
                 closeLoading();
             }, 1000);
         } else {
-            console.log('apiDemo error');
+            console.log('GET001API error');
         }
     };
 
     // get API 002
-    const apiDemo2 = async () => {
+    const GET002API = async () => {
         const res = await getProblemStatus002API();
         if (res.code === 200) {
             let demo = [
@@ -485,12 +500,12 @@ const Home = ({ match, history, location }) => {
                 return [...prev, ...demo];
             });
         } else {
-            console.log('apiDemo2 error');
+            console.log('GET002API error');
         }
     };
 
     // save POST API 003
-    const apiDemo3 = async item => {
+    const POST003API = async item => {
         // 将日期格式转换
         // item.detectedDate = moment(item.detectedDate, 'YYYY/MM/DD HH:mm').utcOffset('+08:00').toISOString();
         let playload = {
@@ -499,22 +514,25 @@ const Home = ({ match, history, location }) => {
             serialNumber: item.serialNumber,
             problem: item.problem,
             status: item.status,
-            statusUpdateTime:  moment(item.statusUpdateTime, 'YYYY/MM/DD HH:mm').format('YYYY-MM-DDTHH:mm:ssZ'),
+            statusUpdateTime: moment(item.statusUpdateTime, 'YYYY/MM/DD HH:mm').format('YYYY-MM-DDTHH:mm:ssZ'),
             note: item.note
         };
         const res = await postProblemStatus003API(playload);
 
         if (res.code === 200) {
-            console.log('apiDemo3 success');
+            console.log('POST003API success');
+        } else if (res.code === 409) {
+            openMessage(res.code, `The message "${playload.userId}" has been repeated, thank you.`);
         } else {
-            console.log('apiDemo3 error');
+            console.log('POST003API error');
+            openMessage(res.code, res.message);
         }
     };
     useEffect(() => {
         // version 1
-        apiDemo();
+        GET001API();
         // version 2
-        if (REACT_APP_VERSION_2) apiDemo2();
+        if (REACT_APP_VERSION_2) GET002API();
     }, []);
     return (
         <>
