@@ -1,7 +1,8 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Input, InputNumber, Select, Tag, Alert, Popconfirm, Form, Table, Typography } from 'antd';
-// import { LoadingOutlined } from '@ant-design/icons';
+import { Input, InputNumber, Select, Tag, Alert, Popconfirm, Form, Table, Typography, Button, Space } from 'antd';
+// import Highlighter from 'react-highlight-words';
+// import { SearchOutlined } from '@ant-design/icons';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -16,88 +17,18 @@ import { PopWindowAnimateStorage } from 'components/DesignSystem/PopWindow';
 import Loading from 'components/DesignSystem/Loading';
 import Message from 'components/DesignSystem/Message';
 import UiCard from 'components/DesignSystem/Card';
+import EditableCell from 'components/DesignSystem/EditableCell';
+import TableSearch from 'components/DesignSystem/TableSearch';
 
 // Context
 import GlobalContainer, { GlobalContext } from 'contexts/global';
 // API
 import { getProblemStatus001API, getProblemStatus002API, postProblemStatus003API } from 'api/api';
 
-// import { from } from 'rxjs';
 // css
-import './style.datePicker.scss';
 import classes from './style.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
-
-
-
-const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
-    const [startDate, setStartDate] = useState(new Date());
-    // const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
-
-    let problem = [
-        { value: '斷線', label: '斷線' },
-        { value: '資料過少', label: '資料過少' },
-        { value: '負值', label: '負值' }
-    ];
-
-    let status = [
-        { label: '已完成', value: '已完成' }, // green icon
-        { label: '未通知', value: '未通知' }, // red icon
-        { label: '已通知', value: '已通知' }, // oragnge icon
-        { label: '已拆除', value: '已拆除' }, // oragnge icon
-        { label: '等待維護', value: '等待維護' }, // oragnge icon
-        { label: '不接受維護', value: '不接受維護' } // oragnge icon
-    ];
-
-    const inputNode =
-        dataIndex == 'problem' || dataIndex == 'status' ? (
-            <Select options={dataIndex == 'problem' ? problem : status} />
-        ) : dataIndex == 'statusUpdateTime' ? (
-            <DatePicker
-                className={cx('datePicker')}
-                selected={startDate}
-                onChange={date => {
-                    setStartDate(date);
-                }}
-                showTimeSelect
-                // showTimeInput
-                timeFormat="HH:mm"
-                dateFormat="yyyy/MM/dd HH:mm"
-                placeholderText="請選擇時間"
-            />
-        ) : (
-            // <Input placeholder="1987/01/01 00:00" />
-            <Input placeholder="請填寫備註(非必填)" />
-        );
-    useEffect(() => {
-        if (editing) {
-            if (record.statusUpdateTime != '' && record.statusUpdateTime != 'Invalid date') {
-                setStartDate(new Date(record.statusUpdateTime));
-            }
-        }
-    }, [editing]);
-    return (
-        <td {...restProps}>
-            {editing ? (
-                <Form.Item
-                    name={dataIndex}
-                    style={{ margin: 0 }}
-                    // rules={[
-                    //     {
-                    //         required: true,
-                    //         message: `請填寫 "${title}"`
-                    //     }
-                    // ]}
-                >
-                    {inputNode}
-                </Form.Item>
-            ) : (
-                children
-            )}
-        </td>
-    );
-};
 
 const Home = ({ match, history, location }) => {
     const [form] = Form.useForm();
@@ -109,6 +40,7 @@ const Home = ({ match, history, location }) => {
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
     const { REACT_APP_VERSION_2 } = useContext(GlobalContext);
+
     const isEditing = record => record.key === editingKey;
     const edit = record => {
         form.setFieldsValue({
@@ -144,6 +76,15 @@ const Home = ({ match, history, location }) => {
                 setData(newData);
                 setEditingKey('');
 
+                if (
+                    newData[key].statusUpdateTime == 'Invalid date' ||
+                    newData[key].statusUpdateTime == null ||
+                    newData[key].statusUpdateTime == ''
+                ) {
+                    openMessage(400, '"處理時間" is required information.');
+                    return;
+                }
+
                 await POST003API(newData[key]);
                 await GET001API();
                 await GET002API();
@@ -156,166 +97,6 @@ const Home = ({ match, history, location }) => {
             console.log('Validate Failed:', errInfo);
         }
     };
-    const columns = [
-        {
-            title: '姓名',
-            dataIndex: 'name',
-            width: '9%',
-            editable: false // 編輯控制
-        },
-        {
-            title: '帳號',
-            dataIndex: 'userId',
-            width: '12%',
-            editable: false // 編輯控制
-        },
-        {
-            title: '更新時間',
-            dataIndex: 'detectedDate',
-            width: '12%',
-            editable: false, // 編輯控制
-            sorter: (a, b) => {
-                // 使用 Moment.js 解析日期字符串
-                const preTime = moment(a.detectedDate, 'YYYY/MM/DD HH:mm');
-                const backTime = moment(b.detectedDate, 'YYYY/MM/DD HH:mm');
-
-                // 获取日期对象的时间戳（以秒为单位）
-                const preSeconds = preTime.unix();
-                const backSeconds = backTime.unix();
-
-                return preSeconds - backSeconds;
-            }
-        },
-        {
-            title: '故障類別',
-            dataIndex: 'problem',
-            width: '9%',
-            editable: false, // 編輯控制
-            filters: [
-                { text: '斷線', value: '斷線' },
-                { text: '資料過少', value: '資料過少' },
-                { text: '負值', value: '負值' }
-            ]
-            // filterMode: 'tree',
-            // filterSearch: true,
-            // onFilter: (value, record) => {
-            //     return record.problem.startsWith(value);
-            // }
-        },
-        {
-            title: '處理狀態',
-            dataIndex: 'status',
-            width: '9%',
-            editable: true, // 編輯控制
-            filters: [
-                { text: '已完成', value: '已完成' },
-                { text: '未通知', value: '未通知' },
-                { text: '已通知', value: '已通知' },
-                { text: '已拆除', value: '已拆除' },
-                { text: '等待維護', value: '等待維護' },
-                { text: '不接受維護', value: '不接受維護' }
-            ],
-            // filterMode: 'tree',
-            // filterSearch: true,
-            onFilter: (value, record) => record.status.startsWith(value),
-            render: tags => {
-                return (
-                    <span>
-                        {[tags].map(tag => {
-                            {
-                                /* let color = tag.length > 5 ? 'red' : 'green'; */
-                            }
-                            let color = tag == '已完成' ? 'green' : tag == '未通知' ? 'red' : 'orange';
-                            if (tag === 'loser') {
-                                color = 'volcano';
-                            }
-                            return (
-                                <Tag color={color} key={tag}>
-                                    {tag.toUpperCase()}
-                                </Tag>
-                            );
-                        })}
-                    </span>
-                );
-            }
-        },
-        {
-            title: '處理時間',
-            dataIndex: 'statusUpdateTime',
-            width: '12%',
-            editable: true, // 編輯控制
-            sorter: (a, b) => {
-                const preTime = moment(a.statusUpdateTime, 'YYYY/MM/DD HH:mm');
-                const backTime = moment(b.statusUpdateTime, 'YYYY/MM/DD HH:mm');
-
-                // 获取日期对象的时间戳（以秒为单位）
-                const preSeconds = preTime.unix();
-                const backSeconds = backTime.unix();
-
-                return preSeconds - backSeconds;
-            }
-        },
-        {
-            title: '備註',
-            dataIndex: 'note',
-            width: '16%',
-            editable: true // 編輯控制
-        },
-        {
-            title: '編輯',
-            dataIndex: 'operation',
-            width: '12%',
-            render: (_, record) => {
-                const editable = isEditing(record);
-                return editable ? (
-                    <span>
-                        <Typography.Link onClick={() => save(record.key)} style={{ marginRight: 8 }}>
-                            Save
-                        </Typography.Link>
-                        <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                            <a>Cancel</a>
-                        </Popconfirm>
-                    </span>
-                ) : (
-                    <span>
-                        <Typography.Link
-                            disabled={editingKey !== ''}
-                            style={{ marginRight: 8 }}
-                            onClick={() => edit(record)}
-                        >
-                            Edit
-                        </Typography.Link>
-                        <Typography.Link
-                            disabled={editingKey !== ''}
-                            onClick={() => {
-                                history.push({
-                                    ...location,
-                                    pathname: `/main/event-detail/${record.serialNumber}`
-                                });
-                            }}
-                        >
-                            Detail
-                        </Typography.Link>
-                    </span>
-                );
-            }
-        }
-    ];
-    const mergedColumns = columns.map(col => {
-        if (!col.editable) {
-            return col;
-        }
-        return {
-            ...col,
-            onCell: record => ({
-                record,
-                inputType: col.dataIndex === 'age' ? 'number' : 'text',
-                dataIndex: col.dataIndex,
-                title: col.title,
-                editing: isEditing(record)
-            })
-        };
-    });
 
     // open loading
     const openLoading = () => {
@@ -528,6 +309,169 @@ const Home = ({ match, history, location }) => {
             openMessage(res.code, res.message);
         }
     };
+
+    const columns = [
+        {
+            title: '姓名',
+            dataIndex: 'name',
+            width: '9%',
+            editable: false, // 編輯控制
+            ...TableSearch('name').getColumnSearchProps // 模糊搜索
+        },
+        {
+            title: '帳號',
+            dataIndex: 'userId',
+            width: '12%',
+            editable: false // 編輯控制
+        },
+        {
+            title: '更新時間',
+            dataIndex: 'detectedDate',
+            width: '12%',
+            editable: false, // 編輯控制
+            sorter: (a, b) => {
+                // 使用 Moment.js 解析日期字符串
+                const preTime = moment(a.detectedDate, 'YYYY/MM/DD HH:mm');
+                const backTime = moment(b.detectedDate, 'YYYY/MM/DD HH:mm');
+
+                // 获取日期对象的时间戳（以秒为单位）
+                const preSeconds = preTime.unix();
+                const backSeconds = backTime.unix();
+
+                return preSeconds - backSeconds;
+            }
+        },
+        {
+            title: '故障類別',
+            dataIndex: 'problem',
+            width: '9%',
+            editable: false, // 編輯控制
+            filters: [
+                { text: '斷線', value: '斷線' },
+                { text: '資料過少', value: '資料過少' },
+                { text: '負值', value: '負值' }
+            ]
+            // filterMode: 'tree',
+            // filterSearch: true,
+            // onFilter: (value, record) => {
+            //     return record.problem.startsWith(value);
+            // }
+        },
+        {
+            title: '處理狀態',
+            dataIndex: 'status',
+            width: '9%',
+            editable: true, // 編輯控制
+            filters: [
+                { text: '已完成', value: '已完成' },
+                { text: '未通知', value: '未通知' },
+                { text: '已通知', value: '已通知' },
+                { text: '已拆除', value: '已拆除' },
+                { text: '等待維護', value: '等待維護' },
+                { text: '不接受維護', value: '不接受維護' }
+            ],
+            // filterMode: 'tree',
+            // filterSearch: true,
+            onFilter: (value, record) => record.status.startsWith(value),
+            render: tags => {
+                return (
+                    <span>
+                        {[tags].map(tag => {
+                            {
+                                /* let color = tag.length > 5 ? 'red' : 'green'; */
+                            }
+                            let color = tag == '已完成' ? 'green' : tag == '未通知' ? 'red' : 'orange';
+                            if (tag === 'loser') {
+                                color = 'volcano';
+                            }
+                            return (
+                                <Tag color={color} key={tag}>
+                                    {tag.toUpperCase()}
+                                </Tag>
+                            );
+                        })}
+                    </span>
+                );
+            }
+        },
+        {
+            title: '處理時間',
+            dataIndex: 'statusUpdateTime',
+            width: '12%',
+            editable: true, // 編輯控制
+            sorter: (a, b) => {
+                const preTime = moment(a.statusUpdateTime, 'YYYY/MM/DD HH:mm');
+                const backTime = moment(b.statusUpdateTime, 'YYYY/MM/DD HH:mm');
+
+                // 获取日期对象的时间戳（以秒为单位）
+                const preSeconds = preTime.unix();
+                const backSeconds = backTime.unix();
+
+                return preSeconds - backSeconds;
+            }
+        },
+        {
+            title: '備註',
+            dataIndex: 'note',
+            width: '16%',
+            editable: true // 編輯控制
+        },
+        {
+            title: '編輯',
+            dataIndex: 'operation',
+            width: '12%',
+            render: (_, record) => {
+                const editable = isEditing(record);
+                return editable ? (
+                    <span>
+                        <Typography.Link onClick={() => save(record.key)} style={{ marginRight: 8 }}>
+                            Save
+                        </Typography.Link>
+                        <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+                            <a>Cancel</a>
+                        </Popconfirm>
+                    </span>
+                ) : (
+                    <span>
+                        <Typography.Link
+                            disabled={editingKey !== ''}
+                            style={{ marginRight: 8 }}
+                            onClick={() => edit(record)}
+                        >
+                            Edit
+                        </Typography.Link>
+                        <Typography.Link
+                            disabled={editingKey !== ''}
+                            onClick={() => {
+                                history.push({
+                                    ...location,
+                                    pathname: `/main/event-detail/${record.serialNumber}`
+                                });
+                            }}
+                        >
+                            Detail
+                        </Typography.Link>
+                    </span>
+                );
+            }
+        }
+    ];
+    const mergedColumns = columns.map(col => {
+        if (!col.editable) {
+            return col;
+        }
+        return {
+            ...col,
+            onCell: record => ({
+                record,
+                inputType: col.dataIndex === 'age' ? 'number' : 'text',
+                dataIndex: col.dataIndex,
+                title: col.title,
+                editing: isEditing(record)
+            })
+        };
+    });
+
     useEffect(() => {
         // version 1
         GET001API();
@@ -561,6 +505,7 @@ const Home = ({ match, history, location }) => {
                         rowClassName="editable-row"
                         // pagination={false}
                         pagination={{
+                            position: ['none', 'bottomLeft'],
                             defaultPageSize: 10, // 默认每页显示的数量
                             onChange: cancel
                         }}
