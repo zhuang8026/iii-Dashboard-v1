@@ -27,11 +27,11 @@ function App({ match, location, history }) {
             icon: <AreaChartOutlined />
         },
         // version 2
-        {
-            name: '歷史資料',
-            path: '/history',
-            icon: <HistoryOutlined />
-        }
+        // {
+        //     name: '歷史資料',
+        //     path: '/history',
+        //     icon: <HistoryOutlined />
+        // }
     ]);
     // all route
     const Routes = () => {
