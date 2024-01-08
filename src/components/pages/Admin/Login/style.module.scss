@@ -1,13 +1,67 @@
-.eventDetail {
+@import 'src/styles/_variables';
+
+.login {
+    width: 100vw;
     height: calc(100vh - 30px);
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    h1 {
-        font-size: 100px;
-        font-weight: bold;
+    color: $black;
+
+    .left {
+        width: 400px;
+        img {
+            width: 100%;
+        }
+        .introduce {
+            .title {
+                font-size: 24px;
+                font-weight: 600;
+            }
+            .inner {
+            }
+        }
     }
-    h2 {
+
+    .right {
+        // width: 500px;
+        margin-left: 40px;
+        .login-page {
+            border-radius: 6px;
+            background-color: #fff;
+            padding: 40px;
+            .title {
+                font-size: 24px;
+                font-weight: 600;
+            }
+            .form {
+                .login-form {
+                    .login-title {
+                        font-size: 14px;
+                        margin: 0;
+                    }
+                    input {
+                        display: block;
+                        width: 384px;
+                        height: 40px;
+                        margin: 4px 0 16px;
+                        padding: 10px;
+                        border: solid 1px #666;
+                        border-radius: 6px;
+                        font-size: 16px;
+                    }
+                    button {
+                        width: 384px;
+                        height: 40px;
+                        border-radius: 6px;
+                        background-color: $bg_color;
+                        color: $table_color;
+                        font-size: 20px;
+                        margin-top: 60px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
     }
 }

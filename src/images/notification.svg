@@ -1,0 +1,23 @@
+<svg id="Asus_IOT_PHM_icon_notification_big" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="Oval" d="M0 20a20 20 0 1 1 20 20A20 20 0 0 1 0 20z" style="fill:none"/>
+        </clipPath>
+        <clipPath id="clip-path-2">
+            <path id="Rectangle_13459" data-name="Rectangle 13459" style="fill:#1982f0" d="M0 0h24v24H0z"/>
+        </clipPath>
+        <style>
+            
+        </style>
+    </defs>
+    <g id="Oval-2" data-name="Oval" transform="translate(4.001 4)">
+        <circle id="Oval-3" data-name="Oval" cx="16" cy="16" r="16" style="fill:#fff"/>
+        <circle id="Oval-4" data-name="Oval" cx="16" cy="16" r="16" style="fill:none"/>
+    </g>
+    <g id="Group_32906" data-name="Group 32906" transform="translate(8 8)">
+        <g id="Group_32906-2" data-name="Group 32906" style="clip-path:url(#clip-path-2)">
+            <path id="Path_123824" data-name="Path 123824" d="M12 3.9a1.118 1.118 0 0 1 1.109 1.022l.047.571.537.2a4.762 4.762 0 0 1 3.123 4.507v4.074l.264.264 1.22 1.22v.742H5.7v-.742l1.22-1.22.264-.264V10.2a4.762 4.762 0 0 1 3.123-4.507l.537-.2.047-.571A1.118 1.118 0 0 1 12 3.9m0-.9a2.014 2.014 0 0 0-2.006 1.849 5.69 5.69 0 0 0-3.71 5.351v3.7l-1.22 1.221a.9.9 0 0 0-.264.636v.743a.9.9 0 0 0 .9.9h12.6a.9.9 0 0 0 .9-.9v-.742a.9.9 0 0 0-.264-.636l-1.22-1.222v-3.7a5.69 5.69 0 0 0-3.71-5.351A2.014 2.014 0 0 0 12 3" style="stroke:#1982f0;stroke-width:.2px;fill:#1982f0"/>
+            <path id="Path_123825" data-name="Path 123825" d="M14 18a2 2 0 0 1-4 0H9a3 3 0 0 0 6 0z" style="stroke:#1982f0;stroke-width:.2px;fill:#1982f0"/>
+        </g>
+    </g>
+</svg>

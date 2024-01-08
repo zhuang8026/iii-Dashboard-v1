@@ -10,6 +10,7 @@ import * as serviceWorker from './serviceWorker';
 
 // contexts
 import GlobalContainer from 'contexts/global';
+import AdminContainer from 'contexts/admin';
 
 import 'styles/_all.scss';
 import 'styles/style.datepicker.scss'; // framework: "react-datepicker": "^4.24.0"
@@ -19,7 +20,9 @@ ReactDOM.render(
     <React.StrictMode>
         <Router>
             <GlobalContainer>
-                <App />
+                <AdminContainer>
+                    <App />
+                </AdminContainer>
             </GlobalContainer>
         </Router>
     </React.StrictMode>,
