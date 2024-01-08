@@ -4,6 +4,9 @@
     background-image: linear-gradient(to bottom, $bg_color_top, $bg_color_bottom);
     width: 248px;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     .menu_Logo {
         text-align: center;
         padding-left: 24px;
@@ -68,6 +71,20 @@
         }
     }
 
+    .bottom {
+        padding-left: 24px;
+        font-size: 18px;
+        color: $table_color;
+        margin-bottom: 36px;
+        img {
+            width: 40px;
+            margin-right: 8px;
+        }
+        .setting {
+            margin-bottom: 6px;
+            cursor: pointer;
+        }
+    }
     h1 {
         font-size: 26px;
         color: $white;

@@ -11,4 +11,9 @@
         overflow-x: hidden;
         background-color: rgb(227, 232, 235);
     }
+    .full_main {
+        width: -webkit-calc(100vw);
+        width: -moz-calc(100vw);
+        width: calc(100vw);
+    }
 }

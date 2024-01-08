@@ -2,8 +2,14 @@
 import React, { lazy, useState, createContext, useEffect, useRef, useCallback, useContext } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
+// DesignSystem
+// import { FullWindowAnimateStorage } from 'components/DesignSystem/FullWindow';
+// import { PopWindowAnimateStorage } from 'components/DesignSystem/PopWindow';
+// import Loading from 'components/DesignSystem/Loading';
+// import Message from 'components/DesignSystem/Message';
+
 // utils
-import { getBooleanFromENV } from 'components/utils';
+import { getBooleanFromENV } from 'utils/fromENV';
 
 export const GlobalContext = createContext();
 

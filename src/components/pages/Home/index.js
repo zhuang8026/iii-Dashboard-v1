@@ -211,7 +211,7 @@ const Home = ({ match, history, location }) => {
                 closeLoading();
             }, 1000);
         } else {
-            console.log('GET001API error');
+            console.log('GET001API error:', res);
         }
     };
 
@@ -281,7 +281,7 @@ const Home = ({ match, history, location }) => {
                 return [...prev, ...demo];
             });
         } else {
-            console.log('GET002API error');
+            console.log('GET002API error:', res);
         }
     };
 
@@ -486,8 +486,8 @@ const Home = ({ match, history, location }) => {
             <div className={cx('top_card')}>
                 {card.length > 0
                     ? card.map((item, index) => (
-                          <UiCard type={item.type} title={item.title} content={item.content} key={index} />
-                      ))
+                            <UiCard type={item.type} title={item.title} content={item.content} key={index} />
+                        ))
                     : ''}
             </div>
             <div className={cx('home')}>
