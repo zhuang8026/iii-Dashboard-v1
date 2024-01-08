@@ -12,8 +12,8 @@ import * as serviceWorker from './serviceWorker';
 import GlobalContainer from 'contexts/global';
 import AdminContainer from 'contexts/admin';
 
-import 'styles/_all.scss';
-import 'styles/style.datepicker.scss'; // framework: "react-datepicker": "^4.24.0"
+import 'assets/scss/_all.scss';
+import 'assets/scss/style.datepicker.scss'; // framework: "react-datepicker": "^4.24.0"
 import 'antd/dist/antd.css'; // or "antd": "^4.7.2"
 
 ReactDOM.render(

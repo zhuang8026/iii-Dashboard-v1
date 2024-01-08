@@ -1,4 +1,4 @@
-@import 'src/styles/_variables';
+@import 'assets/scss/_variables';
 .card {
     min-width: 180px;
     max-width: 360px;
@@ -17,7 +17,7 @@
         .cardTitle {
             max-width: 70px;
             margin-bottom: 5px;
-            font-size: 12px;
+            font-size: 14px;
             border-radius: 10px;
             text-align: center;
             color: $bg_color;
@@ -25,7 +25,7 @@
         }
         .cardContent {
             width: 100%;
-            font-size: 14px;
+            font-size: 16px;
             .cardRow {
                 border-bottom: 1px dashed $menu_color_1;
                 padding: 3px 10px 3px 0;
@@ -48,7 +48,7 @@
                 font-size: 37px;
                 line-height: normal;
                 span {
-                    font-size: 12px;
+                    font-size: 14px;
                 }
                 .line {
                     width: 100%;
@@ -70,7 +70,7 @@
                     left: 0;
                     display: block;
                     width: 10px;
-                    height: 28px;
+                    height: 31px;
                     background: $danger;
                     animation: breathe 0.5s infinite alternate; /* 呼吸閃爍動畫 */
                 }
@@ -85,7 +85,7 @@
                     left: 0;
                     display: block;
                     width: 10px;
-                    height: 28px;
+                    height: 31px;
                     background: $warning;
                     animation: expand 2s forwards; /* 動畫2秒，最後保持最終狀態 */
                 }
@@ -100,7 +100,7 @@
                     left: 0;
                     display: block;
                     width: 10px;
-                    height: 28px;
+                    height: 31px;
                     background: $safe;
                     animation: expand 2s forwards; /* 動畫2秒，最後保持最終狀態 */
                 }

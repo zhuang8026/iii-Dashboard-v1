@@ -1,4 +1,4 @@
-@import 'src/styles/_variables';
+@import 'assets/scss/_variables';
 
 .title {
     font-size: 21px;
@@ -6,7 +6,7 @@
     margin: 20px 20px 0 20px;
 
     span {
-        font-size: 12px;
+        font-size: 14px;
         font-weight: normal;
         color: $menu_color_2;
         // margin-left: 5px;
@@ -21,17 +21,17 @@
 }
 .home {
     margin: 20px 20px 20px 20px;
-    border-radius: 10px;
-    overflow: hidden;
     .table_title {
         margin: 0;
         padding: 15px;
         background: $table_color;
         font-weight: bold;
+        border-radius: 10px 10px 0 0;
+        overflow: hidden;
     }
     .editable-row .ant-form-item-explain {
         position: absolute;
         top: 100%;
-        font-size: 12px;
+        font-size: 14px;
     }
 }

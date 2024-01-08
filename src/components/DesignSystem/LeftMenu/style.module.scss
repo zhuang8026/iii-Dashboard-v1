@@ -1,4 +1,4 @@
-@import 'src/styles/_variables';
+@import 'assets/scss/_variables';
 
 .menu {
     background-image: linear-gradient(to bottom, $bg_color_top, $bg_color_bottom);
@@ -90,6 +90,6 @@
         color: $white;
     }
     span {
-        font-size: 12px;
+        font-size: 14px;
     }
 }

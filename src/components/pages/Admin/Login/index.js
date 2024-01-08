@@ -35,7 +35,7 @@ const Login = ({ history }) => {
                         users quickly understand and analyze relevant information.
                     </div>
 
-                    <img src={require('images/loginin.png')} alt="iii" />
+                    <img src={require('assets/images/loginin.png')} alt="iii" />
                 </div>
             </div>
             <div className={cx('right')}>
