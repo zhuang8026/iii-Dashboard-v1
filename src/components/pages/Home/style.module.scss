@@ -21,13 +21,13 @@
 }
 .home {
     margin: 20px 20px 20px 20px;
-    border-radius: 10px;
-    overflow: hidden;
     .table_title {
         margin: 0;
         padding: 15px;
         background: $table_color;
         font-weight: bold;
+        border-radius: 10px;
+        overflow: hidden;
     }
     .editable-row .ant-form-item-explain {
         position: absolute;
