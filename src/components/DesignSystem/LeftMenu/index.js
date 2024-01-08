@@ -5,11 +5,9 @@ import { Link, Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import { III_VERSION } from 'config';
 
 // icon
-import user from 'images/user.svg';
-import notification from 'images/notification.svg';
-import settings from 'images/settings.svg';
-
-
+import user from 'assets/images/user.svg';
+import notification from 'assets/images/notification.svg';
+import settings from 'assets/images/settings.svg';
 
 // css
 import classes from './style.module.scss';
@@ -40,7 +38,7 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
         <div className={cx('menu')}>
             <div className={cx('top')}>
                 <div className={cx('menu_Logo')}>
-                    <img src={require(`images/iii.png`)} alt="logo" />
+                    <img src={require(`assets/images/iii.png`)} alt="logo" />
                     <p className={cx('logo_name')}>財團法人資訊工業策進會</p>
                     <p className={cx('line')} />
                     <p>數轉院能源數據預測系統</p>
