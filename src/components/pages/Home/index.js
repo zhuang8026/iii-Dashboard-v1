@@ -353,9 +353,7 @@ const Home = ({ match, history, location }) => {
             ],
             // filterMode: 'tree',
             // filterSearch: true,
-            onFilter: (value, record) => {
-                return record.problem.startsWith(value);
-            }
+            onFilter: (value, record) => record.problem.startsWith(value),
         },
         {
             title: '處理狀態',
