@@ -350,12 +350,10 @@ const Home = ({ match, history, location }) => {
                 { text: '斷線', value: '斷線' },
                 { text: '資料過少', value: '資料過少' },
                 { text: '負值', value: '負值' }
-            ]
+            ],
             // filterMode: 'tree',
             // filterSearch: true,
-            // onFilter: (value, record) => {
-            //     return record.problem.startsWith(value);
-            // }
+            onFilter: (value, record) => record.problem.startsWith(value),
         },
         {
             title: '處理狀態',
