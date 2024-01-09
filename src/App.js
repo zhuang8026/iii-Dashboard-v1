@@ -27,13 +27,13 @@ function App({ match, location, history }) {
     const [layouts, setLayouts] = useState([]);
     const [menuList, setMenuList] = useState([
         {
-            name: 'Data Analysis',
+            name: '每日異常資料',
             path: '/main',
             icon: <AreaChartOutlined />
         },
         // version 2
         {
-            name: 'History',
+            name: '歷史異常資料',
             path: '/history',
             icon: <HistoryOutlined />
         }
@@ -50,7 +50,7 @@ function App({ match, location, history }) {
                 exact={route.exact}
                 sensitive
                 render={() => {
-                    document.title = `III | ${route.title}`;
+                    document.title = `III Dashboard | ${route.title}`;
                     return <route.component localeMatch={match} routeData={route} />;
                 }}
             />
