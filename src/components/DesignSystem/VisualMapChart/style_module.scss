@@ -1,0 +1,19 @@
+@import 'assets/scss/_variables';
+
+#chartLine {
+    width: 100%;
+    height: 25rem;
+    margin: auto;
+
+    /deep/ div {
+        &:first-child {
+            width: 100% !important;
+        }
+    }
+
+    /deep/ canvas {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+    }
+}

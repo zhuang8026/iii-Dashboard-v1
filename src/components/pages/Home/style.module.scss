@@ -15,12 +15,12 @@
 .top_card {
     display: flex;
     margin: 20px 20px 0 20px;
-    overflow-y: hidden;
-    overflow-x: auto;
-    padding: 5px 0px;
+    flex-wrap: wrap;
+    // overflow-y: hidden;
+    // overflow-x: auto;
 }
 .home {
-    margin: 20px 20px 20px 20px;
+    margin: 10px 20px 20px 20px;
     .table_title {
         margin: 0;
         padding: 15px;

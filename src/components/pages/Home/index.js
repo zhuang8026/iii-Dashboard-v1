@@ -33,6 +33,7 @@ const cx = classNames.bind(classes);
 const Home = ({ match, history, location }) => {
     const [form] = Form.useForm();
     const [data, setData] = useState();
+    const [lastTime, setLastTime] = useState('2023/12/20 14:41:29');
     const [card, setCard] = useState([]);
     const [editingKey, setEditingKey] = useState('');
     const fetchListener = useRef();
@@ -196,12 +197,12 @@ const Home = ({ match, history, location }) => {
             // 綠色開發區塊（2塊）
             let card = [
                 {
-                    type: 'table',
+                    type: 'Table',
                     title: '故障類別',
                     content: resultProblem
                 },
                 {
-                    type: 'table',
+                    type: 'Table',
                     title: '故障狀態',
                     content: resultStatus
                 }
@@ -218,68 +219,54 @@ const Home = ({ match, history, location }) => {
     // get API 002
     const GET002API = async () => {
         const res = await getProblemStatus002API();
+        console.log(res);
         if (res.code === 200) {
-            let demo = [
-                {
+            let users = res.data.map((data, index) => {
+                let title =
+                    data.userCategory === 'user_111_361'
+                        ? '361戶'
+                        : data.userCategory === 'user_112_400'
+                        ? '400戶'
+                        : data.userCategory === 'others'
+                        ? '其他'
+                        : 'none';
+                return {
                     type: 'Compare',
-                    title: '361戶',
+                    title: title,
                     content: [
-                        {
-                            type: '離線',
-                            val: '87'
-                        },
-                        {
-                            type: '連線',
-                            val: '179'
-                        }
+                        { type: '離線', val: data.connectCounts },
+                        { type: '連線', val: data.disconnectCounts }
                     ]
-                },
+                };
+            });
+
+            // 計算總和
+            const totalConnectCounts = res.data.reduce((sum, entry) => sum + entry.connectCounts, 0);
+            const totalDisconnectCounts = res.data.reduce((sum, entry) => sum + entry.disconnectCounts, 0);
+            // 轉換成所需的格式
+            const total = [
                 {
-                    type: 'Compare',
-                    title: '400戶',
-                    content: [
-                        {
-                            type: '離線',
-                            val: '63'
-                        },
-                        {
-                            type: '連線',
-                            val: '265'
-                        }
-                    ]
-                },
-                {
-                    type: 'Compare',
-                    title: '其他',
-                    content: [
-                        {
-                            type: '離線',
-                            val: '55'
-                        },
-                        {
-                            type: '連線',
-                            val: '96'
-                        }
-                    ]
-                },
-                {
-                    type: 'Compare',
+                    type: 'Total',
                     title: '總用戶',
                     content: [
                         {
                             type: '離線',
-                            val: '205'
+                            val: totalDisconnectCounts.toString()
                         },
                         {
                             type: '連線',
-                            val: '540'
+                            val: totalConnectCounts.toString()
                         }
                     ]
                 }
             ];
+
             setCard(prev => {
-                return [...prev, ...demo];
+                return [...prev, ...users, ...total];
             });
+
+            // 後一次更新
+            setLastTime(moment(res.data[0].detectedDate).format('YYYY/MM/DD HH:mm:ss'));
         } else {
             console.log('GET002API error:', res);
         }
@@ -321,7 +308,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '帳號',
             dataIndex: 'userId',
-            width: '12%',
+            width: '15%',
             editable: false // 編輯控制
         },
         {
@@ -353,7 +340,7 @@ const Home = ({ match, history, location }) => {
             ],
             // filterMode: 'tree',
             // filterSearch: true,
-            onFilter: (value, record) => record.problem.startsWith(value),
+            onFilter: (value, record) => record.problem.startsWith(value)
         },
         {
             title: '處理狀態',
@@ -411,7 +398,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '備註',
             dataIndex: 'note',
-            width: '16%',
+            width: '12%',
             editable: true // 編輯控制
         },
         {
@@ -470,16 +457,19 @@ const Home = ({ match, history, location }) => {
         };
     });
 
-    useEffect(() => {
+    const asyncAllAPI = async () => {
         // version 1
-        GET001API();
+        await GET001API();
         // version 2
-        if (REACT_APP_VERSION_2) GET002API();
+        if (REACT_APP_VERSION_2) await GET002API();
+    };
+    useEffect(() => {
+        asyncAllAPI();
     }, []);
     return (
         <>
             <h1 className={cx('title')}>
-                即時數據分析 <span> | 後一次更新 2023/12/20 14:41:29</span>
+                每日異常資料檢視結果 <span> | 後一次更新 {lastTime}</span>
             </h1>
             <div className={cx('top_card')}>
                 {card.length > 0

@@ -1,0 +1,31 @@
+{
+    "code": 200,
+    "message": "操作成功 (Operation Successfully)",
+    "size": 3,
+    "data": [
+        {
+            "serialNumber": 11,
+            "userCategory": "others",
+            "connectCounts": 1115,
+            "disconnectCounts": 1117,
+            "detectedDate": "2024-01-09T00:00:00.000+08:00",
+            "note": null
+        },
+        {
+            "serialNumber": 12,
+            "userCategory": "user_111_361",
+            "connectCounts": 2227,
+            "disconnectCounts": 2221,
+            "detectedDate": "2024-01-09T00:00:00.000+08:00",
+            "note": null
+        },
+        {
+            "serialNumber": 13,
+            "userCategory": "user_112_400",
+            "connectCounts": 3331,
+            "disconnectCounts": 3339,
+            "detectedDate": "2024-01-09T00:00:00.000+08:00",
+            "note": null
+        }
+    ]
+}

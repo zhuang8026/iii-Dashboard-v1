@@ -7,7 +7,7 @@ import History from 'components/pages/History';
 const privateRoutes = [
     {
         path: '/main',
-        title: 'Home',
+        title: 'Data Analysis',
         component: Home,
         exact: true,
         authRequired: false,
@@ -15,7 +15,7 @@ const privateRoutes = [
     },
     {
         path: '/main/event-detail/:id?',
-        title: 'Event Detail',
+        title: 'Analysis Detail',
         component: EventDetail,
         exact: true,
         authRequired: false,

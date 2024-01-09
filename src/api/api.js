@@ -27,7 +27,7 @@ export const getProblemStatus001API = async () => {
 
 export const getProblemStatus002API = async () => {
     // 如果是开发环境，直接返回模拟数据
-    const url = isMockEnvironment ? `/mock/problem_status.json` : `/${ad_dashboard}/problem_status`;
+    const url = isMockEnvironment ? `/mock/user_connection_stats.json` : `/${ad_dashboard}/user_connection_stats`;
     const res = await apiRequest('GET', url, true);
     return res;
 };
