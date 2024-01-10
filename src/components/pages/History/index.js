@@ -33,7 +33,7 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
     let problem = [
         { value: '斷線', label: '斷線' },
         { value: '資料過少', label: '資料過少' },
-        { value: '負值', label: '負值' }
+        { value: 'CT負值', label: 'CT負值' }
     ];
 
     let status = [
@@ -183,7 +183,7 @@ const History = ({ match, history, location }) => {
             filters: [
                 { text: '斷線', value: '斷線' },
                 { text: '資料過少', value: '資料過少' },
-                { text: '負值', value: '負值' }
+                { text: 'CT負值', value: 'CT負值' }
             ],
             // filterMode: 'tree',
             // filterSearch: true,

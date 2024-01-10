@@ -257,7 +257,7 @@ const Home = ({ match, history, location }) => {
                     ]
                 }
             ];
-            console.log('total:', total)
+            console.log('total:', total);
             setCard(prev => {
                 return [...prev, ...users, ...total];
             });
@@ -333,7 +333,7 @@ const Home = ({ match, history, location }) => {
             filters: [
                 { text: '斷線', value: '斷線' },
                 { text: '資料過少', value: '資料過少' },
-                { text: '負值', value: '負值' }
+                { text: 'CT負值', value: 'CT負值' }
             ],
             // filterMode: 'tree',
             // filterSearch: true,

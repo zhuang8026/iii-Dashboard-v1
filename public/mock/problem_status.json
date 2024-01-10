@@ -19,7 +19,7 @@
             "name": "王陽明",
             "userId": "user111111@gmail.com",
             "detectedDate": "2023-12-12T00:00:00.000+08:00",
-            "problem": "負值",
+            "problem": "CT負值",
             "status": "未通知",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
             "note": null
@@ -63,7 +63,7 @@
             "name": "王大明",
             "userId": "user123456@gmail.com",
             "detectedDate": "2023-12-07T00:00:00.000+08:00",
-            "problem": "負值",
+            "problem": "CT負值",
             "status": "未通知",
             "statusUpdateTime": "2023-12-07T00:00:00.000+08:00",
             "note": "通知用戶少開冰箱"
@@ -85,7 +85,7 @@
             "name": "王陽明",
             "userId": "user111111@gmail.com",
             "detectedDate": "2023-12-12T00:00:00.000+08:00",
-            "problem": "負值",
+            "problem": "CT負值",
             "status": "未通知",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
             "note": null
@@ -129,7 +129,7 @@
             "name": "王大明",
             "userId": "user123456@gmail.com",
             "detectedDate": "2023-12-07T00:00:00.000+08:00",
-            "problem": "負值",
+            "problem": "CT負值",
             "status": "未通知",
             "statusUpdateTime": "2023-12-07T00:00:00.000+08:00",
             "note": "通知用戶少開冰箱"

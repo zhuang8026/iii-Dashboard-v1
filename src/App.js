@@ -18,8 +18,8 @@ import outsideRoutes from 'config/routes';
 // utils
 import { getCookie, eraseCookie } from 'utils/cookie';
 
-// icon
-// import event from 'assets/images/icon_event.svg';
+// Context
+import GlobalContainer, { GlobalContext } from 'contexts/global';
 
 // css
 import classes from './style.module.scss';
@@ -28,6 +28,7 @@ const cx = classNames.bind(classes);
 
 function App({ match, location, history }) {
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
+    const { REACT_APP_VERSION_2 } = useContext(GlobalContext);
     const [layouts, setLayouts] = useState([]);
     const [menuList, setMenuList] = useState([
         {
@@ -36,11 +37,11 @@ function App({ match, location, history }) {
             icon: <AreaChartOutlined style={{ fontSize: '20px' }} />
         },
         // version 2
-        // {
-        //     name: '歷史異常資訊',
-        //     path: '/history',
-        //     icon: <HistoryOutlined style={{ fontSize: '20px' }} />
-        // }
+        {
+            name: '歷史異常資訊',
+            path: '/history',
+            icon: <HistoryOutlined style={{ fontSize: '20px' }} />
+        }
     ]);
 
     const isAuth = getCookie('iii_token'); // cookie testing
@@ -77,15 +78,34 @@ function App({ match, location, history }) {
     };
 
     const Routes = () => {
-        if (!isAuth) {
-            return <Redirect to="/login" />;
+        if (REACT_APP_VERSION_2) {
+            if (!isAuth) {
+                return <Redirect to="/login" />;
+            }
         }
+
         return PrivateRoutes();
     };
 
     // layout & url
     const getLayoutsCallBack = () => {
-        if (isAuth) {
+        if (REACT_APP_VERSION_2) {
+            if (isAuth) {
+                privateRoutes.map((route, key) => {
+                    let layoutPath = [];
+                    layoutPath.push(route.path.split('/')[1]);
+
+                    if (layoutPath[0].toUpperCase() === location.pathname.split('/')[1].toUpperCase()) {
+                        setLayouts(route.layouts);
+                    } else {
+                        // console.log('no fund');
+                    }
+                });
+            } else {
+                // no auth (token error)
+                setLayouts([]);
+            }
+        } else {
             privateRoutes.map((route, key) => {
                 let layoutPath = [];
                 layoutPath.push(route.path.split('/')[1]);
@@ -96,9 +116,6 @@ function App({ match, location, history }) {
                     // console.log('no fund');
                 }
             });
-        } else {
-            // no auth (token error)
-            setLayouts([]);
         }
     };
 

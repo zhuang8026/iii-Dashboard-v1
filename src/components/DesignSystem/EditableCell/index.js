@@ -18,7 +18,7 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
     let problem = [
         { value: '斷線', label: '斷線' },
         { value: '資料過少', label: '資料過少' },
-        { value: '負值', label: '負值' }
+        { value: 'CT負值', label: 'CT負值' }
     ];
 
     let status = [

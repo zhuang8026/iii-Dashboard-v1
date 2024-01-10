@@ -44,11 +44,15 @@ let demo = {
         },
         // 每條X軸的線
         splitLine: {
-            show: false
+            show: true,
+            lineStyle: {
+                color: '#e3e8eb',
+                width: 1
+            }
         },
         // 刻度線
         axisTick: {
-            show: false
+            show: true
         },
         data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     },
