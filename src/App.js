@@ -27,13 +27,13 @@ function App({ match, location, history }) {
     const [layouts, setLayouts] = useState([]);
     const [menuList, setMenuList] = useState([
         {
-            name: '每日異常資料',
+            name: '每日異常',
             path: '/main',
             icon: <AreaChartOutlined />
         },
         // version 2
         {
-            name: '歷史異常資料',
+            name: '歷史異常',
             path: '/history',
             icon: <HistoryOutlined />
         }
@@ -101,7 +101,7 @@ function App({ match, location, history }) {
     // open loading
     const openLoading = () => {
         openAnimate({
-            component: <Loading />
+            component: <Loading text='logout...'/>
         });
     };
 

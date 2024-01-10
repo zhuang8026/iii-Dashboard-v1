@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 
 import { setCookie } from 'utils/cookie';
+
+// DesignSystem
+import { FullWindowAnimateStorage } from 'components/DesignSystem/FullWindow';
+import Loading from 'components/DesignSystem/Loading';
 
 // css
 import classes from './style.module.scss';
@@ -9,6 +13,7 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
 const Login = ({ history }) => {
+    const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const [info, setInfo] = useState({
         user: '',
         pwd: '',
@@ -20,9 +25,24 @@ const Login = ({ history }) => {
     };
 
     const loginin = () => {
-        setCookie('iii_token', info.token); // 設定cookie
-        history.replace('/main');
+        openLoading();
+
+        setTimeout(() => {
+            setCookie('iii_token', info.token); // 設定cookie
+            history.replace('/main');
+            closeLoading();
+        }, 1000);
     };
+
+    // open loading
+    const openLoading = () => {
+        openAnimate({
+            component: <Loading text="Login..." />
+        });
+    };
+
+    // close loading
+    const closeLoading = () => closeAnimate();
 
     return (
         <div className={cx('login')}>

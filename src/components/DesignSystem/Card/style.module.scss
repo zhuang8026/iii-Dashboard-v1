@@ -13,8 +13,8 @@
 
     .inner {
         height: 100%;
-        overflow-x: hidden;
-        overflow-y: auto;
+        // overflow-x: hidden;
+        // overflow-y: auto;
         .cardTitle {
             max-width: 70px;
             margin-bottom: 5px;
@@ -88,7 +88,7 @@
                     width: 10px;
                     height: 31px;
                     background: $warning;
-                    animation: expand 2s forwards; /* 動畫2秒，最後保持最終狀態 */
+                    // animation: expand 2s forwards; /* 動畫2秒，最後保持最終狀態 */
                 }
             }
             .safe {
@@ -103,7 +103,7 @@
                     width: 10px;
                     height: 31px;
                     background: $safe;
-                    animation: expand 2s forwards; /* 動畫2秒，最後保持最終狀態 */
+                    // animation: expand 2s forwards; /* 動畫2秒，最後保持最終狀態 */
                 }
             }
         }
@@ -158,14 +158,14 @@
     }
 }
 
-@keyframes expand {
-    0% {
-        width: 0;
-    }
-    100% {
-        width: 10px;
-    }
-}
+// @keyframes expand {
+//     0% {
+//         width: 0;
+//     }
+//     100% {
+//         width: 10px;
+//     }
+// }
 
 .table {
     background-color: $bg_color;
