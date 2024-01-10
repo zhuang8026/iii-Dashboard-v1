@@ -13,13 +13,19 @@ const EventDetail = () => {
     return (
         <div className={cx('eventDetail')}>
             <h1 className={cx('title')}>
-                即時數據分析細節 <span> | 後一次更新 2023/12/20 14:41:29</span>
+                即時數據分析細節 <span> | 最後一次更新 2023/12/20 14:41:29</span>
             </h1>
             <div className={cx('chart')}>
-                <UiLineChart />
+                <div className={cx('chart_60', 'chart_bg')}>
+                    <UiLineChart />
+                </div>
+                <div className={cx('chart_40', 'chart_bg')}>
+                    <UiDoughnutChart />
+                </div>
             </div>
+
             <div className={cx('chart')}>
-                <div className={cx('dchart')}>
+                {/* <div className={cx('dchart')}>
                     <UiDoughnutChart />
                 </div>
                 <div className={cx('dchart')}>
@@ -27,7 +33,7 @@ const EventDetail = () => {
                 </div>
                 <div className={cx('dchart')}>
                     <UiVisualMapChart />
-                </div>
+                </div> */}
             </div>
         </div>
     );

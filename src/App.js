@@ -37,11 +37,11 @@ function App({ match, location, history }) {
             icon: <AreaChartOutlined style={{ fontSize: '20px' }} />
         },
         // version 2
-        // {
-        //     name: '歷史異常資訊',
-        //     path: '/history',
-        //     icon: <HistoryOutlined style={{ fontSize: '20px' }} />
-        // }
+        {
+            name: '歷史異常資訊',
+            path: '/history',
+            icon: <HistoryOutlined style={{ fontSize: '20px' }} />
+        }
     ]);
 
     const isAuth = getCookie('iii_token'); // cookie testing
@@ -78,6 +78,7 @@ function App({ match, location, history }) {
     };
 
     const Routes = () => {
+        // version 2
         if (REACT_APP_VERSION_2) {
             if (!isAuth) {
                 return <Redirect to="/login" />;

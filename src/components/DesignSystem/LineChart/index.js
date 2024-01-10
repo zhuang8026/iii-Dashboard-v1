@@ -27,10 +27,34 @@ let demo = {
         containLabel: true
     },
     toolbox: {
+        show: true, // 關閉工具列
         feature: {
-            saveAsImage: {}
+            saveAsImage: {},
+            // dataView: {},
+            dataZoom: {},
+            magicType: {
+                title: {
+                    // line: '折線圖',
+                    // bar: '條形圖',
+                    // stack: '堆疊圖',
+                    // tiled: '堆疊圖',
+                },
+                option: {
+                    line: {},
+                    bar: {}
+                },
+                type: ['line', 'bar']
+            }
         }
     },
+    // dataZoom: [
+    //     {   // 这个dataZoom组件，默认控制x轴。
+    //         type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+    //         bottom: '-10px',
+    //         start: 0,      // 左边在 0% 的位置。
+    //         end: 100         // 右边在 100% 的位置。
+    //     },
+    // ],
     xAxis: {
         type: 'category',
         boundaryGap: false, // 座標軸兩邊留白

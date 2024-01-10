@@ -16,14 +16,28 @@
     }
     .chart {
         width: calc(100% - 40px);
+        // height: 500px;
         margin: 20px auto;
         padding: 20px;
-        background: #fff;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .dchart {
+        .chart_bg {
+            background: #fff;
+            margin: 0 5px;
+            padding: 10px;
+        }
+        .chart_30 {
             width: 33%;
+        }
+        .chart_40 {
+            width: 40%;
+        }
+        .chart_50 {
+            width: 50%;
+        }
+        .chart_60 {
+            width: 60%;
         }
     }
 }
