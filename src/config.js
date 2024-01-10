@@ -1,1 +1,1 @@
-export const III_VERSION = "1.0.5";
+export const III_VERSION = "1.0.6";

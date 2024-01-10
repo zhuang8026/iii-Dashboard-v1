@@ -231,8 +231,8 @@ const Home = ({ match, history, location }) => {
                     type: 'Compare',
                     title: title,
                     content: [
-                        { type: '離線', val: data.connectCounts },
-                        { type: '連線', val: data.disconnectCounts }
+                        { type: '離線', val: data.disconnectCounts },
+                        { type: '連線', val: data.connectCounts }
                     ]
                 };
             });
@@ -257,6 +257,7 @@ const Home = ({ match, history, location }) => {
                     ]
                 }
             ];
+            console.log('total:', total)
             setCard(prev => {
                 return [...prev, ...users, ...total];
             });
@@ -467,7 +468,7 @@ const Home = ({ match, history, location }) => {
     return (
         <>
             <h1 className={cx('title')}>
-                每日異常資料檢視結果 <span> | 後一次更新 {lastTime}</span>
+                每日異常資料檢視結果 <span> | 最後一次更新 {lastTime}</span>
             </h1>
             <div className={cx('top_card')}>
                 {card.length > 0

@@ -12,7 +12,8 @@ const cx = classNames.bind(classes);
 const DoughnutNormalChart = ({ data }) => {
     const [options, setOptions] = useState({
         tooltip: {
-            trigger: 'item'
+            trigger: 'item',
+            formatter: '{a}{b}: {c} ({d}%)' // 显示百分比
         },
         legend: {
             data: [],
@@ -41,9 +42,9 @@ const DoughnutNormalChart = ({ data }) => {
                     show: false
                 },
                 data: [
-                    { value: Number(data[0].val), name: '離線' },
+                    { value: Number(data[0].val), name: `離線` },
                     { value: Number(data[1].val), name: '連線' },
-                    { value: Number(data[0].val) + Number(data[1].val), name: '總計' }
+                    // { value: Number(data[0].val) + Number(data[1].val), name: '總計' }
                 ]
             }
         ]

@@ -6,24 +6,24 @@
         {
             "serialNumber": 11,
             "userCategory": "others",
-            "connectCounts": 1115,
-            "disconnectCounts": 1117,
+            "connectCounts": 1,
+            "disconnectCounts": 2,
             "detectedDate": "2024-01-09T00:00:00.000+08:00",
             "note": null
         },
         {
             "serialNumber": 12,
             "userCategory": "user_111_361",
-            "connectCounts": 2227,
-            "disconnectCounts": 2221,
+            "connectCounts": 1,
+            "disconnectCounts": 3,
             "detectedDate": "2024-01-09T00:00:00.000+08:00",
             "note": null
         },
         {
             "serialNumber": 13,
             "userCategory": "user_112_400",
-            "connectCounts": 3331,
-            "disconnectCounts": 3339,
+            "connectCounts": 1,
+            "disconnectCounts": 3,
             "detectedDate": "2024-01-09T00:00:00.000+08:00",
             "note": null
         }

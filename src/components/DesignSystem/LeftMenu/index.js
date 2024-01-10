@@ -46,7 +46,7 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
                     <img src={require(`assets/images/iii.png`)} alt="logo" />
                     <p className={cx('logo_name')}>財團法人資訊工業策進會</p>
                     <p className={cx('line')} />
-                    <p>設備故障預測與健康管理系統</p>
+                    <p>設備故障與資料品質管理系統</p>
                     <span>v.{III_VERSION}</span>
                 </div>
                 <ul>
