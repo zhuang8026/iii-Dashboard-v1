@@ -10,7 +10,6 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
 const DoughnutNormalChart = ({ data }) => {
-    console.log(data);
     const [options, setOptions] = useState({
         tooltip: {
             trigger: 'item'
@@ -54,7 +53,6 @@ const DoughnutNormalChart = ({ data }) => {
     const initChart = () => {
         let chartLine = echarts.init(chartDOM.current);
         chartLine.clear();
-        // setOptions(option);
         options && chartLine.setOption(options);
     };
 

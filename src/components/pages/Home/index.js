@@ -208,9 +208,7 @@ const Home = ({ match, history, location }) => {
                 }
             ];
             setCard([...card]);
-            setTimeout(() => {
-                closeLoading();
-            }, 1000);
+            closeLoading();
         } else {
             console.log('GET001API error:', res);
         }
@@ -219,7 +217,6 @@ const Home = ({ match, history, location }) => {
     // get API 002
     const GET002API = async () => {
         const res = await getProblemStatus002API();
-        console.log(res);
         if (res.code === 200) {
             let users = res.data.map((data, index) => {
                 let title =
@@ -256,11 +253,10 @@ const Home = ({ match, history, location }) => {
                         {
                             type: '連線',
                             val: totalConnectCounts.toString()
-                        }
+                        },
                     ]
                 }
             ];
-
             setCard(prev => {
                 return [...prev, ...users, ...total];
             });

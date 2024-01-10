@@ -7,11 +7,11 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 import './style_module.scss';
 
-const Loading = () => {
+const Loading = ({text = 'Loading, Please Waiting...'}) => {
     return (
         <div className="loading">
             <LoadingOutlined style={{ fontSize: '40px', marginBottom: '10px' }} />
-            Loading, Please Waiting...
+            {text}
         </div>
     );
 };
