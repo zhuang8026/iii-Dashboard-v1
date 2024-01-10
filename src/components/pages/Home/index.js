@@ -253,7 +253,7 @@ const Home = ({ match, history, location }) => {
                         {
                             type: '連線',
                             val: totalConnectCounts.toString()
-                        },
+                        }
                     ]
                 }
             ];
@@ -421,17 +421,19 @@ const Home = ({ match, history, location }) => {
                         >
                             Edit
                         </Typography.Link>
-                        <Typography.Link
-                            disabled={editingKey !== ''}
-                            onClick={() => {
-                                history.push({
-                                    ...location,
-                                    pathname: `/main/event-detail/${record.serialNumber}`
-                                });
-                            }}
-                        >
-                            Detail
-                        </Typography.Link>
+                        {REACT_APP_VERSION_2 && (
+                            <Typography.Link
+                                disabled={editingKey !== ''}
+                                onClick={() => {
+                                    history.push({
+                                        ...location,
+                                        pathname: `/main/event-detail/${record.serialNumber}`
+                                    });
+                                }}
+                            >
+                                Detail
+                            </Typography.Link>
+                        )}
                     </span>
                 );
             }
@@ -457,7 +459,7 @@ const Home = ({ match, history, location }) => {
         // version 1
         await GET001API();
         // version 2
-        if (REACT_APP_VERSION_2) await GET002API();
+        await GET002API();
     };
     useEffect(() => {
         asyncAllAPI();
@@ -470,8 +472,8 @@ const Home = ({ match, history, location }) => {
             <div className={cx('top_card')}>
                 {card.length > 0
                     ? card.map((item, index) => (
-                            <UiCard type={item.type} title={item.title} content={item.content} key={index} />
-                        ))
+                          <UiCard type={item.type} title={item.title} content={item.content} key={index} />
+                      ))
                     : ''}
             </div>
             <div className={cx('home')}>

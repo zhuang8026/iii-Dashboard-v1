@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <g transform="translate(-40 -323)">
+        <circle data-name="24X24" cx="12" cy="12" r="12" transform="translate(40 323)" style="fill:none"/>
+        <path data-name="Path 12320" d="M18.22 17.334V.75H.75v16.54a1.932 1.932 0 0 0 1.932 1.932h13.649a1.888 1.888 0 0 0 1.889-1.888z" transform="translate(42.24 325.014)" style="stroke:#fff;fill:none"/>
+        <path data-name="Line 76" transform="translate(49 330.881)" style="stroke-miterlimit:10;stroke:#fff;fill:none" d="M8.821 0H0"/>
+        <path data-name="Line 77" transform="translate(49 334.999)" style="stroke-miterlimit:10;stroke:#fff;fill:none" d="M8.821 0H0"/>
+        <path data-name="Line 78" transform="translate(49 339.118)" style="stroke-miterlimit:10;stroke:#fff;fill:none" d="M8.821 0H0"/>
+        <path data-name="Line 79" transform="translate(45.768 330.883)" style="stroke-miterlimit:10;stroke:#fff;fill:none" d="M0 0h1.57"/>
+        <path data-name="Line 80" transform="translate(45.768 335.001)" style="stroke-miterlimit:10;stroke:#fff;fill:none" d="M0 0h1.57"/>
+        <path data-name="Line 81" transform="translate(45.768 339.12)" style="stroke-miterlimit:10;stroke:#fff;fill:none" d="M0 0h1.57"/>
+    </g>
+</svg>

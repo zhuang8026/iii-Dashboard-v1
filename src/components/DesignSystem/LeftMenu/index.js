@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
+// Context
+import GlobalContainer, { GlobalContext } from 'contexts/global';
+
 // config
 import { III_VERSION } from 'config';
 
@@ -17,6 +20,8 @@ const cx = classNames.bind(classes);
 const Menu = ({ match, location, history, menuList, logoutAPI }) => {
     const [list, setList] = useState([]);
     const [isClick, setIsClick] = useState(0);
+
+    const { REACT_APP_VERSION_2 } = useContext(GlobalContext);
 
     const clickMenu = (key, path) => {
         setIsClick(key);
@@ -41,11 +46,11 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
                     <img src={require(`assets/images/iii.png`)} alt="logo" />
                     <p className={cx('logo_name')}>財團法人資訊工業策進會</p>
                     <p className={cx('line')} />
-                    <p>設備故障預測與健康管理系統</p> 
+                    <p>設備故障預測與健康管理系統</p>
                     <span>v.{III_VERSION}</span>
                 </div>
                 <ul>
-                    <li className={cx('menu_title')}>Dashboard</li>
+                    <li className={cx('menu_title')}>戰情室</li>
                     {list.map((item, index) => {
                         return (
                             <li
@@ -64,20 +69,22 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
                     })}
                 </ul>
             </div>
-            <div className={cx('bottom')}>
-                <div className={cx('setting', 'user')} onClick={() => logout()}>
-                    <img alt="" src={user} />
-                    Account Logout
+            {REACT_APP_VERSION_2 && (
+                <div className={cx('bottom')}>
+                    <div className={cx('setting', 'user')} onClick={() => logout()}>
+                        <img alt="" src={user} />
+                        Account Logout
+                    </div>
+                    <div className={cx('setting', 'user')}>
+                        <img alt="" src={notification} />
+                        Notification
+                    </div>
+                    <div className={cx('setting', 'user')}>
+                        <img alt="" src={settings} />
+                        Settings
+                    </div>
                 </div>
-                <div className={cx('setting', 'user')}>
-                    <img alt="" src={notification} />
-                    Notification
-                </div>
-                <div className={cx('setting', 'user')}>
-                    <img alt="" src={settings} />
-                    Settings
-                </div>
-            </div>
+            )}
         </div>
     );
 };

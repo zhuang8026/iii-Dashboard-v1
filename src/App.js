@@ -15,7 +15,11 @@ import { withPopWindowProvider, PopWindow } from 'components/DesignSystem/PopWin
 import privateRoutes from 'config/privateRoutes';
 import outsideRoutes from 'config/routes';
 
+// utils
 import { getCookie, eraseCookie } from 'utils/cookie';
+
+// icon
+// import event from 'assets/images/icon_event.svg';
 
 // css
 import classes from './style.module.scss';
@@ -27,16 +31,16 @@ function App({ match, location, history }) {
     const [layouts, setLayouts] = useState([]);
     const [menuList, setMenuList] = useState([
         {
-            name: '每日異常',
+            name: '每日異常資訊',
             path: '/main',
-            icon: <AreaChartOutlined />
+            icon: <AreaChartOutlined style={{ fontSize: '20px' }} />
         },
         // version 2
-        {
-            name: '歷史異常',
-            path: '/history',
-            icon: <HistoryOutlined />
-        }
+        // {
+        //     name: '歷史異常資訊',
+        //     path: '/history',
+        //     icon: <HistoryOutlined style={{ fontSize: '20px' }} />
+        // }
     ]);
 
     const isAuth = getCookie('iii_token'); // cookie testing
@@ -101,7 +105,7 @@ function App({ match, location, history }) {
     // open loading
     const openLoading = () => {
         openAnimate({
-            component: <Loading text='logout...'/>
+            component: <Loading text="logout..." />
         });
     };
 
