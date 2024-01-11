@@ -257,7 +257,7 @@ const Home = ({ match, history, location }) => {
                     ]
                 }
             ];
-            console.log('total:', total);
+
             setCard(prev => {
                 return [...prev, ...users, ...total];
             });

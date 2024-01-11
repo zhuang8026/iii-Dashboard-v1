@@ -30,8 +30,22 @@ export const apiRequest = async (method, url, auth, params = null) => {
     }
 
     let env = process.env;
-    let domain = env.REACT_APP_ENV === 'prod' ? env.REACT_APP_API_DOMAIN : env.REACT_APP_API_DOMAIN_MOCK;
+    let domain = 'http://none:none'; 
 
+    switch (env.REACT_APP_ENV) {
+        case 'development':
+            domain = env.REACT_APP_API_DOMAIN_MOCK;
+            break;
+        case 'uat':
+            domain = env.REACT_APP_API_UAT;
+            break;
+        case 'prod':
+            domain = env.REACT_APP_API_DOMAIN_MOCK;
+            break;
+        default:
+            break;
+    }
+    console.log('domain:', process.env);
     try {
         const response = await axios({
             headers,
