@@ -28,6 +28,7 @@ const Login = ({ history }) => {
         openLoading();
 
         setTimeout(() => {
+            // testing, must wirte to API
             setCookie('iii_token', info.token); // 設定cookie
             history.replace('/main');
             closeLoading();

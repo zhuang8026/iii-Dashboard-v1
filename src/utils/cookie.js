@@ -1,6 +1,8 @@
 // 刪除 cookie
 export const eraseCookie = name => {
-    document.cookie = `${name}=; Max-Age=0`;
+    console.log('eraseCookie:', name);
+    // document.cookie = `${name}=; Max-Age=0`;
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
 
 // 設定 cookies

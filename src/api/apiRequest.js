@@ -45,7 +45,7 @@ export const apiRequest = async (method, url, auth, params = null) => {
         default:
             break;
     }
-    console.log('domain:', process.env);
+
     try {
         const response = await axios({
             headers,

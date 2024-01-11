@@ -4,8 +4,8 @@ import { Input, InputNumber, Select, Tag, Alert, Popconfirm, Form, Table, Typogr
 // import Highlighter from 'react-highlight-words';
 // import { SearchOutlined } from '@ant-design/icons';
 
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+// import DatePicker from 'react-datepicker';
+// import 'react-datepicker/dist/react-datepicker.css';
 
 import moment from 'moment';
 // import { from } from 'rxjs';
@@ -298,20 +298,20 @@ const Home = ({ match, history, location }) => {
         {
             title: '姓名',
             dataIndex: 'name',
-            width: '9%',
+            width: '8%',
             editable: false, // 編輯控制
             ...TableSearch('name').getColumnSearchProps // 模糊搜索
         },
         {
             title: '帳號',
             dataIndex: 'userId',
-            width: '15%',
+            width: '16%',
             editable: false // 編輯控制
         },
         {
             title: '更新時間',
             dataIndex: 'detectedDate',
-            width: '12%',
+            width: '14%',
             editable: false, // 編輯控制
             sorter: (a, b) => {
                 // 使用 Moment.js 解析日期字符串
@@ -328,7 +328,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '故障類別',
             dataIndex: 'problem',
-            width: '9%',
+            width: '10%',
             editable: false, // 編輯控制
             filters: [
                 { text: '斷線', value: '斷線' },
@@ -342,7 +342,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '處理狀態',
             dataIndex: 'status',
-            width: '9%',
+            width: '10%',
             editable: true, // 編輯控制
             filters: [
                 { text: '已完成', value: '已完成' },
@@ -379,7 +379,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '處理時間',
             dataIndex: 'statusUpdateTime',
-            width: '12%',
+            width: '14%',
             editable: true, // 編輯控制
             sorter: (a, b) => {
                 const preTime = moment(a.statusUpdateTime, 'YYYY/MM/DD HH:mm');

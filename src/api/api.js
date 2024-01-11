@@ -38,3 +38,11 @@ export const postProblemStatus003API = async playload => {
     const res = await apiRequest('POST', url, true, playload);
     return res;
 };
+
+// test001 獲取即時細節資料
+export const getProblemStatusDetail001API = async () => {
+    // 如果是开发环境，直接返回模拟数据
+    const url = isMockEnvironment ? `/mock/problem_status_detail.json` : `/${ad_dashboard}/problem_status`;
+    const res = await apiRequest('GET', url, true);
+    return res;
+};

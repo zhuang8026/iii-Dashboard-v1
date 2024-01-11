@@ -9,14 +9,14 @@ import classes from './style_module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
-const DoughnutChart = (optionItems = {}) => {
-    const [option, setOption] = useState();
+const DoughnutChart = () => {
+    // const [option, setOption] = useState();
     const chartDOM = useRef();
 
     let demo = {
         title: {
             text: 'Doughnut Chart',
-            left: 'left', // center
+            left: 'left' // center
             // textStyle: {
             //     color: '#999',
             //     fontWeight: 'normal',
@@ -26,24 +26,26 @@ const DoughnutChart = (optionItems = {}) => {
         series: [
             {
                 type: 'pie',
-                radius: ['20%', '60%'],
+                radius: ['30%', '60%'],
                 // top: top + '%',
                 // height: '33.33%',
                 left: 'center',
                 width: '100%',
+                color: ['#ff7c32', '#ffcb01', '#4bd0ce'] /* 折線圖的颜色 */,
                 itemStyle: {
                     borderColor: '#fff',
                     borderWidth: 1
                 },
                 label: {
                     alignTo: 'edge',
-                    formatter: '{name|{b}}\n{time|{c} 小时}',
+                    formatter: '{name|{b}}\n{number|{c} 次}',
                     minMargin: 5,
                     edgeDistance: 10,
-                    lineHeight: 15,
+                    lineHeight: 20,
+                    fontSize: 16,
                     rich: {
-                        time: {
-                            fontSize: 10,
+                        number: {
+                            fontSize: 16,
                             color: '#999'
                         }
                     }
@@ -63,15 +65,12 @@ const DoughnutChart = (optionItems = {}) => {
                 //     };
                 // },
                 data: [
-                    { name: '圣彼得堡来客', value: 5.6 },
-                    { name: '陀思妥耶夫斯基全集', value: 1 },
-                    { name: '史记精注全译（全6册）', value: 0.8 },
-                    { name: '加德纳艺术通史', value: 0.5 },
-                    { name: '表象与本质', value: 0.5 },
-                    { name: '其它', value: 3.8 }
+                    { name: '短線', value: 3 },
+                    { name: '資料過少', value: 2 },
+                    { name: 'CT負值', value: 4 }
                 ]
             }
-        ],
+        ]
         // series: datas.map(function (data, idx) {
         //     var top = idx * 33.3;
         //     return {
@@ -120,7 +119,7 @@ const DoughnutChart = (optionItems = {}) => {
     const initChart = () => {
         let chartLine = echarts.init(chartDOM.current);
         chartLine.clear();
-        setOption(optionItems);
+        // setOption(optionItems);
         demo && chartLine.setOption(demo);
     };
 
