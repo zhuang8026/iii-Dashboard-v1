@@ -1,108 +1,43 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Input, InputNumber, Select, Tag, Alert, Popconfirm, Form, Table, Typography } from 'antd';
-// import { LoadingOutlined } from '@ant-design/icons';
-
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { Input, InputNumber, Select, Tag, DatePicker, Popconfirm, Form, Table, Typography, Button } from 'antd';
 
 import moment from 'moment';
-// import { from } from 'rxjs';
-// import axios from 'axios';
+// import locale from 'antd/es/date-picker/locale/zh_TW';
 
 // DesignSystem
 import { FullWindowAnimateStorage } from 'components/DesignSystem/FullWindow';
+import { PopWindowAnimateStorage } from 'components/DesignSystem/PopWindow';
 import Loading from 'components/DesignSystem/Loading';
-import UiCard from 'components/DesignSystem/Card';
+import Message from 'components/DesignSystem/Message';
+import EditableCell from 'components/DesignSystem/EditableCell';
+import TableSearch from 'components/DesignSystem/TableSearch';
+import UiLineChart from 'components/DesignSystem/LineChart';
 
 // Context
 import GlobalContainer, { GlobalContext } from 'contexts/global';
 // API
-import { getProblemStatus001API } from 'api/api';
+import { getHistory001API, postProblemStatus003API } from 'api/api';
 
-// import { from } from 'rxjs';
 // css
 import classes from './style.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
-const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
-    const [startDate, setStartDate] = useState(new Date());
-    // const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+const Home = ({ match, history, location }) => {
+    const { RangePicker } = DatePicker;
+    const dateFormat = 'YYYY/MM/DD';
+    const [dates, setDates] = useState([moment().subtract(30, 'days'), moment()]);
+    const [value, setValue] = useState(null);
 
-    let problem = [
-        { value: '斷線', label: '斷線' },
-        { value: '資料過少', label: '資料過少' },
-        { value: 'CT負值', label: 'CT負值' }
-    ];
-
-    let status = [
-        { label: '已完成', value: '已完成' }, // green icon
-        { label: '未通知', value: '未通知' }, // red icon
-        { label: '已通知', value: '已通知' }, // oragnge icon
-        { label: '已拆除', value: '已拆除' }, // oragnge icon
-        { label: '等待維護', value: '等待維護' }, // oragnge icon
-        { label: '不接受維護', value: '不接受維護' } // oragnge icon
-    ];
-
-    const inputNode =
-        dataIndex == 'problem' || dataIndex == 'status' ? (
-            <Select options={dataIndex == 'problem' ? problem : status} />
-        ) : dataIndex == 'statusUpdateTime' ? (
-            <DatePicker
-                className={cx('rdatePicker')}
-                selected={startDate}
-                onChange={date => {
-                    setStartDate(date);
-                }}
-                showTimeSelect
-                // showTimeInput
-                timeFormat="HH:mm"
-                dateFormat="yyyy/MM/dd HH:mm"
-                placeholderText="請選擇時間"
-            />
-        ) : (
-            // <Input placeholder="1987/01/01 00:00" />
-            <Input placeholder="Please fill in the remarks." />
-        );
-    useEffect(() => {
-        if (editing) {
-            if (record.statusUpdateTime != '') {
-                setStartDate(new Date(record.statusUpdateTime));
-            }
-        }
-    }, [editing]);
-    return (
-        <td {...restProps}>
-            {editing ? (
-                <Form.Item
-                    name={dataIndex}
-                    style={{ margin: 0 }}
-                    // rules={[
-                    //     {
-                    //         required: true,
-                    //         message: `請填寫 "${title}"`
-                    //     }
-                    // ]}
-                >
-                    {inputNode}
-                </Form.Item>
-            ) : (
-                children
-            )}
-        </td>
-    );
-};
-
-const History = ({ match, history, location }) => {
     const [form] = Form.useForm();
     const [data, setData] = useState();
-    const [card, setCard] = useState([]);
     const [editingKey, setEditingKey] = useState('');
-    const fetchListener = useRef();
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
+    const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
     const { REACT_APP_VERSION_2 } = useContext(GlobalContext);
+
     const isEditing = record => record.key === editingKey;
     const edit = record => {
         form.setFieldsValue({
@@ -127,15 +62,28 @@ const History = ({ match, history, location }) => {
                     ...item,
                     ...row
                 });
+
                 newData.forEach(ele => {
-                    ele.statusUpdateTime = moment(ele.statusUpdateTime).format('YYYY/MM/DD HH:mm');
+                    ele.statusUpdateTime = ele.statusUpdateTime
+                        ? moment(ele.statusUpdateTime).format('YYYY/MM/DD HH:mm')
+                        : null;
                     ele.detectedDate = moment(ele.detectedDate).format('YYYY/MM/DD HH:mm');
                     return ele;
                 });
                 setData(newData);
                 setEditingKey('');
-                console.log(newData);
-                await apiDemo3(newData[key]);
+
+                if (
+                    newData[key].statusUpdateTime == 'Invalid date' ||
+                    newData[key].statusUpdateTime == null ||
+                    newData[key].statusUpdateTime == ''
+                ) {
+                    openMessage(400, '"處理時間" is required information.');
+                    return;
+                }
+
+                await POST003API(newData[key]);
+                await GETHISTORY001API();
             } else {
                 newData.push(row);
                 setData(newData);
@@ -145,24 +93,162 @@ const History = ({ match, history, location }) => {
             console.log('Validate Failed:', errInfo);
         }
     };
+
+    // open loading
+    const openLoading = () => {
+        openAnimate({
+            component: <Loading />
+        });
+    };
+    // close loading
+    const closeLoading = () => closeAnimate();
+
+    // open message
+    const openMessage = (code, msg) => {
+        openDialog({
+            component: <Message code={code} msg={msg} closeMessage={closeMessage} />
+        });
+    };
+    // close message
+    const closeMessage = () => closeDialog();
+
+    const disabledDate = current => {
+        if (current) {
+            return current > moment().endOf('day');
+        }
+        // if (!dates) {
+        //     return false;
+        // }
+        // const today = moment().startOf('day');
+        // const tooLate = dates[0] && today.diff(dates[0], 'days') > 30;
+        // const tooEarly = dates[1] && dates[1].diff(today, 'days') > 30;
+        // return !!tooEarly || !!tooLate;
+    };
+
+    const onOpenChange = open => {
+        // if (open) {
+        //     setDates([null, null]);
+        // } else {
+        //     setDates(null);
+        // }
+    };
+
+    const handleRangePickerChange = (value, dateString) => {
+        // dateString 是格式化後的時間字符串
+        console.log(value, dateString);
+
+        // 如果您需要將日期轉換成 "YYYY/MM/DD hh:mm:ss" 格式
+        const formattedDates = dateString.map(date => moment(date).format('YYYY/MM/DD HH:mm:ss'));
+        console.log(formattedDates);
+
+        // 更新 state
+        setValue(value);
+        setDates(value);
+        GETHISTORY001API(0, dateString);
+    };
+
+    const isClickDays = days => {
+        let date = [];
+        const currentDateTime = moment().format('YYYY/MM/DD');
+        switch (days) {
+            case 1:
+                // 當前時間
+                date = [currentDateTime];
+                console.log(date);
+                break;
+            case 7:
+                const nextWeekDateTime = moment().subtract(7, 'days');
+                const nextWeekFormattedDate = nextWeekDateTime.format('YYYY/MM/DD');
+                date = [currentDateTime, nextWeekFormattedDate];
+                console.log(date);
+                break;
+            case 30:
+                const past30DaysDateTime = moment().subtract(30, 'days');
+                const past30DaysFormattedDate = past30DaysDateTime.format('YYYY/MM/DD');
+                date = [currentDateTime, past30DaysFormattedDate];
+                console.log(date);
+                break;
+            default:
+                break;
+        }
+
+        GETHISTORY001API(days, date);
+    };
+
+    // get API 001
+    const GETHISTORY001API = async (days, date) => {
+        openLoading();
+        const res = await getHistory001API(days, date);
+        if (res.code === 200) {
+            let tableItem = res.data.map((val, i) => {
+                let updateTime = val.statusUpdateTime ? moment(val.statusUpdateTime).format('YYYY/MM/DD HH:mm') : '';
+                return {
+                    key: i.toString(),
+                    uuid: val.uuid,
+                    serialNumber: val.serialNumber,
+                    name: val.name,
+                    userId: val.userId,
+                    detectedDate: moment(val.detectedDate).format('YYYY/MM/DD HH:mm'),
+                    problem: val.problem,
+                    status: val.status,
+                    statusUpdateTime: updateTime,
+                    note: val.note
+                };
+            });
+            setData([...tableItem]);
+
+            setTimeout(() => {
+                closeLoading();
+            }, 1000);
+        } else {
+            console.log('GETHISTORY001API error:', res);
+        }
+    };
+
+    // save POST API 003
+    const POST003API = async item => {
+        // 将日期格式转换
+        // item.detectedDate = moment(item.detectedDate, 'YYYY/MM/DD HH:mm').utcOffset('+08:00').toISOString();
+        let playload = {
+            userId: item.userId,
+            uuid: item.uuid,
+            serialNumber: item.serialNumber,
+            problem: item.problem,
+            status: item.status,
+            statusUpdateTime: moment(item.statusUpdateTime, 'YYYY/MM/DD HH:mm').format('YYYY-MM-DDTHH:mm:ssZ'),
+            note: item.note
+        };
+        const res = await postProblemStatus003API(playload);
+
+        if (res.code === 200) {
+            console.log('POST003API success');
+        } else if (res.code === 409) {
+            openMessage(res.code, `The message "${playload.userId}" has been repeated, thank you.`);
+        } else {
+            console.log('POST003API error');
+            openMessage(res.code, res.message);
+        }
+    };
+
     const columns = [
         {
             title: '姓名',
             dataIndex: 'name',
-            width: '9%',
-            editable: false
+            width: '8%',
+            editable: false, // 編輯控制
+            ...TableSearch('name').getColumnSearchProps // 模糊搜索
         },
         {
             title: '帳號',
             dataIndex: 'userId',
-            width: '12%',
-            editable: false
+            width: '16%',
+            editable: false // 編輯控制
         },
         {
             title: '更新時間',
             dataIndex: 'detectedDate',
-            width: '12%',
-            editable: false,
+            width: '14%',
+            editable: false, // 編輯控制
             sorter: (a, b) => {
                 // 使用 Moment.js 解析日期字符串
                 const preTime = moment(a.detectedDate, 'YYYY/MM/DD HH:mm');
@@ -178,8 +264,8 @@ const History = ({ match, history, location }) => {
         {
             title: '故障類別',
             dataIndex: 'problem',
-            width: '9%',
-            editable: true,
+            width: '10%',
+            editable: false, // 編輯控制
             filters: [
                 { text: '斷線', value: '斷線' },
                 { text: '資料過少', value: '資料過少' },
@@ -187,16 +273,13 @@ const History = ({ match, history, location }) => {
             ],
             // filterMode: 'tree',
             // filterSearch: true,
-            onFilter: (value, record) => {
-                console.log(value, record);
-                return record.problem.startsWith(value);
-            }
+            onFilter: (value, record) => record.problem.startsWith(value)
         },
         {
             title: '處理狀態',
             dataIndex: 'status',
-            width: '9%',
-            editable: true,
+            width: '10%',
+            editable: true, // 編輯控制
             filters: [
                 { text: '已完成', value: '已完成' },
                 { text: '未通知', value: '未通知' },
@@ -232,8 +315,8 @@ const History = ({ match, history, location }) => {
         {
             title: '處理時間',
             dataIndex: 'statusUpdateTime',
-            width: '12%',
-            editable: true,
+            width: '14%',
+            editable: true, // 編輯控制
             sorter: (a, b) => {
                 const preTime = moment(a.statusUpdateTime, 'YYYY/MM/DD HH:mm');
                 const backTime = moment(b.statusUpdateTime, 'YYYY/MM/DD HH:mm');
@@ -248,8 +331,8 @@ const History = ({ match, history, location }) => {
         {
             title: '備註',
             dataIndex: 'note',
-            width: '16%',
-            editable: true
+            width: '12%',
+            editable: true // 編輯控制
         },
         {
             title: '編輯',
@@ -275,17 +358,19 @@ const History = ({ match, history, location }) => {
                         >
                             Edit
                         </Typography.Link>
-                        <Typography.Link
-                            disabled={editingKey !== ''}
-                            onClick={() => {
-                                history.push({
-                                    ...location,
-                                    pathname: `/main/event-detail/${record.serialNumber}`
-                                });
-                            }}
-                        >
-                            Detail
-                        </Typography.Link>
+                        {REACT_APP_VERSION_2 && (
+                            <Typography.Link
+                                disabled={editingKey !== ''}
+                                onClick={() => {
+                                    history.push({
+                                        ...location,
+                                        pathname: `/main/event-detail/${record.serialNumber}`
+                                    });
+                                }}
+                            >
+                                Detail
+                            </Typography.Link>
+                        )}
                     </span>
                 );
             }
@@ -307,178 +392,53 @@ const History = ({ match, history, location }) => {
         };
     });
 
-    // open loading
-    const openLoading = () => {
-        openAnimate({
-            component: <Loading />
-        });
-    };
-
-    // close loading
-    const closeLoading = () => closeAnimate();
-
-    // get API 001
-    const apiDemo = async () => {
-        openLoading();
-        const res = await getProblemStatus001API();
-        if (res.code === 200) {
-            let tableItem = res.data.map((val, i) => {
-                return {
-                    key: i.toString(),
-                    uuid: val.uuid,
-                    serialNumber: val.serialNumber,
-                    name: val.name,
-                    userId: val.userId,
-                    detectedDate: moment(val.detectedDate).format('YYYY/MM/DD HH:mm'),
-                    problem: val.problem,
-                    status: val.status,
-                    statusUpdateTime: moment(val.statusUpdateTime).format('YYYY/MM/DD HH:mm'),
-                    note: val.note
-                };
-            });
-            setData([...tableItem]);
-
-            // 使用 reduce 函數對 problem 進行加總
-            const problemSummary = res.data.reduce((summary, item) => {
-                const { problem } = item;
-                // 如果 problem 已經存在於加總中，則增加其數量；否則，初始化為 1
-                summary[problem] = (summary[problem] || 0) + 1;
-                return summary;
-            }, {});
-
-            // 將加總結果轉換為指定格式的陣列
-            const resultProblem = Object.entries(problemSummary).map(([type, val]) => ({
-                type,
-                val
-            }));
-
-            // 使用 reduce 函數對 status 進行加總
-            const statusSummary = res.data.reduce((summary, item) => {
-                const { status } = item;
-                // 如果 status 已經存在於加總中，則增加其數量；否則，初始化為 1
-                summary[status] = (summary[status] || 0) + 1;
-                return summary;
-            }, {});
-
-            // 將加總結果轉換為指定格式的陣列
-            const resultStatus = Object.entries(statusSummary).map(([type, val]) => ({
-                type,
-                val
-            }));
-
-            // 綠色開發區塊（2塊）
-            card.push(
-                {
-                    type: 'table',
-                    title: '故障類別',
-                    content: resultProblem
-                },
-                {
-                    type: 'table',
-                    title: '故障狀態',
-                    content: resultStatus
-                }
-            );
-            setCard([...card]);
-            closeLoading();
-        } else {
-            console.log('apiDemo error');
-        }
-    };
-
-    // get API 002
-    const apiDemo2 = async () => {
-        const res = await getProblemStatus001API();
-        if (res.code === 200) {
-            let demo = [
-                {
-                    type: 'Compare',
-                    title: '361戶',
-                    content: [
-                        {
-                            type: '離線',
-                            val: '87'
-                        },
-                        {
-                            type: '連線',
-                            val: '179'
-                        }
-                    ]
-                },
-                {
-                    type: 'Compare',
-                    title: '400戶',
-                    content: [
-                        {
-                            type: '離線',
-                            val: '63'
-                        },
-                        {
-                            type: '連線',
-                            val: '265'
-                        }
-                    ]
-                },
-                {
-                    type: 'Compare',
-                    title: '其他',
-                    content: [
-                        {
-                            type: '離線',
-                            val: '55'
-                        },
-                        {
-                            type: '連線',
-                            val: '96'
-                        }
-                    ]
-                },
-                {
-                    type: 'Compare',
-                    title: '總用戶',
-                    content: [
-                        {
-                            type: '離線',
-                            val: '205'
-                        },
-                        {
-                            type: '連線',
-                            val: '540'
-                        }
-                    ]
-                }
-            ];
-            card.push(...demo);
-            setCard([...card]);
-        } else {
-            console.log('apiDemo2 error');
-        }
-    };
-
-    // save API 003
-    const apiDemo3 = async item => {
-        // 将日期格式转换
-        // item.detectedDate = moment(item.detectedDate, 'YYYY/MM/DD HH:mm').utcOffset('+08:00').toISOString();
-        // item.statusUpdateTime = moment(item.statusUpdateTime, 'YYYY/MM/DD HH:mm').utcOffset('+08:00').toISOString();
-        // console.log('save:', item);
-    };
-    useEffect(() => {
+    const asyncAllAPI = async () => {
         // version 1
-        apiDemo();
-        // version 2
-        if (REACT_APP_VERSION_2) apiDemo2();
+        await GETHISTORY001API();
+    };
+
+    useEffect(() => {
+        asyncAllAPI();
     }, []);
     return (
-        <>
-            {/* 361戶:離線87,連線179； 400戶:離線63,連線265； 其他:離線55,連線96；總離線+總連線 = 205戶+540戶 = 745戶 */}
-            <div className={cx('top_card')}>
-                {card.length > 0
-                    ? card.map((item, index) => (
-                          <UiCard type={item.type} title={item.title} content={item.content} key={index} />
-                      ))
-                    : ''}
+        <div className={cx('history')}>
+            <h1 className={cx('title')}>歷史異常資料檢視結果</h1>
+            <div className={cx('history_time')}>
+                <Button size="default" onClick={() => isClickDays(1)}>
+                    Today
+                </Button>{' '}
+                &nbsp;
+                <Button size="default" onClick={() => isClickDays(7)}>
+                    Past 7 Days
+                </Button>{' '}
+                &nbsp;
+                <Button size="default" onClick={() => isClickDays(30)}>
+                    Past 30 Days
+                </Button>{' '}
+                &nbsp;
+                <RangePicker
+                    value={dates || value}
+                    defaultValue={dates}
+                    // disabled={[false, true]}
+                    disabledDate={disabledDate}
+                    onCalendarChange={val => setDates(val)}
+                    onChange={handleRangePickerChange}
+                    onOpenChange={onOpenChange}
+                    onBlur={() => console.log('blur has been triggered')}
+                />
             </div>
-            <div className={cx('history')}>
+            <div className={cx('history_eChart')}>
+                <div className={cx('chart')}>
+                    <UiLineChart title="故障類別" />
+                </div>
+                <div className={cx('chart')}>
+                    <UiLineChart title="故障類別" />
+                </div>
+            </div>
+            <div className={cx('history_table')}>
+                <h1 className={cx('table_title')}>
+                    歷史異常紀錄 <span> | 最後一次更新 2024/01/09</span>
+                </h1>
                 <Form form={form} component={false}>
                     <Table
                         components={{
@@ -492,6 +452,7 @@ const History = ({ match, history, location }) => {
                         rowClassName="editable-row"
                         // pagination={false}
                         pagination={{
+                            position: ['none', 'bottomLeft'],
                             defaultPageSize: 10, // 默认每页显示的数量
                             onChange: cancel
                         }}
@@ -509,8 +470,8 @@ const History = ({ match, history, location }) => {
                     />
                 </Form>
             </div>
-        </>
+        </div>
     );
 };
 
-export default withRouter(History);
+export default withRouter(Home);

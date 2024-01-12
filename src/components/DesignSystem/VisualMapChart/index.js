@@ -146,7 +146,7 @@ const VisualMapChart = (optionItems = {}) => {
 
     useEffect(() => {}, []);
 
-    return <div id="chartLine" ref={chartDOM} />;
+    return <div id="visualMapChart" ref={chartDOM} />;
 };
 
 export default VisualMapChart;

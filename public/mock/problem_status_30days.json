@@ -1,0 +1,61 @@
+{
+    "code": 200,
+    "message": "操作成功 (Operation successfully.)",
+    "data": [
+        {
+            "serialNumber": 2,
+            "uuid": "Pq9RtU7w",
+            "name": "王曉明",
+            "userId": "user654321@gmail.com",
+            "detectedDate": "2023-12-12T00:00:00.000+08:00",
+            "problem": "資料過少",
+            "status": "已通知",
+            "statusUpdateTime": "",
+            "note": "通知用戶少開冰箱"
+        },
+        {
+            "serialNumber": 4,
+            "uuid": "R4jW7uP1",
+            "name": "王陽明",
+            "userId": "user111111@gmail.com",
+            "detectedDate": "2023-12-12T00:00:00.000+08:00",
+            "problem": "CT負值",
+            "status": "未通知",
+            "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
+            "note": null
+        },
+        {
+            "serialNumber": 5,
+            "uuid": "L2zK9vY6",
+            "name": "王建名",
+            "userId": "user222222@gmail.com",
+            "detectedDate": "2023-12-12T00:00:00.000+08:00",
+            "problem": "資料過少",
+            "status": "已完成",
+            "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
+            "note": null
+        },
+        {
+            "serialNumber": 6,
+            "uuid": "Q8xN3mH5",
+            "name": "王啟瑞",
+            "userId": "user333333@gmail.com",
+            "detectedDate": "2023-12-12T00:00:00.000+08:00",
+            "problem": "斷線",
+            "status": "等待維護",
+            "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
+            "note": "通知用戶少開冰箱"
+        },
+        {
+            "serialNumber": 3,
+            "uuid": "K5mN1vLp",
+            "name": "王忠明",
+            "userId": "user789546@gmail.com",
+            "detectedDate": "2023-12-12T00:00:00.000+08:00",
+            "problem": "斷線",
+            "status": "等待維護",
+            "statusUpdateTime": "2023-12-14T10:30:00.000+08:00",
+            "note": "20231218"
+        }
+    ]
+}

@@ -12,14 +12,22 @@ const cx = classNames.bind(classes);
 const LineChart = ({ title = 'Line Chart' }) => {
     const [option, setOption] = useState({
         title: {
-            text: title
+            text: title,
+            textStyle: {
+                // color: '#999',
+                // fontWeight: 'normal',
+                fontSize: 14
+            }
         },
         tooltip: {
             trigger: 'axis'
         },
         color: ['#ff7c32', '#ffcb01', '#4bd0ce'] /* 折線圖的颜色 */,
         legend: {
-            data: ['A item', 'B item', 'C item']
+            data: ['斷線', '資料過少', 'CT負值'],
+            // orient: 'vertical', // 垂直排列
+            // right: -50, // 靠右側距離
+            // top: 50 // 距離頂部的距離
         },
         grid: {
             left: '3%',
@@ -28,7 +36,7 @@ const LineChart = ({ title = 'Line Chart' }) => {
             containLabel: true
         },
         toolbox: {
-            show: true, // 關閉工具列
+            show: true, // 工具列開關(下載、拖拽、放大、圖表盤等)
             feature: {
                 saveAsImage: {},
                 // dataView: {},
@@ -156,9 +164,23 @@ const LineChart = ({ title = 'Line Chart' }) => {
         initChart();
     }, []);
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        const myChart = echarts.init(chartDOM.current);
+        myChart.setOption(option);
 
-    return <div id="chartLine" ref={chartDOM} />;
+        const handleResize = () => {
+            myChart.resize();
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            myChart.dispose();
+        };
+    }, []);
+
+    return <div id="chartLine" ref={chartDOM} style={{ width: '100%', height: '100%' }} />;
 };
 
 export default LineChart;

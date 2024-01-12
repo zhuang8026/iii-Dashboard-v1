@@ -34,7 +34,7 @@ export const apiRequest = async (method, url, auth, params = null) => {
 
     switch (env.REACT_APP_ENV) {
         case 'development':
-            domain = env.REACT_APP_API_DOMAIN_MOCK;
+            domain = env.REACT_APP_API_DOMAIN_MOCK; // mock data
             break;
         case 'uat':
             domain = env.REACT_APP_API_UAT;

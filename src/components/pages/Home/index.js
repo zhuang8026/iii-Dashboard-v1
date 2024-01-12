@@ -33,7 +33,7 @@ const cx = classNames.bind(classes);
 const Home = ({ match, history, location }) => {
     const [form] = Form.useForm();
     const [data, setData] = useState();
-    const [lastTime, setLastTime] = useState('2023/12/20 14:41:29');
+    const [lastTime, setLastTime] = useState('');
     const [card, setCard] = useState([]);
     const [editingKey, setEditingKey] = useState('');
     const fetchListener = useRef();
@@ -263,7 +263,7 @@ const Home = ({ match, history, location }) => {
             });
 
             // 後一次更新
-            setLastTime(moment(res.data[0].detectedDate).format('YYYY/MM/DD HH:mm:ss'));
+            setLastTime(moment(res.data[0].detectedDate).format('YYYY/MM/DD')); // YYYY/MM/DD HH:mm:ss
         } else {
             console.log('GET002API error:', res);
         }

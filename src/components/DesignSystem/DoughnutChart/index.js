@@ -16,12 +16,12 @@ const DoughnutChart = () => {
     let demo = {
         title: {
             text: 'Doughnut Chart',
-            left: 'left' // center
-            // textStyle: {
-            //     color: '#999',
-            //     fontWeight: 'normal',
-            //     fontSize: 14
-            // }
+            left: 'left', // center
+            textStyle: {
+                // color: '#999',
+                // fontWeight: 'normal',
+                fontSize: 14
+            }
         },
         series: [
             {
@@ -129,7 +129,7 @@ const DoughnutChart = () => {
 
     useEffect(() => {}, []);
 
-    return <div id="chartLine" ref={chartDOM} />;
+    return <div id="doughnutChart" ref={chartDOM} />;
 };
 
 export default DoughnutChart;

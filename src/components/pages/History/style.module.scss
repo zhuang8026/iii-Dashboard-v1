@@ -1,16 +1,51 @@
-.top_card {
-    display: flex;
-    margin: 20px 20px 0 20px;
-    overflow-y: hidden;
-    overflow-x: auto;
-}
+@import 'assets/scss/_variables';
+
 .history {
-    margin: 10px 20px 20px 20px;
-    border-radius: 10px;
-    overflow: hidden;
-    .editable-row .ant-form-item-explain {
-        position: absolute;
-        top: 100%;
-        font-size: 14px;
+    width: calc(100vw - 248px);
+    // width: calc(100%);
+    background-color: #fff;
+    padding: 20px 20px 0px 20px;
+    margin-bottom: 20px;
+    .title {
+        font-size: 21px;
+        font-weight: bold;
+        padding-bottom: 7px;
+        border-bottom: 2px solid $line;
     }
+    .history_time {
+        margin-bottom: 10px;
+    }
+    .history_eChart {
+        width: 100%;
+        max-width: 100%;
+        .chart {
+            width: 100%;
+            height: 200px;
+            margin: 10px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid $line;
+        }
+    }
+    .history_table {
+        .table_title {
+            padding: 10px 0;
+            span {
+                font-size: 14px;
+                font-weight: normal;
+                color: $menu_color_2;
+            }
+        }
+    }
+}
+
+.button {
+    margin-right: 5px;
+}
+.editable-row .ant-form-item-explain {
+    position: absolute;
+    top: 100%;
+    font-size: 14px;
+}
+td {
+    font-size: 16px;
 }

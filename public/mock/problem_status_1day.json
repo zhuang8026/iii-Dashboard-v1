@@ -1,0 +1,17 @@
+{
+    "code": 200,
+    "message": "操作成功 (Operation successfully.)",
+    "data": [
+        {
+            "serialNumber": 2,
+            "uuid": "Pq9RtU7w",
+            "name": "王曉明",
+            "userId": "user654321@gmail.com",
+            "detectedDate": "2023-12-12T00:00:00.000+08:00",
+            "problem": "資料過少",
+            "status": "已通知",
+            "statusUpdateTime": "",
+            "note": "通知用戶少開冰箱"
+        }
+    ]
+}

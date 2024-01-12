@@ -99,7 +99,7 @@ function App({ match, location, history }) {
                     if (layoutPath[0].toUpperCase() === location.pathname.split('/')[1].toUpperCase()) {
                         setLayouts(route.layouts);
                     } else {
-                        // console.log('no fund');
+                        console.log('no fund');
                     }
                 });
             } else {
@@ -114,7 +114,7 @@ function App({ match, location, history }) {
                 if (layoutPath[0].toUpperCase() === location.pathname.split('/')[1].toUpperCase()) {
                     setLayouts(route.layouts);
                 } else {
-                    // console.log('no fund');
+                    console.log('no fund');
                 }
             });
         }
@@ -134,7 +134,7 @@ function App({ match, location, history }) {
         openLoading();
         setTimeout(() => {
             eraseCookie('iii_token');
-            history.replace('/');
+            history.replace('/login');
             closeLoading();
         }, 1000);
     };
