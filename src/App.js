@@ -1,7 +1,7 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
-import { AreaChartOutlined, HistoryOutlined } from '@ant-design/icons';
+import { AreaChartOutlined, HistoryOutlined, SettingOutlined } from '@ant-design/icons';
 
 // DesignSystem
 import NoMatch from 'components/DesignSystem/NoMatch';
@@ -28,21 +28,9 @@ const cx = classNames.bind(classes);
 
 function App({ match, location, history }) {
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
-    const { REACT_APP_VERSION_2 } = useContext(GlobalContext);
+    const { REACT_APP_VERSION_1, REACT_APP_VERSION_2, REACT_APP_VERSION_3 } = useContext(GlobalContext);
     const [layouts, setLayouts] = useState([]);
-    const [menuList, setMenuList] = useState([
-        {
-            name: '每日異常資訊',
-            path: '/main',
-            icon: <AreaChartOutlined style={{ fontSize: '20px' }} />
-        },
-        // version 2
-        {
-            name: '歷史異常資訊',
-            path: '/history',
-            icon: <HistoryOutlined style={{ fontSize: '20px' }} />
-        }
-    ]);
+    const [menuList, setMenuList] = useState([]);
 
     const isAuth = getCookie('iii_token'); // cookie testing
 
@@ -90,7 +78,7 @@ function App({ match, location, history }) {
 
     // layout & url
     const getLayoutsCallBack = () => {
-        if (REACT_APP_VERSION_2) {
+        if (REACT_APP_VERSION_3) {
             if (isAuth) {
                 privateRoutes.map((route, key) => {
                     let layoutPath = [];
@@ -138,6 +126,67 @@ function App({ match, location, history }) {
             closeLoading();
         }, 1000);
     };
+
+    useEffect(() => {
+        let v1 = {
+            title: '戰情室',
+            children: [
+                {
+                    name: '每日異常資訊',
+                    path: '/main',
+                    icon: <AreaChartOutlined style={{ fontSize: '20px' }} />
+                }
+            ]
+        };
+        let v2 = {
+            title: '戰情室',
+            children: [
+                {
+                    name: '每日異常資訊',
+                    path: '/main',
+                    icon: <AreaChartOutlined style={{ fontSize: '20px' }} />
+                },
+                // version 2
+                {
+                    name: '歷史異常資訊',
+                    path: '/history',
+                    icon: <HistoryOutlined style={{ fontSize: '20px' }} />
+                }
+            ]
+        };
+        let v3 = {
+            title: '用戶資訊',
+            children: [
+                {
+                    name: 'demo1',
+                    path: '/demo1',
+                    icon: <SettingOutlined style={{ fontSize: '20px' }} />
+                },
+                {
+                    name: 'demo2',
+                    path: '/demo2',
+                    icon: <SettingOutlined style={{ fontSize: '20px' }} />
+                }
+            ]
+        };
+
+        setMenuList((prev, next) => {
+            console.log(REACT_APP_VERSION_1, REACT_APP_VERSION_2, REACT_APP_VERSION_3);
+            if (REACT_APP_VERSION_1) {
+                if (REACT_APP_VERSION_2) {
+                    if (REACT_APP_VERSION_3) {
+                        prev = [v2, v3];
+                    } else {
+                        prev = [v2];
+                    }
+                } else {
+                    prev = [v1];
+                }
+            }
+            return prev;
+        });
+    }, []);
+
     // check auth render menu dom
     useEffect(() => {
         getLayoutsCallBack();

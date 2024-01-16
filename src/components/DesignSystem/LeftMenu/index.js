@@ -19,12 +19,14 @@ const cx = classNames.bind(classes);
 
 const Menu = ({ match, location, history, menuList, logoutAPI }) => {
     const [list, setList] = useState([]);
-    const [isClick, setIsClick] = useState(0);
+    const [isClick, setIsClick] = useState('/main');
 
-    const { REACT_APP_VERSION_2 } = useContext(GlobalContext);
+    const { REACT_APP_VERSION_3 } = useContext(GlobalContext);
 
     const clickMenu = (key, path) => {
-        setIsClick(key);
+        let parts = path.split('/');
+        setIsClick(`/${parts[1]}`);
+        console.log(parts[1]);
         history.push({
             ...location,
             pathname: `${path}`
@@ -39,6 +41,11 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
         setList(menuList);
     }, []);
 
+    useEffect(() => {
+        let parts = location.pathname.split('/');
+        setIsClick(`/${parts[1]}`);
+    }, [location]);
+
     return (
         <div className={cx('menu')}>
             <div className={cx('top')}>
@@ -46,30 +53,38 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
                     <img src={require(`assets/images/iii.png`)} alt="logo" />
                     <p className={cx('logo_name')}>財團法人資訊工業策進會</p>
                     <p className={cx('line')} />
-                    <p>設備故障與資料品質管理系統</p>
+                    <p>故障預測與資料品質管理系統</p>
+                    {/* Prognostic and Data Quality Management */}
                     <span>v.{III_VERSION}</span>
                 </div>
                 <ul>
-                    <li className={cx('menu_title')}>戰情室</li>
-                    {list.map((item, index) => {
-                        return (
-                            <li
-                                className={cx('link', index === isClick && 'menu_active')}
-                                onClick={() => clickMenu(index, item.path)}
-                                key={index}
-                                index={index}
-                            >
-                                <Link to={item.path}>
-                                    {item.icon}
-                                    <span className={cx('menu_icon')}></span>
-                                    <span>{item.name}</span>
-                                </Link>
-                            </li>
-                        );
-                    })}
+                    {list.length > 0 &&
+                        list.map((data, index) => {
+                            return (
+                                <div key={index}>
+                                    <li className={cx('menu_title')}>{data.title}</li>
+                                    {data.children.map((item, index) => {
+                                        return (
+                                            <li
+                                                className={cx('link', item.path === isClick && 'menu_active')}
+                                                onClick={() => clickMenu(index, item.path)}
+                                                key={index}
+                                                index={index}
+                                            >
+                                                <Link to={item.path}>
+                                                    {item.icon}
+                                                    <span className={cx('menu_icon')}></span>
+                                                    <span>{item.name}</span>
+                                                </Link>
+                                            </li>
+                                        );
+                                    })}
+                                </div>
+                            );
+                        })}
                 </ul>
             </div>
-            {REACT_APP_VERSION_2 && (
+            {REACT_APP_VERSION_3 && (
                 <div className={cx('bottom')}>
                     <div className={cx('setting', 'user')} onClick={() => logout()}>
                         <img alt="" src={user} />

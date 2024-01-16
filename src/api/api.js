@@ -36,14 +36,38 @@ export const getProblemStatusDetail001API = async () => {
 };
 
 // ------------------ history API ------------------
-// history001 獲取即時資料
-export const getHistory001API = async (days, date) => {
+// history001 獲取歷史資料
+export const getHistory001API = async (days, startTime, endTime) => {
     // 如果是开发环境，直接返回模拟数据
-    const url = isMockEnvironment ? (
-        days === 1 ? `/mock/problem_status_1day.json` :
-        days === 7 ? `/mock/problem_status_7days.json` : 
-        days === 30 ? `/mock/problem_status_30days.json` : `/mock/problem_status.json`
-    ) : `/${ad_dashboard}/problem_status?date=${date}`;
+    const url = isMockEnvironment
+        ? days === 1
+            ? `/mock/problem_status_1day.json`
+            : days === 7
+            ? `/mock/problem_status_7days.json`
+            : days === 30
+            ? `/mock/problem_status_30days.json`
+            : `/mock/problem_status.json`
+        : `/${ad_dashboard}/problem_status?startTime=${startTime}&endTime=${endTime}`;
+    const res = await apiRequest('GET', url, true);
+    return res;
+};
+
+// history002 獲取歷史圖表資料
+export const getHistory002API = async (days, startTime, endTime) => {
+    // 如果是开发环境，直接返回模拟数据
+    const url = isMockEnvironment
+        ? `/mock/problem_status.json`
+        : `/${ad_dashboard}/problem_status?startTime=${startTime}&endTime=${endTime}`;
+    const res = await apiRequest('GET', url, true);
+    return res;
+};
+
+// history003 獲取歷史圖表資料
+export const getHistory003API = async (days, startTime, endTime) => {
+    // 如果是开发环境，直接返回模拟数据
+    const url = isMockEnvironment
+        ? `/mock/problem_status.json`
+        : `/${ad_dashboard}/problem_status?startTime=${startTime}&endTime=${endTime}`;
     const res = await apiRequest('GET', url, true);
     return res;
 };

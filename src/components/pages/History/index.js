@@ -27,7 +27,7 @@ const cx = classNames.bind(classes);
 const Home = ({ match, history, location }) => {
     const { RangePicker } = DatePicker;
     const dateFormat = 'YYYY/MM/DD';
-    const [dates, setDates] = useState([moment().subtract(30, 'days'), moment()]);
+    const [dates, setDates] = useState([moment().subtract(30, 'days'), moment()]); // 今天往前30天
     const [value, setValue] = useState(null);
 
     const [form] = Form.useForm();
@@ -36,7 +36,7 @@ const Home = ({ match, history, location }) => {
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
-    const { REACT_APP_VERSION_2 } = useContext(GlobalContext);
+    const { REACT_APP_VERSION_3 } = useContext(GlobalContext);
 
     const isEditing = record => record.key === editingKey;
     const edit = record => {
@@ -141,44 +141,68 @@ const Home = ({ match, history, location }) => {
         const formattedDates = dateString.map(date => moment(date).format('YYYY/MM/DD HH:mm:ss'));
         console.log(formattedDates);
 
-        // 更新 state
-        setValue(value);
-        setDates(value);
-        GETHISTORY001API(0, dateString);
+        // 转换日期字符串为Unix时间戳，包括到毫秒的信息
+        // const unixTimestamps = dateString.map(date => moment(date, 'YYYY/MM/DD HH:mm:ss').valueOf());
+        let startTime = moment(dateString[0], 'YYYY/MM/DD HH:mm:ss').valueOf();
+        let endTime = moment(dateString[1], 'YYYY/MM/DD HH:mm:ss').endOf('day').valueOf();
+
+        console.log(startTime, endTime);
+
+        if (!!value) {
+            // 更新 state
+            setValue(value);
+            setDates(value);
+
+            GETHISTORY001API(0, startTime, endTime);
+        }
     };
 
     const isClickDays = days => {
-        let date = [];
-        const currentDateTime = moment().format('YYYY/MM/DD');
+        // 获取今天的开始时间（00:00:00）
+        const todayStart = moment().startOf('day');
+        // 获取今天的结束时间（23:59:59）
+        const todayEnd = moment().endOf('day');
+        // 获取过去7天的开始时间（00:00:00）
+        const sevenDaysAgoStart = moment().subtract(7, 'days').startOf('day');
+        // 获取过去30天的开始时间（00:00:00）
+        const thirtyDaysAgoStart = moment().subtract(30, 'days').startOf('day');
+
+        let unixStart = todayStart.valueOf(); // 开始时间戳
+        let unixEnd = ''; // 結束时间戳
+
         switch (days) {
             case 1:
-                // 當前時間
-                date = [currentDateTime];
-                console.log(date);
+                // 转换为Unix时间戳，包括到毫秒的信息
+                unixEnd = todayEnd.valueOf();
+                console.log(`开始时间：${unixStart}`);
+                console.log(`结束时间：${unixEnd}`);
+
                 break;
             case 7:
-                const nextWeekDateTime = moment().subtract(7, 'days');
-                const nextWeekFormattedDate = nextWeekDateTime.format('YYYY/MM/DD');
-                date = [currentDateTime, nextWeekFormattedDate];
-                console.log(date);
+                // 转换为Unix时间戳，包括到毫秒的信息
+                unixEnd = sevenDaysAgoStart.valueOf();
+                console.log(`开始时间：${unixStart}`);
+                console.log(`结束时间：${unixEnd}`);
+
                 break;
             case 30:
-                const past30DaysDateTime = moment().subtract(30, 'days');
-                const past30DaysFormattedDate = past30DaysDateTime.format('YYYY/MM/DD');
-                date = [currentDateTime, past30DaysFormattedDate];
-                console.log(date);
+                // 转换为Unix时间戳，包括到毫秒的信息
+                unixEnd = thirtyDaysAgoStart.valueOf();
+                console.log(`开始时间：${unixStart}`);
+                console.log(`结束时间：${unixEnd}`);
+
                 break;
             default:
                 break;
         }
 
-        GETHISTORY001API(days, date);
+        GETHISTORY001API(days, unixStart, unixEnd);
     };
 
     // get API 001
-    const GETHISTORY001API = async (days, date) => {
+    const GETHISTORY001API = async (days, startTime, endTime) => {
         openLoading();
-        const res = await getHistory001API(days, date);
+        const res = await getHistory001API(days, startTime, endTime);
         if (res.code === 200) {
             let tableItem = res.data.map((val, i) => {
                 let updateTime = val.statusUpdateTime ? moment(val.statusUpdateTime).format('YYYY/MM/DD HH:mm') : '';
@@ -358,7 +382,7 @@ const Home = ({ match, history, location }) => {
                         >
                             Edit
                         </Typography.Link>
-                        {REACT_APP_VERSION_2 && (
+                        {REACT_APP_VERSION_3 && (
                             <Typography.Link
                                 disabled={editingKey !== ''}
                                 onClick={() => {

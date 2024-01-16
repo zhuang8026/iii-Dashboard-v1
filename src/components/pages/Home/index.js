@@ -40,7 +40,7 @@ const Home = ({ match, history, location }) => {
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
-    const { REACT_APP_VERSION_2 } = useContext(GlobalContext);
+    const { REACT_APP_VERSION_3 } = useContext(GlobalContext);
 
     const isEditing = record => record.key === editingKey;
     const edit = record => {
@@ -299,14 +299,15 @@ const Home = ({ match, history, location }) => {
             title: '姓名',
             dataIndex: 'name',
             width: '8%',
-            editable: false, // 編輯控制
+            editable: true, // 編輯控制
             ...TableSearch('name').getColumnSearchProps // 模糊搜索
         },
         {
             title: '帳號',
             dataIndex: 'userId',
             width: '16%',
-            editable: false // 編輯控制
+            editable: true, // 編輯控制
+            ...TableSearch('userId').getColumnSearchProps // 模糊搜索
         },
         {
             title: '更新時間',
@@ -396,7 +397,8 @@ const Home = ({ match, history, location }) => {
             title: '備註',
             dataIndex: 'note',
             width: '12%',
-            editable: true // 編輯控制
+            editable: true, // 編輯控制
+            ...TableSearch('note').getColumnSearchProps // 模糊搜索
         },
         {
             title: '編輯',
@@ -422,7 +424,7 @@ const Home = ({ match, history, location }) => {
                         >
                             Edit
                         </Typography.Link>
-                        {REACT_APP_VERSION_2 && (
+                        {REACT_APP_VERSION_3 && (
                             <Typography.Link
                                 disabled={editingKey !== ''}
                                 onClick={() => {

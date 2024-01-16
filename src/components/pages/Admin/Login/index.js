@@ -49,7 +49,7 @@ const Login = ({ history }) => {
         <div className={cx('login')}>
             <div className={cx('left')}>
                 <div className={cx('introduce')}>
-                    <div className={cx('title')}>Welcome to III Dashboard</div>
+                    <div className={cx('title')}>Welcome to III PDM</div>
                     <div className={cx('inner')}>
                         Visualization tools to centrally display and monitor key business indicators (KPIs) and data. It
                         is usually presented in the form of charts, graphs, tables and other visual elements to help

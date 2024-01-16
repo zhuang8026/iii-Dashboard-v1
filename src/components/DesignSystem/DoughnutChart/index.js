@@ -9,13 +9,13 @@ import classes from './style_module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
-const DoughnutChart = () => {
+const DoughnutChart = ({ title = 'Doughnut Chart', optionItems = {} }) => {
     // const [option, setOption] = useState();
     const chartDOM = useRef();
 
     let demo = {
         title: {
-            text: 'Doughnut Chart',
+            text: title,
             left: 'left', // center
             textStyle: {
                 // color: '#999',

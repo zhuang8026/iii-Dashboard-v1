@@ -311,7 +311,7 @@ const EventDetail = ({history}) => {
                     <UiLineChart title="分析圖一" />
                 </div>
                 <div className={cx('chart_40', 'chart_bg')}>
-                    <UiDoughnutChart />
+                    <UiDoughnutChart title='圓餅圖二'/>
                 </div>
             </div>
 

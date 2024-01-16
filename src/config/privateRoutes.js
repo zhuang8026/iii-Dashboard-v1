@@ -30,7 +30,15 @@ const privateRoutes = [
         exact: true,
         authRequired: false,
         layouts: ['NavLeft']
-    }
+    },
+    {
+        path: '/history/event-detail/:id?',
+        title: 'Analysis history Detail',
+        component: EventDetail,
+        exact: true,
+        authRequired: false,
+        layouts: ['NavLeft']
+    },
 ];
 
 export default privateRoutes;
