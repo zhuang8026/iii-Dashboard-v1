@@ -40,6 +40,11 @@
                         font-size: 14px;
                         margin: 0;
                     }
+                    .seePassword {
+                        text-align: right;
+                        cursor: pointer;
+                        margin-top: -15px;
+                    }
                     input {
                         display: block;
                         width: 384px;
@@ -47,13 +52,13 @@
                         margin: 4px 0 16px;
                         padding: 10px;
                         border: solid 1px #666;
-                        border-radius: 6px;
+                        border-radius: 20px;
                         font-size: 16px;
                     }
                     button {
                         width: 384px;
                         height: 40px;
-                        border-radius: 6px;
+                        border-radius: 20px;
                         background-color: $bg_color;
                         color: $table_color;
                         font-size: 20px;

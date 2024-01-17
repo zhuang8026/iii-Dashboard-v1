@@ -9,7 +9,7 @@ import classes from './style_module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
-const LineChart = ({ title = 'Line Chart' }) => {
+const LineChart = ({ title = 'Line Chart', chartData = [] }) => {
     const [option, setOption] = useState({
         title: {
             text: title,
@@ -24,7 +24,7 @@ const LineChart = ({ title = 'Line Chart' }) => {
         },
         color: ['#ff7c32', '#ffcb01', '#4bd0ce'] /* 折線圖的颜色 */,
         legend: {
-            data: ['斷線', '資料過少', 'CT負值'],
+            data: ['斷線', '資料過少', 'CT負值']
             // orient: 'vertical', // 垂直排列
             // right: -50, // 靠右側距離
             // top: 50 // 距離頂部的距離
@@ -106,49 +106,7 @@ const LineChart = ({ title = 'Line Chart' }) => {
                 // stack: 'Total',
                 data: [
                     ['2022-06-15', 84],
-                    ['2022-07-03', 92],
-                    ['2022-11-30', 17],
-                    ['2022-12-15', 55],
-                    ['2023-02-28', 78],
-                    ['2023-03-12', 42],
-                    ['2023-05-08', 93],
-                    ['2023-08-22', 65],
-                    ['2023-09-18', 21],
-                    ['2024-01-05', 37]
-                ]
-            },
-            {
-                name: '資料過少',
-                type: 'line',
-                // stack: 'Total',
-                data: [
-                    ['2022-06-15', 63],
-                    ['2022-07-03', 25],
-                    ['2022-11-30', 84],
-                    ['2022-12-15', 72],
-                    ['2023-02-28', 15],
-                    ['2023-03-12', 47],
-                    ['2023-05-08', 88],
-                    ['2023-08-22', 39],
-                    ['2023-09-18', 54],
-                    ['2024-01-05', 72]
-                ]
-            },
-            {
-                name: 'CT負值',
-                type: 'line',
-                // stack: 'Total',
-                data: [
-                    ['2022-06-15', 46],
-                    ['2022-07-03', 79],
-                    ['2022-11-30', 32],
-                    ['2022-12-15', 67],
-                    ['2023-02-28', 91],
-                    ['2023-03-12', 12],
-                    ['2023-05-08', 77],
-                    ['2023-08-22', 58],
-                    ['2023-09-18', 31],
-                    ['2024-01-05', 84]
+                    ['2022-07-03', 92]
                 ]
             }
         ]
@@ -160,9 +118,9 @@ const LineChart = ({ title = 'Line Chart' }) => {
         option && chartLine.setOption(option);
     };
 
-    useEffect(() => {
-        initChart();
-    }, []);
+    // useEffect(() => {
+    //     initChart();
+    // }, []);
 
     useEffect(() => {
         const myChart = echarts.init(chartDOM.current);
@@ -179,6 +137,12 @@ const LineChart = ({ title = 'Line Chart' }) => {
             myChart.dispose();
         };
     }, []);
+
+    useEffect(() => {
+        option.series = chartData;
+        setOption(option);
+        initChart();
+    }, [chartData]);
 
     return <div id="chartLine" ref={chartDOM} style={{ width: '100%', height: '100%' }} />;
 };

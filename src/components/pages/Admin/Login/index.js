@@ -14,6 +14,7 @@ const cx = classNames.bind(classes);
 
 const Login = ({ history }) => {
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
+    const [seeType, setSeeType] = useState('password');
     const [info, setInfo] = useState({
         user: '',
         pwd: '',
@@ -45,15 +46,23 @@ const Login = ({ history }) => {
     // close loading
     const closeLoading = () => closeAnimate();
 
+    const seePassword = () => {
+        if (seeType === 'password') {
+            setSeeType('text');
+        } else {
+            setSeeType('password');
+        }
+    };
+
     return (
         <div className={cx('login')}>
             <div className={cx('left')}>
                 <div className={cx('introduce')}>
                     <div className={cx('title')}>Welcome to III PDM</div>
                     <div className={cx('inner')}>
-                        Visualization tools to centrally display and monitor key business indicators (KPIs) and data. It
-                        is usually presented in the form of charts, graphs, tables and other visual elements to help
-                        users quickly understand and analyze relevant information.
+                        Prognostic and Data Quality Management visualization tools centrally display and monitor key
+                        business indicators (KPIs) and data. It usually uses visual elements such as charts, graphs,
+                        tables, etc. to help users quickly understand and analyze relevant content information.
                     </div>
 
                     <img src={require('assets/images/loginin.png')} alt="iii" />
@@ -73,10 +82,14 @@ const Login = ({ history }) => {
 
                             <p className={cx('login-title')}> Password</p>
                             <input
-                                type="password"
+                                type={seeType}
                                 placeholder="password"
                                 onChange={e => setAdminInfo('pwd', e.target.value)}
                             />
+                            <p className={cx('seePassword')} onClick={e => seePassword()}>
+                                see password
+                            </p>
+
                             <button onClick={() => loginin()}>Login</button>
                         </div>
                     </div>

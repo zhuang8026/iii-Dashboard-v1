@@ -41,13 +41,13 @@ export const getHistory001API = async (days, startTime, endTime) => {
     // 如果是开发环境，直接返回模拟数据
     const url = isMockEnvironment
         ? days === 1
-            ? `/mock/problem_status_1day.json`
+            ? `/mock/problem_list_1day.json`
             : days === 7
-            ? `/mock/problem_status_7days.json`
+            ? `/mock/problem_list_7days.json`
             : days === 30
-            ? `/mock/problem_status_30days.json`
-            : `/mock/problem_status.json`
-        : `/${ad_dashboard}/problem_status?startTime=${startTime}&endTime=${endTime}`;
+            ? `/mock/problem_list_30days.json`
+            : `/mock/problem_list.json`
+        : `/${ad_dashboard}/problem_list?startTime=${startTime}&endTime=${endTime}`;
     const res = await apiRequest('GET', url, true);
     return res;
 };
@@ -56,8 +56,8 @@ export const getHistory001API = async (days, startTime, endTime) => {
 export const getHistory002API = async (days, startTime, endTime) => {
     // 如果是开发环境，直接返回模拟数据
     const url = isMockEnvironment
-        ? `/mock/problem_status.json`
-        : `/${ad_dashboard}/problem_status?startTime=${startTime}&endTime=${endTime}`;
+        ? `/mock/problem_list.json`
+        : `/${ad_dashboard}/problem_list?startTime=${startTime}&endTime=${endTime}`;
     const res = await apiRequest('GET', url, true);
     return res;
 };
@@ -66,8 +66,8 @@ export const getHistory002API = async (days, startTime, endTime) => {
 export const getHistory003API = async (days, startTime, endTime) => {
     // 如果是开发环境，直接返回模拟数据
     const url = isMockEnvironment
-        ? `/mock/problem_status.json`
-        : `/${ad_dashboard}/problem_status?startTime=${startTime}&endTime=${endTime}`;
+        ? `/mock/problem_list.json`
+        : `/${ad_dashboard}/problem_list?startTime=${startTime}&endTime=${endTime}`;
     const res = await apiRequest('GET', url, true);
     return res;
 };

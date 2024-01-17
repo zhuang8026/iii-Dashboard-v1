@@ -26,7 +26,7 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
     const clickMenu = (key, path) => {
         let parts = path.split('/');
         setIsClick(`/${parts[1]}`);
-        console.log(parts[1]);
+
         history.push({
             ...location,
             pathname: `${path}`
@@ -44,6 +44,7 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
     useEffect(() => {
         let parts = location.pathname.split('/');
         setIsClick(`/${parts[1]}`);
+        console.log(`router: ${parts[1]}`);
     }, [location]);
 
     return (

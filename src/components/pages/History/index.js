@@ -26,13 +26,13 @@ const cx = classNames.bind(classes);
 
 const Home = ({ match, history, location }) => {
     const { RangePicker } = DatePicker;
-    const dateFormat = 'YYYY/MM/DD';
-    const [dates, setDates] = useState([moment().subtract(30, 'days'), moment()]); // 今天往前30天
+    const [dates, setDates] = useState([moment().subtract(30, 'days').startOf('day'), moment().endOf('day')]); // 今天往前30天
     const [value, setValue] = useState(null);
 
     const [form] = Form.useForm();
     const [data, setData] = useState();
     const [editingKey, setEditingKey] = useState('');
+    const [chartData, setChartData] = useState();
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
@@ -113,16 +113,18 @@ const Home = ({ match, history, location }) => {
     const closeMessage = () => closeDialog();
 
     const disabledDate = current => {
-        if (current) {
-            return current > moment().endOf('day');
+        const today = moment();
+        // 今天之后的日期不可选
+        if (current && current >= today.endOf('day')) {
+            return true;
         }
-        // if (!dates) {
-        //     return false;
-        // }
-        // const today = moment().startOf('day');
-        // const tooLate = dates[0] && today.diff(dates[0], 'days') > 30;
-        // const tooEarly = dates[1] && dates[1].diff(today, 'days') > 30;
-        // return !!tooEarly || !!tooLate;
+
+        // 2023年12月1日之后的日期不可选
+        if (current && current >= moment('2023-11-30').endOf('day')) {
+            return false;
+        }
+
+        return true;
     };
 
     const onOpenChange = open => {
@@ -135,18 +137,19 @@ const Home = ({ match, history, location }) => {
 
     const handleRangePickerChange = (value, dateString) => {
         // dateString 是格式化後的時間字符串
-        console.log(value, dateString);
+        // console.log(value, dateString);
 
         // 如果您需要將日期轉換成 "YYYY/MM/DD hh:mm:ss" 格式
-        const formattedDates = dateString.map(date => moment(date).format('YYYY/MM/DD HH:mm:ss'));
-        console.log(formattedDates);
+        // const formattedDates = dateString.map(date => moment(date).format('YYYY/MM/DD HH:mm:ss'));
+        // console.log(formattedDates);
 
         // 转换日期字符串为Unix时间戳，包括到毫秒的信息
         // const unixTimestamps = dateString.map(date => moment(date, 'YYYY/MM/DD HH:mm:ss').valueOf());
         let startTime = moment(dateString[0], 'YYYY/MM/DD HH:mm:ss').valueOf();
         let endTime = moment(dateString[1], 'YYYY/MM/DD HH:mm:ss').endOf('day').valueOf();
 
-        console.log(startTime, endTime);
+        console.log(`开始时间：${startTime}`);
+        console.log(`结束时间：${endTime}`);
 
         if (!!value) {
             // 更新 state
@@ -159,35 +162,34 @@ const Home = ({ match, history, location }) => {
 
     const isClickDays = days => {
         // 获取今天的开始时间（00:00:00）
-        const todayStart = moment().startOf('day');
-        // 获取今天的结束时间（23:59:59）
-        const todayEnd = moment().endOf('day');
+        const today = moment();
         // 获取过去7天的开始时间（00:00:00）
         const sevenDaysAgoStart = moment().subtract(7, 'days').startOf('day');
         // 获取过去30天的开始时间（00:00:00）
         const thirtyDaysAgoStart = moment().subtract(30, 'days').startOf('day');
 
-        let unixStart = todayStart.valueOf(); // 开始时间戳
+        let unixStart = ''; // 开始时间戳
         let unixEnd = ''; // 結束时间戳
 
         switch (days) {
             case 1:
                 // 转换为Unix时间戳，包括到毫秒的信息
-                unixEnd = todayEnd.valueOf();
+                unixStart = today.startOf('day').valueOf(); // 获取今天的开始时间（00:00:00）
+                unixEnd = today.endOf('day').valueOf(); // 获取今天的结束时间（23:59:59）
                 console.log(`开始时间：${unixStart}`);
                 console.log(`结束时间：${unixEnd}`);
-
                 break;
             case 7:
                 // 转换为Unix时间戳，包括到毫秒的信息
-                unixEnd = sevenDaysAgoStart.valueOf();
+                unixStart = sevenDaysAgoStart.valueOf(); // 开始时间戳
+                unixEnd = today.endOf('day').valueOf();
                 console.log(`开始时间：${unixStart}`);
                 console.log(`结束时间：${unixEnd}`);
-
                 break;
             case 30:
                 // 转换为Unix时间戳，包括到毫秒的信息
-                unixEnd = thirtyDaysAgoStart.valueOf();
+                unixStart = thirtyDaysAgoStart.valueOf(); // 开始时间戳
+                unixEnd = today.endOf('day').valueOf();
                 console.log(`开始时间：${unixStart}`);
                 console.log(`结束时间：${unixEnd}`);
 
@@ -196,7 +198,13 @@ const Home = ({ match, history, location }) => {
                 break;
         }
 
-        GETHISTORY001API(days, unixStart, unixEnd);
+        if (unixStart != '' && unixEnd != '') {
+            // 更新 state
+            setValue([moment.unix(unixStart / 1000), moment.unix(unixEnd / 1000)]);
+            setDates([moment.unix(unixStart / 1000), moment.unix(unixEnd / 1000)]);
+
+            GETHISTORY001API(days, unixStart, unixEnd);
+        }
     };
 
     // get API 001
@@ -220,6 +228,34 @@ const Home = ({ match, history, location }) => {
                 };
             });
             setData([...tableItem]);
+
+            // Create an object to store data for each problem type
+            const transformedData = {};
+
+            // Iterate through the API data and organize it by problem type
+            res.data.forEach(entry => {
+                const { problem, detectedDate } = entry;
+
+                if (!transformedData[problem]) {
+                    transformedData[problem] = {};
+                }
+
+                const formattedDate = moment(detectedDate).format('YYYY-MM-DD');
+                if (!transformedData[problem][formattedDate]) {
+                    transformedData[problem][formattedDate] = 0;
+                }
+
+                transformedData[problem][formattedDate] += 1; // Increment the count for the specific date and problem
+            });
+
+            // Convert the organized data into the desired format
+            const result = Object.keys(transformedData).map(problem => ({
+                name: problem,
+                type: 'line',
+                data: Object.keys(transformedData[problem]).map(date => [date, transformedData[problem][date]])
+            }));
+
+            setChartData([...result]);
 
             setTimeout(() => {
                 closeLoading();
@@ -266,7 +302,8 @@ const Home = ({ match, history, location }) => {
             title: '帳號',
             dataIndex: 'userId',
             width: '16%',
-            editable: false // 編輯控制
+            editable: false, // 編輯控制
+            ...TableSearch('userId').getColumnSearchProps // 模糊搜索
         },
         {
             title: '更新時間',
@@ -356,7 +393,8 @@ const Home = ({ match, history, location }) => {
             title: '備註',
             dataIndex: 'note',
             width: '12%',
-            editable: true // 編輯控制
+            editable: true, // 編輯控制
+            ...TableSearch('note').getColumnSearchProps // 模糊搜索
         },
         {
             title: '編輯',
@@ -418,12 +456,15 @@ const Home = ({ match, history, location }) => {
 
     const asyncAllAPI = async () => {
         // version 1
-        await GETHISTORY001API();
+        let startTime = dates[0].valueOf();
+        let endTime = dates[1].valueOf();
+        await GETHISTORY001API(0, startTime, endTime);
     };
 
     useEffect(() => {
         asyncAllAPI();
     }, []);
+
     return (
         <div className={cx('history')}>
             <h1 className={cx('title')}>歷史異常資料檢視結果</h1>
@@ -453,10 +494,10 @@ const Home = ({ match, history, location }) => {
             </div>
             <div className={cx('history_eChart')}>
                 <div className={cx('chart')}>
-                    <UiLineChart title="故障類別" />
+                    <UiLineChart title="故障類別" chartData={chartData} />
                 </div>
                 <div className={cx('chart')}>
-                    <UiLineChart title="故障類別" />
+                    <UiLineChart title="故障類別" chartData={chartData} />
                 </div>
             </div>
             <div className={cx('history_table')}>
@@ -472,7 +513,7 @@ const Home = ({ match, history, location }) => {
                         }}
                         bordered
                         dataSource={data}
-                        columns={mergedColumns}
+                        columns={mergedColumns} // 欄位功能控制
                         rowClassName="editable-row"
                         // pagination={false}
                         pagination={{

@@ -87,7 +87,7 @@ function App({ match, location, history }) {
                     if (layoutPath[0].toUpperCase() === location.pathname.split('/')[1].toUpperCase()) {
                         setLayouts(route.layouts);
                     } else {
-                        console.log('no fund');
+                        // console.log('no fund');
                     }
                 });
             } else {
@@ -171,7 +171,9 @@ function App({ match, location, history }) {
         };
 
         setMenuList((prev, next) => {
-            console.log(REACT_APP_VERSION_1, REACT_APP_VERSION_2, REACT_APP_VERSION_3);
+            console.log('REACT_APP_VERSION_1:', REACT_APP_VERSION_1);
+            console.log('REACT_APP_VERSION_2:', REACT_APP_VERSION_2);
+            console.log('REACT_APP_VERSION_3:', REACT_APP_VERSION_3);
             if (REACT_APP_VERSION_1) {
                 if (REACT_APP_VERSION_2) {
                     if (REACT_APP_VERSION_3) {
