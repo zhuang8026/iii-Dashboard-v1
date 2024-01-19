@@ -30,7 +30,7 @@ export const apiRequest = async (method, url, auth, params = null) => {
     }
 
     let env = process.env;
-    let domain = 'http://none:none'; 
+    let domain = 'http://none:none';
 
     switch (env.REACT_APP_ENV) {
         case 'development':
@@ -40,7 +40,7 @@ export const apiRequest = async (method, url, auth, params = null) => {
             domain = env.REACT_APP_API_UAT;
             break;
         case 'prod':
-            domain = env.REACT_APP_API_DOMAIN_MOCK;
+            domain = env.REACT_APP_API_DOMAIN;
             break;
         default:
             break;
