@@ -1,7 +1,7 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Input, InputNumber, Select, Tag, DatePicker, Popconfirm, Form, Table, Typography, Button } from 'antd';
-
+import { ApiOutlined, FallOutlined, ReconciliationOutlined } from '@ant-design/icons';
 import moment from 'moment';
 // import locale from 'antd/es/date-picker/locale/zh_TW';
 
@@ -33,6 +33,8 @@ const Home = ({ match, history, location }) => {
     const [data, setData] = useState();
     const [editingKey, setEditingKey] = useState('');
     const [chartData, setChartData] = useState();
+    const [faultData, setFaultData] = useState([]);
+    const [color, setColor] = useState('ff7c32');
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
@@ -160,6 +162,7 @@ const Home = ({ match, history, location }) => {
         }
     };
 
+    // 點擊時間 今天、7天、30天
     const isClickDays = days => {
         // 获取今天的开始时间（00:00:00）
         const today = moment();
@@ -207,6 +210,72 @@ const Home = ({ match, history, location }) => {
         }
     };
 
+    // 取得 故障類別全部資料
+    const faultLineChartData = async data => {
+        // Create an object to define the sorting order of each problem type
+        const problemOrder = {
+            斷線: 1,
+            CT負值: 2,
+            資料過少: 3
+        };
+
+        // Create an object to store data for each problem type
+        const transformedData = {};
+
+        // Iterate through the API data and organize it by problem type
+        data.forEach(entry => {
+            const { problem, detectedDate } = entry;
+
+            if (!transformedData[problem]) {
+                transformedData[problem] = {};
+            }
+
+            const formattedDate = moment(detectedDate).format('YYYY-MM-DD');
+            if (!transformedData[problem][formattedDate]) {
+                transformedData[problem][formattedDate] = 0;
+            }
+
+            transformedData[problem][formattedDate] += 1; // Increment the count for the specific date and problem
+        });
+
+        // Convert the organized data into the desired format
+        const result = Object.keys(transformedData)
+            .sort((a, b) => problemOrder[a] - problemOrder[b])
+            .map(problem => {
+                const datesAndCounts = Object.keys(transformedData[problem])
+                    .map(date => ({ date: new Date(date), count: transformedData[problem][date] }))
+                    .sort((a, b) => a.date - b.date)
+                    .map(item => [moment(item.date).format('YYYY-MM-DD'), item.count]);
+
+                // Sort datesAndCounts by date
+                datesAndCounts.sort((a, b) => moment(a[0]).valueOf() - moment(b[0]).valueOf());
+
+                // 發生事件個別總和
+                const total = datesAndCounts.reduce((acc, [date, count]) => acc + count, 0);
+
+                return {
+                    name: problem,
+                    key: problem == '斷線' ? 0 : problem == 'CT負值' ? 1 : 2,
+                    type: 'line',
+                    data: datesAndCounts,
+                    total: total
+                };
+            });
+
+        setChartData([...result]);
+        setFaultData([result[0]]); // 默認顯示斷線
+        // setColor('#ff7c32'); // 默認顯示斷線
+        console.log('chartData:', result);
+    };
+
+    // 選擇故障類別功能
+    const checkFaultType = key => {
+        let arr = chartData.filter(ele => ele.key == key);
+        let c = ['#ff7c32', '#ffcb01', '#4bd0ce'];
+        setFaultData([...arr]);
+        setColor(c[key]);
+    };
+
     // get API 001
     const GETHISTORY001API = async (days, startTime, endTime) => {
         openLoading();
@@ -229,33 +298,7 @@ const Home = ({ match, history, location }) => {
             });
             setData([...tableItem]);
 
-            // Create an object to store data for each problem type
-            const transformedData = {};
-
-            // Iterate through the API data and organize it by problem type
-            res.data.forEach(entry => {
-                const { problem, detectedDate } = entry;
-
-                if (!transformedData[problem]) {
-                    transformedData[problem] = {};
-                }
-
-                const formattedDate = moment(detectedDate).format('YYYY-MM-DD');
-                if (!transformedData[problem][formattedDate]) {
-                    transformedData[problem][formattedDate] = 0;
-                }
-
-                transformedData[problem][formattedDate] += 1; // Increment the count for the specific date and problem
-            });
-
-            // Convert the organized data into the desired format
-            const result = Object.keys(transformedData).map(problem => ({
-                name: problem,
-                type: 'line',
-                data: Object.keys(transformedData[problem]).map(date => [date, transformedData[problem][date]])
-            }));
-
-            setChartData([...result]);
+            await faultLineChartData(res.data);
 
             setTimeout(() => {
                 closeLoading();
@@ -493,11 +536,52 @@ const Home = ({ match, history, location }) => {
                 />
             </div>
             <div className={cx('history_eChart')}>
-                <div className={cx('chart')}>
-                    <UiLineChart title="故障類別" chartData={chartData} />
+                {/* 故障數量 卡片 */}
+                <div className={cx('chart', 'h_card_container')}>
+                    {chartData &&
+                        chartData.map((ele, index) => {
+                            return (
+                                <div
+                                    key={index}
+                                    className={cx(
+                                        'h_card',
+                                        ele.key == 0 ? 'Disconnected' : ele.key == 1 ? 'CT' : 'Litte_information'
+                                    )}
+                                >
+                                    <div className={cx('h_card_name')}>{ele.name}</div>
+                                    <div className={cx('h_card_num')}>
+                                        {ele.total}
+                                        <span>/次</span>
+                                    </div>
+                                    <div className={cx('h_card_icon')}>
+                                        {ele.key == 0 ? (
+                                            <ApiOutlined style={{ fontSize: '110px', color: '#fff' }} />
+                                        ) : ele.key == 1 ? (
+                                            <FallOutlined style={{ fontSize: '110px', color: '#fff' }} />
+                                        ) : (
+                                            <ReconciliationOutlined style={{ fontSize: '110px', color: '#fff' }} />
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
                 </div>
-                <div className={cx('chart')}>
-                    <UiLineChart title="故障類別" chartData={chartData} />
+
+                {/* 故障类别折线图 */}
+                <div className={cx('chart', 'fault_type')}>
+                    <div className={cx('chooseType')}>
+                        <button onClick={() => checkFaultType(0)}>
+                            <ApiOutlined style={{ fontSize: '16px', color: '#ff7c32' }} /> {''} 斷線
+                        </button>
+                        <button onClick={() => checkFaultType(1)}>
+                            <FallOutlined style={{ fontSize: '16px', color: '#ffcb01' }} /> {''} CT負值
+                        </button>
+                        <button onClick={() => checkFaultType(2)}>
+                            <ReconciliationOutlined style={{ fontSize: '16px', color: '#4bd0ce' }} /> {''} 資料過少
+                        </button>
+                    </div>
+                    {/* 折線圖 */}
+                    <UiLineChart title="故障類別" chartData={faultData} color={color} />
                 </div>
             </div>
             <div className={cx('history_table')}>

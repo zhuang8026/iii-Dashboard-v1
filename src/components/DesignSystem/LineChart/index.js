@@ -9,7 +9,7 @@ import classes from './style_module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
-const LineChart = ({ title = 'Line Chart', chartData = [] }) => {
+const LineChart = ({ title = 'Line Chart', chartData = [], color = ['#ff7c32', '#ffcb01', '#4bd0ce'] }) => {
     const [option, setOption] = useState({
         title: {
             text: title,
@@ -22,7 +22,7 @@ const LineChart = ({ title = 'Line Chart', chartData = [] }) => {
         tooltip: {
             trigger: 'axis'
         },
-        color: ['#ff7c32', '#ffcb01', '#4bd0ce'] /* 折線圖的颜色 */,
+        color: color /* 折線圖的颜色 */,
         legend: {
             data: ['斷線', '資料過少', 'CT負值']
             // orient: 'vertical', // 垂直排列
@@ -140,6 +140,7 @@ const LineChart = ({ title = 'Line Chart', chartData = [] }) => {
 
     useEffect(() => {
         option.series = chartData;
+        option.color = color;
         setOption(option);
         initChart();
     }, [chartData]);

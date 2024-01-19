@@ -16,8 +16,8 @@ import { ConfigProvider } from 'antd';
 
 // 默认语言为 en-US，如果你需要设置其他语言，推荐在入口文件全局设置 locale
 import moment from 'moment';
-import 'moment/locale/zh-cn';
-import locale from 'antd/es/locale/zh_CN';
+import 'moment/locale/zh-tw';
+import locale from 'antd/es/locale/zh_TW';
 
 import 'assets/scss/_all.scss';
 import 'assets/scss/style.datepicker.scss'; // framework: "react-datepicker": "^4.24.0"
