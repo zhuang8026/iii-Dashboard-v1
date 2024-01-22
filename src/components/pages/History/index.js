@@ -1,7 +1,7 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Input, InputNumber, Select, Tag, DatePicker, Popconfirm, Form, Table, Typography, Button } from 'antd';
-import { ApiOutlined, FallOutlined, ReconciliationOutlined } from '@ant-design/icons';
+import { ApiOutlined, FallOutlined, ReconciliationOutlined, ReloadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 // import locale from 'antd/es/date-picker/locale/zh_TW';
 
@@ -35,6 +35,14 @@ const Home = ({ match, history, location }) => {
     const [chartData, setChartData] = useState();
     const [faultData, setFaultData] = useState([]);
     const [color, setColor] = useState('ff7c32');
+    const [city, setCity] = useState([
+        { name: '台北市', num: 111 },
+        { name: '新北市', num: 76 },
+        { name: '桃園市', num: 5555 },
+        { name: '新竹縣', num: 88 },
+        { name: '台中市', num: 912 },
+        { name: '花蓮市', num: 65721 }
+    ]);
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
@@ -569,6 +577,7 @@ const Home = ({ match, history, location }) => {
 
                 {/* 故障类别折线图 */}
                 <div className={cx('chart', 'fault_type')}>
+                    {/* left: menu */}
                     <div className={cx('chooseType')}>
                         <button onClick={() => checkFaultType(0)}>
                             <ApiOutlined style={{ fontSize: '16px', color: '#ff7c32' }} /> {''} 斷線
@@ -580,13 +589,34 @@ const Home = ({ match, history, location }) => {
                             <ReconciliationOutlined style={{ fontSize: '16px', color: '#4bd0ce' }} /> {''} 資料過少
                         </button>
                     </div>
-                    {/* 折線圖 */}
+                    {/* right: 折線圖 */}
                     <UiLineChart title="故障類別" chartData={faultData} color={color} />
                 </div>
             </div>
             <div className={cx('history_table')}>
+                <h1 className={cx('table_title')}>歷史異常地區</h1>
+                {/* 台北市, 新北市, 桃園市, 新竹縣, 台中市, 花蓮市 */}
+                <div className={cx('table_body')}>
+                    {city.map((ele, index) => (
+                        <div className={cx('card', 'city')} key={index}>
+                            <h3>{ele.name}</h3>
+                            <div className={cx('num')}>
+                                {ele.num}
+                                <span>/次</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className={cx('history_table')}>
+                <h1 className={cx('table_title')}>歷史異常設備</h1>
+            </div>
+            <div className={cx('history_table')}>
                 <h1 className={cx('table_title')}>
-                    歷史異常紀錄 <span> | 最後一次更新 2024/01/09</span>
+                    歷史異常紀錄
+                    <span>
+                        | <ReloadOutlined /> 最後一次更新 2024/01/22
+                    </span>
                 </h1>
                 <Form form={form} component={false}>
                     <Table

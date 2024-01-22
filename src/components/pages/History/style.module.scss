@@ -110,6 +110,39 @@
                 color: $menu_color_2;
             }
         }
+        .table_body {
+            display: flex;
+            .card {
+                position: relative;
+                flex-grow: 1;
+                color: #fff;
+                background: $bg_color_bottom;
+                border-radius: 10px;
+                box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+                padding: 10px;
+                height: 125px;
+                font-size: 70px;
+                margin-right: 10px;
+                &:last-child {
+                    /* 最后一行的 border-bottom 设置为透明或与背景颜色相同 */
+                    margin-right: 0px;
+                }
+                h3 {
+                    position: absolute;
+                    top: 5px;
+                    left: 10px;
+                    font-size: 14px;
+                    border-bottom: 1px solid #fff;
+                    color: #fff;
+                }
+                .num {
+                    text-align: center;
+                    span {
+                        font-size: 20px;
+                    }
+                }
+            }
+        }
     }
 }
 
