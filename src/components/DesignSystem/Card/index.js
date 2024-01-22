@@ -8,7 +8,13 @@ import classes from './style.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
-const Card = ({ type = 'Table', title = 'TEST', content = [] }) => {
+const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
+    const handleClick = val => {
+        onClick({
+            title,
+            val
+        });
+    };
     return (
         <div className={cx('card', type == 'Table' ? 'table' : type == 'Compare' ? 'compare' : 'total')}>
             <div className={cx('inner')}>
@@ -17,7 +23,11 @@ const Card = ({ type = 'Table', title = 'TEST', content = [] }) => {
                     <div className={cx('cardContent', content.length > 3 && 'card-width-50')}>
                         {content.map((obj, index) => {
                             return (
-                                <div className={cx('cardRow', obj.status)} key={index}>
+                                <div
+                                    className={cx('cardRow', obj.status)}
+                                    key={index}
+                                    onClick={() => handleClick(obj.type)}
+                                >
                                     <p>{obj.type}</p>
                                     {obj.val}
                                 </div>
@@ -49,7 +59,7 @@ const Card = ({ type = 'Table', title = 'TEST', content = [] }) => {
                 ) : type == 'Total' ? (
                     <div className={cx('cardContent', 'totalContent')}>
                         <div className={cx('chart')}>
-                            <UiDoughnutNormalChart data={content}/>
+                            <UiDoughnutNormalChart data={content} />
                         </div>
                         <div className={cx('cardTotal')}>
                             <div className={cx('user')}>

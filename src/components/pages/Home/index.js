@@ -36,7 +36,10 @@ const Home = ({ match, history, location }) => {
     const [lastTime, setLastTime] = useState('');
     const [card, setCard] = useState([]);
     const [editingKey, setEditingKey] = useState('');
-    const fetchListener = useRef();
+
+    const [cardFilter, setCardFilter] = useState({ type: null, status: null });
+
+    // const fetchListener = useRef();
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
@@ -109,13 +112,43 @@ const Home = ({ match, history, location }) => {
     // close loading
     const closeLoading = () => closeAnimate();
 
+    // 開啟提視窗（400、500、ERROR win）
     const openMessage = (code, msg) => {
         openDialog({
             component: <Message code={code} msg={msg} closeMessage={closeMessage} />
         });
     };
-
+    // 關閉提視窗（400、500、ERROR win）
     const closeMessage = () => closeDialog();
+
+    // 卡片狀態篩選 改變 table 資料
+    const handleStatusClick = obj => {
+        const { title, val } = obj;
+        // 根据标题设置 type 或 status
+        const newFilter = { ...cardFilter, [title === '故障類別' ? 'type' : 'status']: val };
+
+        // 将新的 filter 存储在 state 中
+        setCardFilter(newFilter);
+        console.log(newFilter);
+        // 從 localStorage 中獲取資料
+        const localStorageData = localStorage.getItem('currentData');
+        // 將 JSON 字串轉換為物件
+        const currentData = JSON.parse(localStorageData);
+        // 在這裡使用 filter 函數來篩選符合條件的資料
+        // 在這裡使用 filter 函數來篩選符合條件的資料
+        const filterData = currentData.filter(item => {
+            // 如果 newFilter.type 不是 null，则检查 item.problem 是否匹配 newFilter.type
+            const matchType = newFilter.type !== null ? item.problem === newFilter.type : true;
+
+            // 如果 newFilter.status 不是 null，则检查 item.status 是否匹配 newFilter.status
+            const matchStatus = newFilter.status !== null ? item.status === newFilter.status : true;
+
+            // 返回同时满足两个条件的数据
+            return matchType && matchStatus;
+        });
+        // 在這裡更新表格資料
+        setData(filterData);
+    };
 
     // get API 001
     const GET001API = async () => {
@@ -138,6 +171,8 @@ const Home = ({ match, history, location }) => {
                 };
             });
             setData([...tableItem]);
+            // 將資料轉換為 JSON 字串並存儲在 localStorage 中
+            localStorage.setItem('currentData', JSON.stringify(tableItem));
 
             // 使用 reduce 函數對 problem 進行加總
             const problemSummary = res.data.reduce((summary, item) => {
@@ -312,7 +347,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '更新時間',
             dataIndex: 'detectedDate',
-            width: '14%',
+            width: '13%',
             editable: false, // 編輯控制
             sorter: (a, b) => {
                 // 使用 Moment.js 解析日期字符串
@@ -329,7 +364,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '故障類別',
             dataIndex: 'problem',
-            width: '10%',
+            width: '11%',
             editable: false, // 編輯控制
             filters: [
                 { text: '斷線', value: '斷線' },
@@ -343,7 +378,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '處理狀態',
             dataIndex: 'status',
-            width: '10%',
+            width: '11%',
             editable: true, // 編輯控制
             filters: [
                 { text: '已完成', value: '已完成' },
@@ -360,9 +395,6 @@ const Home = ({ match, history, location }) => {
                 return (
                     <span>
                         {[tags].map(tag => {
-                            {
-                                /* let color = tag.length > 5 ? 'red' : 'green'; */
-                            }
                             let color = tag == '已完成' ? 'green' : tag == '未通知' ? 'red' : 'orange';
                             if (tag === 'loser') {
                                 color = 'volcano';
@@ -380,7 +412,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '處理時間',
             dataIndex: 'statusUpdateTime',
-            width: '14%',
+            width: '13%',
             editable: true, // 編輯控制
             sorter: (a, b) => {
                 const preTime = moment(a.statusUpdateTime, 'YYYY/MM/DD HH:mm');
@@ -464,9 +496,12 @@ const Home = ({ match, history, location }) => {
         // version 2
         await GET002API();
     };
+
+    // callfull API
     useEffect(() => {
         asyncAllAPI();
     }, []);
+
     return (
         <>
             <h1 className={cx('title')}>
@@ -475,7 +510,13 @@ const Home = ({ match, history, location }) => {
             <div className={cx('top_card')}>
                 {card.length > 0
                     ? card.map((item, index) => (
-                          <UiCard type={item.type} title={item.title} content={item.content} key={index} />
+                          <UiCard
+                              type={item.type}
+                              title={item.title}
+                              content={item.content}
+                              key={index}
+                              onClick={val => handleStatusClick(val)}
+                          />
                       ))
                     : ''}
             </div>

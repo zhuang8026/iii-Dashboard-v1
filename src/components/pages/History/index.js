@@ -43,6 +43,14 @@ const Home = ({ match, history, location }) => {
         { name: '台中市', num: 912 },
         { name: '花蓮市', num: 65721 }
     ]);
+    const [device, setDevice] = useState([
+        { name: 'IN10----344CA40174C5', num: 111 },
+        { name: 'II09000D6F0005FE596E', num: 76 },
+        { name: 'IN10----344CA401ED01', num: 5555 },
+        { name: 'II09000D6F0005B8CEC6', num: 88 },
+        { name: '0C61CFCE5050', num: 912 },
+        { name: 'II09000D6F0005FE5A3B', num: 65721 }
+    ]);
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
@@ -610,6 +618,17 @@ const Home = ({ match, history, location }) => {
             </div>
             <div className={cx('history_table')}>
                 <h1 className={cx('table_title')}>歷史異常設備</h1>
+                <div className={cx('table_body')}>
+                    {device.map((ele, index) => (
+                        <div className={cx('card', 'device')} key={index}>
+                            <h3>{ele.name}</h3>
+                            <div className={cx('num')}>
+                                {ele.num}
+                                <span>/次</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
             <div className={cx('history_table')}>
                 <h1 className={cx('table_title')}>

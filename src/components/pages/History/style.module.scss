@@ -112,11 +112,17 @@
         }
         .table_body {
             display: flex;
+            .city {
+                flex-grow: 1;
+                background: $bg_color_bottom;
+            }
+            .device {
+                flex-grow: 1;
+                background: $iii_color;
+            }
             .card {
                 position: relative;
-                flex-grow: 1;
                 color: #fff;
-                background: $bg_color_bottom;
                 border-radius: 10px;
                 box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
                 padding: 10px;
