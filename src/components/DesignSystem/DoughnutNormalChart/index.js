@@ -20,7 +20,7 @@ const DoughnutNormalChart = ({ data }) => {
             top: '5%',
             left: 'center'
         },
-        color: ['#ff7c32', '#ffcb01', '#4bd0ce'] /* 折線圖的颜色 */,
+        color: ['#ff7c32', '#ffcb01', '#4bd0ce', '#2EA9DF', '#86C166', '#F17C67'] /* 折線圖的颜色 */,
         series: [
             {
                 name: '',
@@ -43,7 +43,7 @@ const DoughnutNormalChart = ({ data }) => {
                 },
                 data: [
                     { value: Number(data[0].val), name: `離線` },
-                    { value: Number(data[1].val), name: '連線' },
+                    { value: Number(data[1].val), name: '連線' }
                     // { value: Number(data[0].val) + Number(data[1].val), name: '總計' }
                 ]
             }

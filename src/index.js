@@ -22,6 +22,7 @@ import locale from 'antd/es/locale/zh_TW';
 import 'assets/scss/_all.scss';
 import 'assets/scss/style.datepicker.scss'; // framework: "react-datepicker": "^4.24.0"
 import 'antd/dist/antd.css'; // or "antd": "^4.7.2"
+import 'assets/scss/_ant.style.scss'; // 客製化 antd css
 
 ReactDOM.render(
     <React.StrictMode>

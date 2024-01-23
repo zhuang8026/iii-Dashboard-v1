@@ -44,24 +44,35 @@
             }
             .cardCompare {
                 display: flex;
-                justify-content: center;
-                align-items: flex-start;
+                // justify-content: center;
+                // align-items: flex-start;
                 flex-direction: column;
-                font-size: 37px;
+                // font-size: 37px;
                 line-height: normal;
+                height: 100px;
+                overflow-y: auto;
+                overflow-x: hidden;
+
                 span {
                     font-size: 14px;
+                    p {
+                        margin: 0;
+                        padding: 0;
+                        display: inline;
+                        font-size: 18px;
+                    }
                 }
-                .line {
-                    width: 100%;
-                    // background: $menu_color_1;
+
+                .user {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    padding: 4.5px 10px 4.5px 0;
+                    margin: 0 10px 0 0;
                     border-bottom: 1px dashed $menu_color_1;
-                    height: 1px;
-                }
-                .all_user {
-                    font-size: 24px;
                 }
             }
+
             .dangerous {
                 position: relative;
                 padding-left: 15px;
@@ -107,6 +118,23 @@
                     // animation: expand 2s forwards; /* 動畫2秒，最後保持最終狀態 */
                 }
             }
+
+            // 滾動條
+            ::-webkit-scrollbar {
+                background: $menu_color_2 !important; // srcoll bar background
+                width: 5px;
+                height: 5px;
+                border-radius: 5px;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                border-radius: 5px;
+                background-color: $scroll_bar;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: $table_color;
+            }
         }
         .totalContent {
             display: flex;
@@ -117,6 +145,7 @@
             .cardTotal {
                 width: 65%;
                 display: flex;
+                flex-wrap: wrap;
                 .user {
                     width: 33%;
                     .type {

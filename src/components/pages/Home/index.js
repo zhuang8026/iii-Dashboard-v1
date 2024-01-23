@@ -37,7 +37,7 @@ const Home = ({ match, history, location }) => {
     const [card, setCard] = useState([]);
     const [editingKey, setEditingKey] = useState('');
 
-    const [cardFilter, setCardFilter] = useState({ type: null, status: null });
+    const [cardFilter, setCardFilter] = useState({ type: [], status: [] });
 
     // const fetchListener = useRef();
 
@@ -123,29 +123,40 @@ const Home = ({ match, history, location }) => {
 
     // 卡片狀態篩選 改變 table 資料
     const handleStatusClick = obj => {
-        const { title, val } = obj;
+        const { title, values } = obj;
+
         // 根据标题设置 type 或 status
-        const newFilter = { ...cardFilter, [title === '故障類別' ? 'type' : 'status']: val };
+        const newFilter = { ...cardFilter };
+
+        if (title === '故障類別') {
+            // 如果是 '故障類別'，将 val 包装成数组存储
+            newFilter.type = values;
+        } else {
+            // 如果是 '處理狀態'，将 val 包装成数组存储
+            newFilter.status = values;
+        }
 
         // 将新的 filter 存储在 state 中
         setCardFilter(newFilter);
-        console.log(newFilter);
+
         // 從 localStorage 中獲取資料
         const localStorageData = localStorage.getItem('currentData');
+
         // 將 JSON 字串轉換為物件
         const currentData = JSON.parse(localStorageData);
-        // 在這裡使用 filter 函數來篩選符合條件的資料
+
         // 在這裡使用 filter 函數來篩選符合條件的資料
         const filterData = currentData.filter(item => {
-            // 如果 newFilter.type 不是 null，则检查 item.problem 是否匹配 newFilter.type
-            const matchType = newFilter.type !== null ? item.problem === newFilter.type : true;
+            // 如果 newFilter.type 不是空数组，则检查 item.problem 是否包含在 newFilter.type 中
+            const matchType = newFilter.type.length > 0 ? newFilter.type.includes(item.problem) : true;
 
-            // 如果 newFilter.status 不是 null，则检查 item.status 是否匹配 newFilter.status
-            const matchStatus = newFilter.status !== null ? item.status === newFilter.status : true;
+            // 如果 newFilter.status 不是空数组，则检查 item.status 是否包含在 newFilter.status 中
+            const matchStatus = newFilter.status.length > 0 ? newFilter.status.includes(item.status) : true;
 
             // 返回同时满足两个条件的数据
             return matchType && matchStatus;
         });
+
         // 在這裡更新表格資料
         setData(filterData);
     };

@@ -1,0 +1,15 @@
+@import 'assets/scss/_variables';
+
+.ant-table-wrapper {
+    width: 100%;
+}
+
+.ant-checkbox-wrapper {
+    span {
+        color: #fff;
+    }
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: $bg_color_bottom;
+    border-color: $bg_color_bottom;
+}
