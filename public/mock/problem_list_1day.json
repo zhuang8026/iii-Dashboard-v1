@@ -11,7 +11,9 @@
             "problem": "資料過少",
             "status": "已通知",
             "statusUpdateTime": "",
-            "note": "用戶已搬家"
+            "note": "用戶已搬家",
+            "deviceId": "0081F9250CB4",
+            "deviceSource": "3Egreen"
         }
     ]
 }

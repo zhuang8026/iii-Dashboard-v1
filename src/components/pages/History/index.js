@@ -317,13 +317,35 @@ const Home = ({ match, history, location }) => {
                     problem: val.problem,
                     status: val.status,
                     statusUpdateTime: updateTime,
-                    note: val.note
+                    note: val.note,
+                    deviceId: val.deviceId,
+                    deviceSource: val.deviceSource,
+                    apartment: '幸福社區',
+                    area: '台北市'
                 };
             });
             setData([...tableItem]);
 
             await faultLineChartData(res.data);
 
+            // 提取所有 "deviceSource" 的值
+            var deviceSources = res.data.map(user => user.deviceSource);
+
+            // 統計每個 "deviceSource" 的數量
+            var deviceSourceCounts = deviceSources.reduce((counts, source) => {
+                counts[source] = (counts[source] || 0) + 1;
+                return counts;
+            }, {});
+
+            // 將統計結果轉換為所需的格式
+            var result = Object.keys(deviceSourceCounts).map(key => ({
+                name: key,
+                num: deviceSourceCounts[key]
+            }));
+            // 打印結果
+            console.log(result);
+            setDevice([...result])
+            // { name: 'insynerger_1', num: 0 },
             setTimeout(() => {
                 closeLoading();
             }, 1000);
@@ -361,21 +383,21 @@ const Home = ({ match, history, location }) => {
         {
             title: '姓名',
             dataIndex: 'name',
-            width: '8%',
-            editable: false, // 編輯控制
+            width: '6%',
+            editable: true, // 編輯控制
             ...TableSearch('name').getColumnSearchProps // 模糊搜索
         },
         {
             title: '帳號',
             dataIndex: 'userId',
-            width: '16%',
-            editable: false, // 編輯控制
+            width: '13%',
+            editable: true, // 編輯控制
             ...TableSearch('userId').getColumnSearchProps // 模糊搜索
         },
         {
             title: '更新時間',
             dataIndex: 'detectedDate',
-            width: '14%',
+            width: '10%',
             editable: false, // 編輯控制
             sorter: (a, b) => {
                 // 使用 Moment.js 解析日期字符串
@@ -390,9 +412,47 @@ const Home = ({ match, history, location }) => {
             }
         },
         {
+            title: '地區',
+            dataIndex: 'area',
+            width: '6%',
+            editable: false, // 編輯控制
+            filters: [
+                { text: '台北市', value: '台北市' },
+                { text: '新北市', value: '新北市' },
+                { text: '桃園市', value: '桃園市' },
+                { text: '新竹縣', value: '新竹縣' },
+                { text: '台中市', value: '台中市' },
+                { text: '花蓮市', value: '花蓮市' }
+            ],
+            onFilter: (value, record) => record.area.startsWith(value)
+        },
+        {
+            title: '社區',
+            dataIndex: 'apartment',
+            width: '8%',
+            editable: true, // 編輯控制
+            ...TableSearch('apartment').getColumnSearchProps // 模糊搜索
+        },
+        Table.EXPAND_COLUMN,
+        {
+            title: '廠牌',
+            dataIndex: 'deviceSource',
+            width: '8%',
+            editable: false, // 編輯控制
+            filters: [
+                { text: 'insynerger_1', value: 'insynerger_1' },
+                { text: 'insynerger_2', value: 'insynerger_2' },
+                { text: 'insynerger_3', value: 'insynerger_3' },
+                { text: '3Egreen', value: '3Egreen' }
+            ],
+            // filterMode: 'tree',
+            // filterSearch: true,
+            onFilter: (value, record) => record.deviceSource.startsWith(value)
+        },
+        {
             title: '故障類別',
             dataIndex: 'problem',
-            width: '10%',
+            width: '8%',
             editable: false, // 編輯控制
             filters: [
                 { text: '斷線', value: '斷線' },
@@ -406,7 +466,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '處理狀態',
             dataIndex: 'status',
-            width: '10%',
+            width: '8%',
             editable: true, // 編輯控制
             filters: [
                 { text: '已完成', value: '已完成' },
@@ -423,9 +483,6 @@ const Home = ({ match, history, location }) => {
                 return (
                     <span>
                         {[tags].map(tag => {
-                            {
-                                /* let color = tag.length > 5 ? 'red' : 'green'; */
-                            }
                             let color = tag == '已完成' ? 'green' : tag == '未通知' ? 'red' : 'orange';
                             if (tag === 'loser') {
                                 color = 'volcano';
@@ -443,7 +500,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '處理時間',
             dataIndex: 'statusUpdateTime',
-            width: '14%',
+            width: '10%',
             editable: true, // 編輯控制
             sorter: (a, b) => {
                 const preTime = moment(a.statusUpdateTime, 'YYYY/MM/DD HH:mm');
@@ -459,14 +516,14 @@ const Home = ({ match, history, location }) => {
         {
             title: '備註',
             dataIndex: 'note',
-            width: '12%',
+            width: '9%',
             editable: true, // 編輯控制
             ...TableSearch('note').getColumnSearchProps // 模糊搜索
         },
         {
             title: '編輯',
             dataIndex: 'operation',
-            width: '12%',
+            width: '10%',
             render: (_, record) => {
                 const editable = isEditing(record);
                 return editable ? (
@@ -661,6 +718,19 @@ const Home = ({ match, history, location }) => {
                             position: ['none', 'bottomLeft'],
                             defaultPageSize: 10, // 默认每页显示的数量
                             onChange: cancel
+                        }}
+                        expandable={{
+                            expandedRowRender: record => {
+                                return (
+                                    <p
+                                        style={{
+                                            margin: 0
+                                        }}
+                                    >
+                                        Device ID - {record.deviceId}
+                                    </p>
+                                );
+                            }
                         }}
                         onRow={record => {
                             return {

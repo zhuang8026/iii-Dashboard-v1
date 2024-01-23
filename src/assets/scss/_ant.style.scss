@@ -13,3 +13,8 @@
     background-color: $bg_color_bottom;
     border-color: $bg_color_bottom;
 }
+
+.ant-checkbox-inner {
+    border-radius: 50% !important;
+    border: 1px solid transparent;
+}

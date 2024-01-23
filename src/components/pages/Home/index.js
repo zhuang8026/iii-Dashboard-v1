@@ -599,7 +599,7 @@ const Home = ({ match, history, location }) => {
                                             margin: 0
                                         }}
                                     >
-                                        Device ID "{record.deviceId}"
+                                        Device ID - {record.deviceId}
                                     </p>
                                 );
                             }

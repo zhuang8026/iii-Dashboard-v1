@@ -11,7 +11,9 @@
             "problem": "資料過少",
             "status": "已通知",
             "statusUpdateTime": "",
-            "note": "用戶已搬家"
+            "note": "用戶已搬家",
+            "deviceId": "II09000D6F0005FE6073",
+            "deviceSource": "insynerger_1"
         },
         {
             "serialNumber": 4,
@@ -22,7 +24,9 @@
             "problem": "CT負值",
             "status": "未通知",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
-            "note": null
+            "note": null,
+            "deviceId": "II09000D6F0005FE6073",
+            "deviceSource": "3Egreen"
         },
         {
             "serialNumber": 5,
@@ -33,7 +37,9 @@
             "problem": "資料過少",
             "status": "已完成",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
-            "note": null
+            "note": null,
+            "deviceId": "II09000D6F0005FE6073",
+            "deviceSource": "insynerger_1"
         },
         {
             "serialNumber": 6,
@@ -44,7 +50,9 @@
             "problem": "斷線",
             "status": "等待維護",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
-            "note": "用戶已搬家"
+            "note": "用戶已搬家",
+            "deviceId": "II09000D6F0005FE6073",
+            "deviceSource": "insynerger_1"
         },
         {
             "serialNumber": 3,
@@ -55,7 +63,9 @@
             "problem": "斷線",
             "status": "等待維護",
             "statusUpdateTime": "2023-12-14T10:30:00.000+08:00",
-            "note": "20231218"
+            "note": "20231218",
+            "deviceId": "II09000D6F0005FE6073",
+            "deviceSource": "insynerger_1"
         }
     ]
 }
