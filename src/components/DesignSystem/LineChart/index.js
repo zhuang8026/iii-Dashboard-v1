@@ -9,7 +9,7 @@ import classes from './style_module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
-const LineChart = ({ title = 'Line Chart', chartData = [], color = ['#ff7c32', '#ffcb01', '#4bd0ce'] }) => {
+const LineChart = ({ title = 'Line Chart', chartData = [], color = ['#ff7c32', '#ffcb01', '#4bd0ce'], onclick }) => {
     const [option, setOption] = useState({
         title: {
             text: title,
@@ -118,10 +118,6 @@ const LineChart = ({ title = 'Line Chart', chartData = [], color = ['#ff7c32', '
         option && chartLine.setOption(option);
     };
 
-    // useEffect(() => {
-    //     initChart();
-    // }, []);
-
     useEffect(() => {
         const myChart = echarts.init(chartDOM.current);
         myChart.setOption(option);
@@ -136,6 +132,16 @@ const LineChart = ({ title = 'Line Chart', chartData = [], color = ['#ff7c32', '
             window.removeEventListener('resize', handleResize);
             myChart.dispose();
         };
+    }, []);
+
+    useEffect(() => {
+        let chartLine = echarts.init(chartDOM.current);
+        // 監聽點擊事件
+        chartLine.on('click', params => {
+            // params 包含了點擊的相關信息，例如數據索引、數據值等
+            // 在這裡可以獲取點擊的參數，並進行相應的處理
+            onclick(params);
+        });
     }, []);
 
     useEffect(() => {

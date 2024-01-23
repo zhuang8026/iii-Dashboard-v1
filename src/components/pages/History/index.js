@@ -36,20 +36,18 @@ const Home = ({ match, history, location }) => {
     const [faultData, setFaultData] = useState([]);
     const [color, setColor] = useState('ff7c32');
     const [city, setCity] = useState([
-        { name: '台北市', num: 111 },
-        { name: '新北市', num: 76 },
-        { name: '桃園市', num: 5555 },
-        { name: '新竹縣', num: 88 },
-        { name: '台中市', num: 912 },
-        { name: '花蓮市', num: 65721 }
+        { name: '台北市', num: 0 },
+        { name: '新北市', num: 1 },
+        { name: '桃園市', num: 2 },
+        { name: '新竹縣', num: 3 },
+        { name: '台中市', num: 4 },
+        { name: '花蓮市', num: 5 }
     ]);
     const [device, setDevice] = useState([
-        { name: 'IN10----344CA40174C5', num: 111 },
-        { name: 'II09000D6F0005FE596E', num: 76 },
-        { name: 'IN10----344CA401ED01', num: 5555 },
-        { name: 'II09000D6F0005B8CEC6', num: 88 },
-        { name: '0C61CFCE5050', num: 912 },
-        { name: 'II09000D6F0005FE5A3B', num: 65721 }
+        { name: 'insynerger_1', num: 0 },
+        { name: 'insynerger_2', num: 1 },
+        { name: 'insynerger_3', num: 2 },
+        { name: '3Egreen', num: 3 }
     ]);
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
@@ -155,7 +153,7 @@ const Home = ({ match, history, location }) => {
 
     const handleRangePickerChange = (value, dateString) => {
         // dateString 是格式化後的時間字符串
-        // console.log(value, dateString);
+        console.log(value, dateString);
 
         // 如果您需要將日期轉換成 "YYYY/MM/DD hh:mm:ss" 格式
         // const formattedDates = dateString.map(date => moment(date).format('YYYY/MM/DD HH:mm:ss'));
@@ -226,6 +224,17 @@ const Home = ({ match, history, location }) => {
         }
     };
 
+    const getLineChartTimeFunc = dates => {
+        let date = dates.data[0];
+        let unixStart = moment(date, 'YYYY/MM/DD HH:mm:ss').valueOf();
+        let unixEnd = moment(date, 'YYYY/MM/DD HH:mm:ss').endOf('day').valueOf();
+
+        setValue([moment.unix(unixStart / 1000), moment.unix(unixEnd / 1000)]);
+        setDates([moment.unix(unixStart / 1000), moment.unix(unixEnd / 1000)]);
+
+        GETHISTORY001API(0, unixStart, unixEnd);
+    };
+
     // 取得 故障類別全部資料
     const faultLineChartData = async data => {
         // Create an object to define the sorting order of each problem type
@@ -281,7 +290,6 @@ const Home = ({ match, history, location }) => {
         setChartData([...result]);
         setFaultData([result[0]]); // 默認顯示斷線
         // setColor('#ff7c32'); // 默認顯示斷線
-        console.log('chartData:', result);
     };
 
     // 選擇故障類別功能
@@ -598,11 +606,11 @@ const Home = ({ match, history, location }) => {
                         </button>
                     </div>
                     {/* right: 折線圖 */}
-                    <UiLineChart title="故障類別" chartData={faultData} color={color} />
+                    <UiLineChart title="故障類別" chartData={faultData} color={color} onclick={getLineChartTimeFunc} />
                 </div>
             </div>
             <div className={cx('history_table')}>
-                <h1 className={cx('table_title')}>歷史異常地區</h1>
+                <h1 className={cx('table_title')}>地區異常次數</h1>
                 {/* 台北市, 新北市, 桃園市, 新竹縣, 台中市, 花蓮市 */}
                 <div className={cx('table_body')}>
                     {city.map((ele, index) => (
@@ -610,21 +618,21 @@ const Home = ({ match, history, location }) => {
                             <h3>{ele.name}</h3>
                             <div className={cx('num')}>
                                 {ele.num}
-                                <span>/次</span>
+                                {/* <span>/次</span> */}
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
             <div className={cx('history_table')}>
-                <h1 className={cx('table_title')}>歷史異常設備</h1>
+                <h1 className={cx('table_title')}>設備異常次數</h1>
                 <div className={cx('table_body')}>
                     {device.map((ele, index) => (
                         <div className={cx('card', 'device')} key={index}>
                             <h3>{ele.name}</h3>
                             <div className={cx('num')}>
                                 {ele.num}
-                                <span>/次</span>
+                                {/* <span>/次</span> */}
                             </div>
                         </div>
                     ))}

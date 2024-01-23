@@ -74,19 +74,19 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
                             <div className={cx('user')}>
                                 <span>已拆除</span>
                                 <span>
-                                    <p>9999</p> /戶
+                                    <p>{content[1].val}</p> /戶
                                 </span>
                             </div>
                             <div className={cx('user')}>
                                 <span>未開通</span>
                                 <span>
-                                    <p>9999</p> /戶
+                                    <p>{content[1].val}</p> /戶
                                 </span>
                             </div>
                             <div className={cx('user')}>
                                 <span>不接受維護</span>
                                 <span>
-                                    <p>9999</p> /戶
+                                    <p>{content[1].val}</p> /戶
                                 </span>
                             </div>
                         </div>

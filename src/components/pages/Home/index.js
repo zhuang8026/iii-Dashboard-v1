@@ -178,7 +178,11 @@ const Home = ({ match, history, location }) => {
                     problem: val.problem,
                     status: val.status,
                     statusUpdateTime: updateTime,
-                    note: val.note
+                    note: val.note,
+                    deviceId: 'IN10----344CA40174C5',
+                    deviceSource: "insynerger_3",
+                    apartment:'幸福社區',
+                    area: '台北市',
                 };
             });
             setData([...tableItem]);
@@ -344,21 +348,21 @@ const Home = ({ match, history, location }) => {
         {
             title: '姓名',
             dataIndex: 'name',
-            width: '8%',
+            width: '6%',
             editable: true, // 編輯控制
             ...TableSearch('name').getColumnSearchProps // 模糊搜索
         },
         {
             title: '帳號',
             dataIndex: 'userId',
-            width: '16%',
+            width: '13%',
             editable: true, // 編輯控制
             ...TableSearch('userId').getColumnSearchProps // 模糊搜索
         },
         {
             title: '更新時間',
             dataIndex: 'detectedDate',
-            width: '13%',
+            width: '10%',
             editable: false, // 編輯控制
             sorter: (a, b) => {
                 // 使用 Moment.js 解析日期字符串
@@ -373,9 +377,46 @@ const Home = ({ match, history, location }) => {
             }
         },
         {
+            title: '地區',
+            dataIndex: 'area',
+            width: '6%',
+            editable: false, // 編輯控制
+            filters: [
+                { text: '台北市', value: '台北市' },
+                { text: '新北市', value: '新北市' },
+                { text: '桃園市', value: '桃園市' },
+                { text: '新竹縣', value: '新竹縣' },
+                { text: '台中市', value: '台中市' },
+                { text: '花蓮市', value: '花蓮市' }
+            ],
+            onFilter: (value, record) => record.area.startsWith(value)
+        },
+        {
+            title: '社區',
+            dataIndex: 'apartment',
+            width: '8%',
+            editable: true, // 編輯控制
+            ...TableSearch('apartment').getColumnSearchProps // 模糊搜索
+        },
+        Table.EXPAND_COLUMN,
+        {
+            title: '廠牌',
+            dataIndex: 'deviceSource',
+            width: '8%',
+            editable: false, // 編輯控制
+            filters: [
+                { text: 'insynerger_3', value: 'insynerger_3' },
+                { text: 'insynerger_2', value: 'insynerger_2' },
+                { text: 'insynerger_1', value: 'insynerger_1' }
+            ],
+            // filterMode: 'tree',
+            // filterSearch: true,
+            onFilter: (value, record) => record.deviceSource.startsWith(value)
+        },
+        {
             title: '故障類別',
             dataIndex: 'problem',
-            width: '11%',
+            width: '8%',
             editable: false, // 編輯控制
             filters: [
                 { text: '斷線', value: '斷線' },
@@ -389,7 +430,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '處理狀態',
             dataIndex: 'status',
-            width: '11%',
+            width: '8%',
             editable: true, // 編輯控制
             filters: [
                 { text: '已完成', value: '已完成' },
@@ -423,7 +464,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '處理時間',
             dataIndex: 'statusUpdateTime',
-            width: '13%',
+            width: '10%',
             editable: true, // 編輯控制
             sorter: (a, b) => {
                 const preTime = moment(a.statusUpdateTime, 'YYYY/MM/DD HH:mm');
@@ -439,14 +480,14 @@ const Home = ({ match, history, location }) => {
         {
             title: '備註',
             dataIndex: 'note',
-            width: '12%',
+            width: '9%',
             editable: true, // 編輯控制
             ...TableSearch('note').getColumnSearchProps // 模糊搜索
         },
         {
             title: '編輯',
             dataIndex: 'operation',
-            width: '12%',
+            width: '10%',
             render: (_, record) => {
                 const editable = isEditing(record);
                 return editable ? (
@@ -521,14 +562,14 @@ const Home = ({ match, history, location }) => {
             <div className={cx('top_card')}>
                 {card.length > 0
                     ? card.map((item, index) => (
-                          <UiCard
-                              type={item.type}
-                              title={item.title}
-                              content={item.content}
-                              key={index}
-                              onClick={val => handleStatusClick(val)}
-                          />
-                      ))
+                            <UiCard
+                                type={item.type}
+                                title={item.title}
+                                content={item.content}
+                                key={index}
+                                onClick={val => handleStatusClick(val)}
+                            />
+                        ))
                     : ''}
             </div>
             <div className={cx('home')}>
@@ -540,7 +581,7 @@ const Home = ({ match, history, location }) => {
                                 cell: EditableCell
                             }
                         }}
-                        bordered
+                        bordered={true} // table 边框  k控制
                         dataSource={data}
                         columns={mergedColumns}
                         rowClassName="editable-row"
@@ -549,6 +590,19 @@ const Home = ({ match, history, location }) => {
                             position: ['none', 'bottomLeft'],
                             defaultPageSize: 10, // 默认每页显示的数量
                             onChange: cancel
+                        }}
+                        expandable={{
+                            expandedRowRender: record => {
+                                return (
+                                    <p
+                                        style={{
+                                            margin: 0
+                                        }}
+                                    >
+                                        Device ID "{record.deviceId}"
+                                    </p>
+                                );
+                            }
                         }}
                         onRow={record => {
                             return {

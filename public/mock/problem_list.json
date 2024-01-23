@@ -11,7 +11,7 @@
             "problem": "資料過少",
             "status": "已通知",
             "statusUpdateTime": "",
-            "note": "通知用戶少開冰箱"
+            "note": "用戶已搬家"
         },
         {
             "serialNumber": 4,
@@ -44,7 +44,7 @@
             "problem": "斷線",
             "status": "等待維護",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
-            "note": "通知用戶少開冰箱"
+            "note": "用戶已搬家"
         },
         {
             "serialNumber": 3,
@@ -66,7 +66,7 @@
             "problem": "CT負值",
             "status": "未通知",
             "statusUpdateTime": "2023-12-07T00:00:00.000+08:00",
-            "note": "通知用戶少開冰箱"
+            "note": "用戶已搬家"
         },
         {
             "serialNumber": 7,
@@ -110,7 +110,7 @@
             "problem": "斷線",
             "status": "不接受維護",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
-            "note": "通知用戶少開冰箱"
+            "note": "用戶已搬家"
         },
         {
             "serialNumber": 11,
@@ -132,7 +132,7 @@
             "problem": "CT負值",
             "status": "未通知",
             "statusUpdateTime": "2023-12-18T00:00:00.000+08:00",
-            "note": "通知用戶少開冰箱"
+            "note": "用戶已搬家"
         },
         {
             "serialNumber": 12,
@@ -143,7 +143,7 @@
             "problem": "CT負值",
             "status": "未通知",
             "statusUpdateTime": "2023-12-18T00:00:00.000+08:00",
-            "note": "通知用戶少開冰箱"
+            "note": "用戶已搬家"
         }
     ]
 }
