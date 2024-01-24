@@ -18,3 +18,9 @@
     border-radius: 50% !important;
     border: 1px solid $iii_color;
 }
+
+// Device ID 表格欄位內容
+th.ant-table-row-expand-icon-cell::after {
+    content: 'ID';
+    font-weight: bold;
+}

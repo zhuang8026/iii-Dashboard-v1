@@ -114,7 +114,18 @@
             display: flex;
             .city {
                 flex-grow: 1;
-                background: $bg_color_bottom;
+                // background: $bg_color_bottom;
+                background: url('../../../assets/images/card_bg.svg') center center no-repeat;
+                img {
+                    position: absolute;
+                    top: -10px;
+                    right: -49px;
+                    width: 150px;
+                    opacity: 0.2;
+                    // border-radius: 50%;
+                    // border: 4px solid $bg_color_bottom;
+                    padding: 5px;
+                }
             }
             .device {
                 flex-grow: 1;
@@ -129,6 +140,7 @@
                 height: 125px;
                 font-size: 70px;
                 margin-right: 10px;
+                overflow: hidden;
                 &:last-child {
                     /* 最后一行的 border-bottom 设置为透明或与背景颜色相同 */
                     margin-right: 0px;

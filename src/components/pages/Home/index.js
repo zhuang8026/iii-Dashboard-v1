@@ -114,7 +114,7 @@ const Home = ({ match, history, location }) => {
     const closeLoading = () => closeAnimate();
 
     // 開啟提視窗（400、500、ERROR win）
-    const openNILMPopup = (data) => {
+    const openNILMPopup = data => {
         openDialog({
             component: <NILMPopup data={data} closeMessage={closeMessage} />
         });
@@ -169,6 +169,91 @@ const Home = ({ match, history, location }) => {
         setData(filterData);
     };
 
+    // 卡片所有狀態
+    const getCardStatus = (apiData) => {
+        // 使用 reduce 函數對 problem 進行加總
+        const problemSummary = apiData.reduce((summary, item) => {
+            const { problem } = item;
+            // 如果 problem 已經存在於加總中，則增加其數量；否則，初始化為 1
+            summary[problem] = (summary[problem] || 0) + 1;
+            return summary;
+        }, {});
+
+        // 將加總結果轉換為指定格式的陣列
+        const resultProblem = Object.entries(problemSummary).map(([type, val]) => ({
+            type,
+            val
+        }));
+
+        // 使用 reduce 函數對 status 進行加總
+        const statusSummary = apiData.reduce((summary, item) => {
+            const { status } = item;
+            // 如果 status 已經存在於加總中，則增加其數量；否則，初始化為 1
+            summary[status] = (summary[status] || 0) + 1;
+            return summary;
+        }, {});
+
+        // 將加總結果轉換為指定格式的陣列
+        const resultStatus = Object.entries(statusSummary)
+            .map(([type, val]) => {
+                let status;
+                switch (type) {
+                    case '已完成':
+                        status = 'safe';
+                        break;
+                    case '已通知':
+                    case '已拆除':
+                    case '等待維護':
+                    case '不接受維護':
+                        status = 'warning';
+                        break;
+                    case '未通知':
+                        status = 'dangerous';
+                        break;
+                }
+                return {
+                    type,
+                    val,
+                    status
+                };
+            })
+            .sort((a, b) => {
+                // 自訂排序邏輯，'已完成'排第一，'未通知'排第二，其餘按照字母順序排序
+                if (a.type === '已完成') return -1;
+                if (b.type === '已完成') return 1;
+                if (a.type === '未通知') return -1;
+                if (b.type === '未通知') return 1;
+                return a.type.localeCompare(b.type);
+            });
+
+        // 綠色開發區塊（2塊）
+        let card = [
+            {
+                type: 'Table',
+                title: '故障類別',
+                content: resultProblem
+            },
+            {
+                type: 'Table',
+                title: '故障狀態',
+                content: resultStatus
+            }
+        ];
+        setCard([...card]);
+    }
+
+    // table 批量選區
+    const rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        },
+        getCheckboxProps: record => ({
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name
+        })
+    };
+
     // get API 001
     const GET001API = async () => {
         openLoading();
@@ -188,84 +273,19 @@ const Home = ({ match, history, location }) => {
                     statusUpdateTime: updateTime,
                     note: val.note,
                     deviceId: 'IN10----344CA40174C5',
-                    deviceSource: "insynerger_3",
-                    apartment:'幸福社區',
-                    area: '台北市',
+                    deviceSource: 'insynerger_3',
+                    apartment: '幸福社區',
+                    area: '台北市'
                 };
             });
             setData([...tableItem]);
             // 將資料轉換為 JSON 字串並存儲在 localStorage 中
             localStorage.setItem('currentData', JSON.stringify(tableItem));
 
-            // 使用 reduce 函數對 problem 進行加總
-            const problemSummary = res.data.reduce((summary, item) => {
-                const { problem } = item;
-                // 如果 problem 已經存在於加總中，則增加其數量；否則，初始化為 1
-                summary[problem] = (summary[problem] || 0) + 1;
-                return summary;
-            }, {});
-
-            // 將加總結果轉換為指定格式的陣列
-            const resultProblem = Object.entries(problemSummary).map(([type, val]) => ({
-                type,
-                val
-            }));
-
-            // 使用 reduce 函數對 status 進行加總
-            const statusSummary = res.data.reduce((summary, item) => {
-                const { status } = item;
-                // 如果 status 已經存在於加總中，則增加其數量；否則，初始化為 1
-                summary[status] = (summary[status] || 0) + 1;
-                return summary;
-            }, {});
-
-            // 將加總結果轉換為指定格式的陣列
-            const resultStatus = Object.entries(statusSummary)
-                .map(([type, val]) => {
-                    let status;
-                    switch (type) {
-                        case '已完成':
-                            status = 'safe';
-                            break;
-                        case '已通知':
-                        case '已拆除':
-                        case '等待維護':
-                        case '不接受維護':
-                            status = 'warning';
-                            break;
-                        case '未通知':
-                            status = 'dangerous';
-                            break;
-                    }
-                    return {
-                        type,
-                        val,
-                        status
-                    };
-                })
-                .sort((a, b) => {
-                    // 自訂排序邏輯，'已完成'排第一，'未通知'排第二，其餘按照字母順序排序
-                    if (a.type === '已完成') return -1;
-                    if (b.type === '已完成') return 1;
-                    if (a.type === '未通知') return -1;
-                    if (b.type === '未通知') return 1;
-                    return a.type.localeCompare(b.type);
-                });
-
-            // 綠色開發區塊（2塊）
-            let card = [
-                {
-                    type: 'Table',
-                    title: '故障類別',
-                    content: resultProblem
-                },
-                {
-                    type: 'Table',
-                    title: '故障狀態',
-                    content: resultStatus
-                }
-            ];
-            setCard([...card]);
+            // 計算卡片總和
+            getCardStatus(res.data);
+            
+            // 關閉 loading
             closeLoading();
         } else {
             console.log('GET001API error:', res);
@@ -352,19 +372,28 @@ const Home = ({ match, history, location }) => {
         }
     };
 
+    // call API's
+    const asyncAllAPI = async () => {
+        // version 1
+        await GET001API();
+        // version 2
+        await GET002API();
+    };
+
+    // table 所有欄位 設定
     const columns = [
         {
             title: '姓名',
             dataIndex: 'name',
             width: '6%',
-            editable: true, // 編輯控制
+            editable: false, // 編輯控制
             ...TableSearch('name').getColumnSearchProps // 模糊搜索
         },
         {
             title: '帳號',
             dataIndex: 'userId',
             width: '13%',
-            editable: true, // 編輯控制
+            editable: false, // 編輯控制
             ...TableSearch('userId').getColumnSearchProps // 模糊搜索
         },
         {
@@ -403,10 +432,9 @@ const Home = ({ match, history, location }) => {
             title: '社區',
             dataIndex: 'apartment',
             width: '8%',
-            editable: true, // 編輯控制
+            editable: false, // 編輯控制
             ...TableSearch('apartment').getColumnSearchProps // 模糊搜索
         },
-        Table.EXPAND_COLUMN,
         {
             title: '廠牌',
             dataIndex: 'deviceSource',
@@ -421,6 +449,7 @@ const Home = ({ match, history, location }) => {
             // filterSearch: true,
             onFilter: (value, record) => record.deviceSource.startsWith(value)
         },
+        Table.EXPAND_COLUMN,
         {
             title: '故障類別',
             dataIndex: 'problem',
@@ -550,13 +579,6 @@ const Home = ({ match, history, location }) => {
         };
     });
 
-    const asyncAllAPI = async () => {
-        // version 1
-        await GET001API();
-        // version 2
-        await GET002API();
-    };
-
     // callfull API
     useEffect(() => {
         openNILMPopup();
@@ -571,14 +593,14 @@ const Home = ({ match, history, location }) => {
             <div className={cx('top_card')}>
                 {card.length > 0
                     ? card.map((item, index) => (
-                            <UiCard
-                                type={item.type}
-                                title={item.title}
-                                content={item.content}
-                                key={index}
-                                onClick={val => handleStatusClick(val)}
-                            />
-                        ))
+                          <UiCard
+                              type={item.type}
+                              title={item.title}
+                              content={item.content}
+                              key={index}
+                              onClick={val => handleStatusClick(val)}
+                          />
+                      ))
                     : ''}
             </div>
             <div className={cx('home')}>
@@ -594,8 +616,13 @@ const Home = ({ match, history, location }) => {
                         dataSource={data}
                         columns={mergedColumns}
                         rowClassName="editable-row"
+                        rowSelection={{
+                            type: 'checkbox',
+                            ...rowSelection
+                        }}
                         // pagination={false}
                         pagination={{
+                            // 分頁
                             position: ['none', 'bottomLeft'],
                             defaultPageSize: 10, // 默认每页显示的数量
                             onChange: cancel

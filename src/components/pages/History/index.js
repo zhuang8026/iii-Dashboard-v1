@@ -36,12 +36,12 @@ const Home = ({ match, history, location }) => {
     const [faultData, setFaultData] = useState([]);
     const [color, setColor] = useState('ff7c32');
     const [city, setCity] = useState([
-        { name: '台北市', num: 0 },
-        { name: '新北市', num: 1 },
-        { name: '桃園市', num: 2 },
-        { name: '新竹縣', num: 3 },
-        { name: '台中市', num: 4 },
-        { name: '花蓮市', num: 5 }
+        { name: '台北市', num: 0, key: 'taiopei' },
+        { name: '新北市', num: 1, key: 'TaipeiCity' },
+        { name: '桃園市', num: 2, key: 'taoyuan' },
+        { name: '新竹縣', num: 3, key: 'xinzhu' },
+        { name: '台中市', num: 4, key: 'taichong' },
+        { name: '花蓮市', num: 5, key: 'hualian' }
     ]);
     const [device, setDevice] = useState([
         { name: 'insynerger_1', num: 0 },
@@ -300,6 +300,38 @@ const Home = ({ match, history, location }) => {
         setColor(c[key]);
     };
 
+    // 計算 設備異常次數
+    const getFaultCount = async apiData => {
+        // 提取所有 "deviceSource" 的值
+        let deviceSources = apiData.map(user => user.deviceSource);
+
+        // 統計每個 "deviceSource" 的數量
+        let deviceSourceCounts = deviceSources.reduce((counts, source) => {
+            counts[source] = (counts[source] || 0) + 1;
+            return counts;
+        }, {});
+
+        // 將統計結果轉換為所需的格式
+        let result = Object.keys(deviceSourceCounts).map(key => ({
+            name: key,
+            num: deviceSourceCounts[key]
+        }));
+        // 打印結果
+        setDevice([...result]);
+    };
+
+    // table 批量選區
+    const rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        },
+        getCheckboxProps: record => ({
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name
+        })
+    };
+
     // get API 001
     const GETHISTORY001API = async (days, startTime, endTime) => {
         openLoading();
@@ -326,26 +358,12 @@ const Home = ({ match, history, location }) => {
             });
             setData([...tableItem]);
 
+            // 取得 故障類別全部資料
             await faultLineChartData(res.data);
 
-            // 提取所有 "deviceSource" 的值
-            var deviceSources = res.data.map(user => user.deviceSource);
+            // 計算 設備異常次數
+            await getFaultCount(res.data);
 
-            // 統計每個 "deviceSource" 的數量
-            var deviceSourceCounts = deviceSources.reduce((counts, source) => {
-                counts[source] = (counts[source] || 0) + 1;
-                return counts;
-            }, {});
-
-            // 將統計結果轉換為所需的格式
-            var result = Object.keys(deviceSourceCounts).map(key => ({
-                name: key,
-                num: deviceSourceCounts[key]
-            }));
-            // 打印結果
-            console.log(result);
-            setDevice([...result])
-            // { name: 'insynerger_1', num: 0 },
             setTimeout(() => {
                 closeLoading();
             }, 1000);
@@ -379,19 +397,28 @@ const Home = ({ match, history, location }) => {
         }
     };
 
+    // call API's
+    const asyncAllAPI = async () => {
+        // version 1
+        let startTime = dates[0].valueOf();
+        let endTime = dates[1].valueOf();
+        await GETHISTORY001API(0, startTime, endTime);
+    };
+
+    // table 所有欄位 設定
     const columns = [
         {
             title: '姓名',
             dataIndex: 'name',
             width: '6%',
-            editable: true, // 編輯控制
+            editable: false, // 編輯控制
             ...TableSearch('name').getColumnSearchProps // 模糊搜索
         },
         {
             title: '帳號',
             dataIndex: 'userId',
             width: '13%',
-            editable: true, // 編輯控制
+            editable: false, // 編輯控制
             ...TableSearch('userId').getColumnSearchProps // 模糊搜索
         },
         {
@@ -430,10 +457,9 @@ const Home = ({ match, history, location }) => {
             title: '社區',
             dataIndex: 'apartment',
             width: '8%',
-            editable: true, // 編輯控制
+            editable: false, // 編輯控制
             ...TableSearch('apartment').getColumnSearchProps // 模糊搜索
         },
-        Table.EXPAND_COLUMN,
         {
             title: '廠牌',
             dataIndex: 'deviceSource',
@@ -449,6 +475,7 @@ const Home = ({ match, history, location }) => {
             // filterSearch: true,
             onFilter: (value, record) => record.deviceSource.startsWith(value)
         },
+        Table.EXPAND_COLUMN,
         {
             title: '故障類別',
             dataIndex: 'problem',
@@ -578,13 +605,6 @@ const Home = ({ match, history, location }) => {
         };
     });
 
-    const asyncAllAPI = async () => {
-        // version 1
-        let startTime = dates[0].valueOf();
-        let endTime = dates[1].valueOf();
-        await GETHISTORY001API(0, startTime, endTime);
-    };
-
     useEffect(() => {
         asyncAllAPI();
     }, []);
@@ -677,6 +697,7 @@ const Home = ({ match, history, location }) => {
                                 {ele.num}
                                 {/* <span>/次</span> */}
                             </div>
+                            <img src={require(`assets/images/${ele.key}.png`)} alt="" />
                         </div>
                     ))}
                 </div>
@@ -713,6 +734,10 @@ const Home = ({ match, history, location }) => {
                         dataSource={data}
                         columns={mergedColumns} // 欄位功能控制
                         rowClassName="editable-row"
+                        rowSelection={{
+                            type: 'checkbox',
+                            ...rowSelection
+                        }}
                         // pagination={false}
                         pagination={{
                             position: ['none', 'bottomLeft'],
