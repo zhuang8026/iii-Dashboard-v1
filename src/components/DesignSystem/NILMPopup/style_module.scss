@@ -1,0 +1,93 @@
+@import 'assets/scss/_variables';
+
+.nilm_bg {
+    position: fixed;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.85);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 80px;
+    // color: #fff;
+    .nilm {
+        min-width: 300px;
+        max-width: 600px;
+        min-height: 100px;
+        border-radius: 8px;
+        overflow: hidden;
+        background: $table_color;
+        text-align: center;
+        .title {
+            height: 56px;
+            line-height: 56px;
+            background: $bg_color;
+            text-align: center;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            .icon {
+                font-size: 22px;
+                margin-right: 10px;
+            }
+        }
+        .inner {
+            display: flex;
+            // padding: 10px;
+            .fun {
+                flex-grow: 1;
+                padding: 0 20px;
+                color: #fff;
+                border-right: 1px solid #fff;
+                border-top: 1px solid #fff;
+
+                &:last-child {
+                    border-right: 0px solid transparent;
+                }
+                p {
+                    text-align: center;
+                    margin: 10px auto;
+                    font-size: 16px;
+                }
+                .time {
+                    font-size: 12px;
+                }
+                .result {
+                    border: 2px solid #fff;
+                    border-radius: 50px;
+                    padding: 2px 6px;
+                    font-weight: bolder;
+                    margin-bottom: 15px;
+                }
+            }
+            .safe {
+                background: $bg_color_bottom;
+                .result {
+                    // color: $iii_color;
+                }
+            }
+            .danger {
+                background: $danger;
+                animation: breathe 0.4s infinite alternate; /* 呼吸閃爍動畫 */
+                .result {
+                }
+            }
+
+            @keyframes breathe {
+                0% {
+                    opacity: 0.35; /* 初始透明度 */
+                }
+                100% {
+                    opacity: 1; /* 最大透明度 */
+                }
+            }
+        }
+        .btn {
+            padding: 10px 0 20px 0;
+        }
+    }
+}

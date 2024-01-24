@@ -16,6 +16,7 @@ import { FullWindowAnimateStorage } from 'components/DesignSystem/FullWindow';
 import { PopWindowAnimateStorage } from 'components/DesignSystem/PopWindow';
 import Loading from 'components/DesignSystem/Loading';
 import Message from 'components/DesignSystem/Message';
+import NILMPopup from 'components/DesignSystem/NILMPopup';
 import UiCard from 'components/DesignSystem/Card';
 import EditableCell from 'components/DesignSystem/EditableCell';
 import TableSearch from 'components/DesignSystem/TableSearch';
@@ -111,6 +112,13 @@ const Home = ({ match, history, location }) => {
 
     // close loading
     const closeLoading = () => closeAnimate();
+
+    // 開啟提視窗（400、500、ERROR win）
+    const openNILMPopup = (data) => {
+        openDialog({
+            component: <NILMPopup data={data} closeMessage={closeMessage} />
+        });
+    };
 
     // 開啟提視窗（400、500、ERROR win）
     const openMessage = (code, msg) => {
@@ -551,6 +559,7 @@ const Home = ({ match, history, location }) => {
 
     // callfull API
     useEffect(() => {
+        openNILMPopup();
         asyncAllAPI();
     }, []);
 
