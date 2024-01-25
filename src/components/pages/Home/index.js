@@ -303,7 +303,7 @@ const Home = ({ match, history, location }) => {
                         : data.userCategory === 'user_112_400'
                         ? '400戶'
                         : data.userCategory === 'others'
-                        ? '其他'
+                        ? '新北市'
                         : 'none';
                 return {
                     type: 'Compare',
