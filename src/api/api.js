@@ -4,6 +4,14 @@ const isMockEnvironment = process.env.REACT_APP_ENV === 'development';
 
 const ad_dashboard = 'ad_dashboard';
 
+// nilm001 獲取即時nilm結果
+export const getNilmReport001API = async () => {
+    // 如果是开发环境，直接返回模拟数据
+    const url = isMockEnvironment ? `/mock/nilm_report.json` : `/${ad_dashboard}/nilm_report`;
+    const res = await apiRequest('GET', url, true);
+    return res;
+};
+
 // main001 獲取即時資料
 export const getProblemStatus001API = async () => {
     // 如果是开发环境，直接返回模拟数据

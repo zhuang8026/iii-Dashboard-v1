@@ -52,6 +52,10 @@
                     text-align: center;
                     margin: 10px auto;
                     font-size: 16px;
+                    text-transform: uppercase;
+                    span {
+                        margin-right: 5px;
+                    }
                 }
                 .time {
                     font-size: 12px;
@@ -66,15 +70,14 @@
             }
             .safe {
                 background: $bg_color_bottom;
-                .result {
-                    // color: $iii_color;
-                }
+                // .result {
+                // }
             }
             .danger {
                 background: $danger;
                 animation: breathe 0.4s infinite alternate; /* 呼吸閃爍動畫 */
-                .result {
-                }
+                // .result {
+                // }
             }
 
             @keyframes breathe {

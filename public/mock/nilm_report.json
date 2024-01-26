@@ -1,0 +1,27 @@
+{
+    "code": 200,
+    "message": "操作成功 (Operation Successfully)",
+    "size": 4,
+    "data": [
+        {
+            "type": "daily_backup",
+            "updateTime": "2024-01-26T00:30:00.000+08:00",
+            "queue": 1
+        },
+        {
+            "type": "nilm",
+            "updateTime": "2024-01-26T01:00:00.000+08:00",
+            "queue": 2
+        },
+        {
+            "type": "dev_pub",
+            "updateTime": "2024-01-26T01:30:00.000+08:00",
+            "queue": 3
+        },
+        {
+            "type": "energy_track",
+            "updateTime": "2024-01-22T02:30:00.000+08:00",
+            "queue": 4
+        }
+    ]
+}

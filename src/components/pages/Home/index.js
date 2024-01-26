@@ -1,15 +1,8 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Input, InputNumber, Select, Tag, Alert, Popconfirm, Form, Table, Typography, Button, Space } from 'antd';
-// import Highlighter from 'react-highlight-words';
-// import { SearchOutlined } from '@ant-design/icons';
-
-// import DatePicker from 'react-datepicker';
-// import 'react-datepicker/dist/react-datepicker.css';
-
+import { CloudUploadOutlined, SearchOutlined, WarningOutlined, CalculatorOutlined } from '@ant-design/icons';
 import moment from 'moment';
-// import { from } from 'rxjs';
-// import axios from 'axios';
 
 // DesignSystem
 import { FullWindowAnimateStorage } from 'components/DesignSystem/FullWindow';
@@ -24,7 +17,7 @@ import TableSearch from 'components/DesignSystem/TableSearch';
 // Context
 import GlobalContainer, { GlobalContext } from 'contexts/global';
 // API
-import { getProblemStatus001API, getProblemStatus002API, postProblemStatus003API } from 'api/api';
+import { getProblemStatus001API, getProblemStatus002API, postProblemStatus003API, getNilmReport001API } from 'api/api';
 
 // css
 import classes from './style.module.scss';
@@ -113,7 +106,7 @@ const Home = ({ match, history, location }) => {
     // close loading
     const closeLoading = () => closeAnimate();
 
-    // 開啟提視窗（400、500、ERROR win）
+    // 開啟提視窗（nilm result）
     const openNILMPopup = data => {
         openDialog({
             component: <NILMPopup data={data} closeMessage={closeMessage} />
@@ -170,7 +163,7 @@ const Home = ({ match, history, location }) => {
     };
 
     // 卡片所有狀態
-    const getCardStatus = (apiData) => {
+    const getCardStatus = apiData => {
         // 使用 reduce 函數對 problem 進行加總
         const problemSummary = apiData.reduce((summary, item) => {
             const { problem } = item;
@@ -240,7 +233,7 @@ const Home = ({ match, history, location }) => {
             }
         ];
         setCard([...card]);
-    }
+    };
 
     // table 批量選區
     const rowSelection = {
@@ -284,7 +277,7 @@ const Home = ({ match, history, location }) => {
 
             // 計算卡片總和
             getCardStatus(res.data);
-            
+
             // 關閉 loading
             closeLoading();
         } else {
@@ -372,12 +365,46 @@ const Home = ({ match, history, location }) => {
         }
     };
 
+    const GETNILM001API = async () => {
+        const res = await getNilmReport001API();
+        if (res.code === 200) {
+            let nilmData = res.data.map((val, i) => {
+                const isToday = moment(val.updateTime).isSame(moment(), 'day');
+                const iconDOM =
+                    val.type === 'daily_backup' ? (
+                        <CloudUploadOutlined />
+                    ) : val.type === 'nilm' ? (
+                        <SearchOutlined />
+                    ) : val.type === 'dev_pub' ? (
+                        <WarningOutlined />
+                    ) : val.type === 'energy_track' ? (
+                        <CalculatorOutlined />
+                    ) : (
+                        ''
+                    );
+                return {
+                    queue: val.queue,
+                    type: val.type,
+                    status: isToday ? 'PASS' : 'WARNING',
+                    icon: iconDOM,
+                    updateTime: moment(val.updateTime).format('YYYY/MM/DD HH:mm')
+                };
+            });
+            console.log('GET001API success:', nilmData);
+            openNILMPopup(nilmData);
+        } else {
+            console.log('GET001API error:', res);
+        }
+    };
+
     // call API's
     const asyncAllAPI = async () => {
         // version 1
         await GET001API();
         // version 2
         await GET002API();
+        // version 2
+        await GETNILM001API();
     };
 
     // table 所有欄位 設定
@@ -581,7 +608,6 @@ const Home = ({ match, history, location }) => {
 
     // callfull API
     useEffect(() => {
-        openNILMPopup();
         asyncAllAPI();
     }, []);
 
