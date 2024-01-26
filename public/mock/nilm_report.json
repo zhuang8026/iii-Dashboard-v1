@@ -4,14 +4,9 @@
     "size": 4,
     "data": [
         {
-            "type": "daily_backup",
-            "updateTime": "2024-01-26T00:30:00.000+08:00",
-            "queue": 1
-        },
-        {
-            "type": "nilm",
-            "updateTime": "2024-01-26T01:00:00.000+08:00",
-            "queue": 2
+            "type": "energy_track",
+            "updateTime": "2024-01-22T02:30:00.000+08:00",
+            "queue": 4
         },
         {
             "type": "dev_pub",
@@ -19,9 +14,14 @@
             "queue": 3
         },
         {
-            "type": "energy_track",
-            "updateTime": "2024-01-22T02:30:00.000+08:00",
-            "queue": 4
+            "type": "nilm",
+            "updateTime": "2024-01-26T01:00:00.000+08:00",
+            "queue": 2
+        },
+        {
+            "type": "daily_backup",
+            "updateTime": "2024-01-26T00:30:00.000+08:00",
+            "queue": 1
         }
     ]
 }

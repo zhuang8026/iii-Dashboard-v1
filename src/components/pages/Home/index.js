@@ -389,7 +389,9 @@ const Home = ({ match, history, location }) => {
                     icon: iconDOM,
                     updateTime: moment(val.updateTime).format('YYYY/MM/DD HH:mm')
                 };
-            });
+            })
+            .sort((a,b) => a.queue - b.queue);
+
             console.log('GET001API success:', nilmData);
             openNILMPopup(nilmData);
         } else {
