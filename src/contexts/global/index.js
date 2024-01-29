@@ -9,15 +9,29 @@ import { getNilmReport001API } from 'api/api';
 
 // utils
 import { getBooleanFromENV } from 'utils/fromENV';
+import { eraseCookie } from 'utils/cookie';
 
 export const GlobalContext = createContext();
 
 const GlobalContainer = props => {
     const { history, location, match } = props;
-    const [nilm, setNilm] = useState([]);
+    // const [nilm, setNilm] = useState([]);
     const REACT_APP_VERSION_1 = getBooleanFromENV('REACT_APP_VERSION_1', false);
     const REACT_APP_VERSION_2 = getBooleanFromENV('REACT_APP_VERSION_2', false);
     const REACT_APP_VERSION_3 = getBooleanFromENV('REACT_APP_VERSION_3', false);
+
+    const deleteCookieAtMidnight = () => {
+        const now = moment();
+
+        // 设置为当前日期的明天的凌晨
+        const midnight = moment(now).add(1, 'days').startOf('day');
+
+        // 检查当前时间是否超过明天凌晨
+        if (now.isSameOrAfter(midnight)) {
+            eraseCookie('CLOSE_NILM_REPORT'); // 替换为你要删除的 cookie 的名称
+            console.log('Cookie deleted at midnight');
+        }
+    };
 
     // GETNILM001API: 每日 NILM 報告 API
     const GETNILM001API = async () => {
@@ -47,7 +61,6 @@ const GlobalContainer = props => {
                     };
                 })
                 .sort((a, b) => a.queue - b.queue);
-
             return nilmData;
         } else {
             console.log('GET001API error:', res);
@@ -55,7 +68,7 @@ const GlobalContainer = props => {
     };
 
     useEffect(() => {
-        GETNILM001API();
+        deleteCookieAtMidnight();
     }, []);
 
     return (

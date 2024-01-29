@@ -1,6 +1,7 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Input, InputNumber, Select, Tag, Alert, Popconfirm, Form, Table, Typography, Button, Space } from 'antd';
+import { Input, InputNumber, Select, Tag, Popconfirm, Form, Table, Typography, notification, Button } from 'antd';
+import { BellOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
 // DesignSystem
@@ -15,8 +16,12 @@ import TableSearch from 'components/DesignSystem/TableSearch';
 
 // Context
 import GlobalContainer, { GlobalContext } from 'contexts/global';
+
 // API
 import { getProblemStatus001API, getProblemStatus002API, postProblemStatus003API } from 'api/api';
+
+// utils
+import { setCookie, getCookie } from 'utils/cookie';
 
 // css
 import classes from './style.module.scss';
@@ -36,7 +41,7 @@ const Home = ({ match, history, location }) => {
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
-    const { REACT_APP_VERSION_3, GETNILM001API } = useContext(GlobalContext);
+    const { REACT_APP_VERSION_3, GETNILM001API, nilm } = useContext(GlobalContext);
 
     const isEditing = record => record.key === editingKey;
     const edit = record => {
@@ -121,7 +126,36 @@ const Home = ({ match, history, location }) => {
         });
     };
     // 關閉提視窗（400、500、ERROR win）
-    const closeMessage = () => closeDialog();
+    const closeMessage = (data = '') => {
+        if (data === 'CLOSE_NILM_REPORT') {
+            setCookie('CLOSE_NILM_REPORT', true); // 設定cookie
+        }
+        closeDialog();
+    };
+
+    const openNotification = async () => {
+        const key = `open${Date.now()}`;
+        const btn = (
+            <Button type="primary" size="small" onClick={ async () => {
+                notification.close(key);
+                await openNILMReportPopup();
+            }}>
+                查詢
+            </Button>
+        );
+        notification.info({
+            message: `NILM 報告通知`,
+            description: 'NILM報告已更新，請點擊本彈窗查詢，謝謝。',
+            placement: 'topRight',
+            duration: 20,
+            btn,
+            key,
+            icon: <BellOutlined style={{ color: '#108ee9' }} />,
+            // onClick: async () => {
+            //     await openNILMReportPopup();
+            // }
+        });
+    };
 
     // 卡片狀態篩選 改變 table 資料
     const handleStatusClick = obj => {
@@ -266,10 +300,10 @@ const Home = ({ match, history, location }) => {
                     status: val.status,
                     statusUpdateTime: updateTime,
                     note: val.note,
-                    deviceId: 'IN10----344CA40174C5',
-                    deviceSource: 'insynerger_3',
-                    apartment: '幸福社區',
-                    area: '台北市'
+                    deviceId: val.deviceId,
+                    deviceSource: val.deviceSource,
+                    apartment: val.community,
+                    area: val.area
                 };
             });
             setData([...tableItem]);
@@ -372,7 +406,11 @@ const Home = ({ match, history, location }) => {
         await GET001API();
         // version 2
         await GET002API();
-        await openNILMReportPopup();
+        // verison 2
+        const CLOSE_NILM_REPORT = getCookie('CLOSE_NILM_REPORT');
+        if (!CLOSE_NILM_REPORT) {
+            openNotification();
+        }
     };
 
     // table 所有欄位 設定

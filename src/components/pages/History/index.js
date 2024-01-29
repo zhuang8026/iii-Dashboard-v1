@@ -36,7 +36,7 @@ const Home = ({ match, history, location }) => {
     const [faultData, setFaultData] = useState([]);
     const [color, setColor] = useState('ff7c32');
     const [city, setCity] = useState([
-        { name: '台北市', num: 0, key: 'taiopei' },
+        { name: '台北市', num: 0, key: 'taipei' },
         { name: '新北市', num: 1, key: 'TaipeiCity' },
         { name: '桃園市', num: 2, key: 'taoyuan' },
         { name: '新竹縣', num: 3, key: 'xinzhu' },
@@ -320,6 +320,27 @@ const Home = ({ match, history, location }) => {
         setDevice([...result]);
     };
 
+    // 計算 設備異常次數
+    const getAreaCount = async apiData => {
+        // 提取所有 "deviceSource" 的值
+        let area = apiData.map(user => user.area);
+
+        // 統計每個 "deviceSource" 的數量
+        let areaCounts = area.reduce((counts, source) => {
+            counts[source] = (counts[source] || 0) + 1;
+            return counts;
+        }, {});
+
+        // 將統計結果轉換為所需的格式
+        let result = Object.keys(areaCounts).map(key => ({
+            name: key,
+            num: areaCounts[key]
+        }));
+        console.log(result)
+        // 打印結果
+        // setCity([...result]);
+    };
+
     // table 批量選區
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
@@ -352,8 +373,8 @@ const Home = ({ match, history, location }) => {
                     note: val.note,
                     deviceId: val.deviceId,
                     deviceSource: val.deviceSource,
-                    apartment: '幸福社區',
-                    area: '台北市'
+                    apartment: val.community,
+                    area: val.area
                 };
             });
             setData([...tableItem]);
@@ -363,6 +384,7 @@ const Home = ({ match, history, location }) => {
 
             // 計算 設備異常次數
             await getFaultCount(res.data);
+            await getAreaCount(res.data);
 
             setTimeout(() => {
                 closeLoading();
@@ -697,7 +719,7 @@ const Home = ({ match, history, location }) => {
                                 {ele.num}
                                 {/* <span>/次</span> */}
                             </div>
-                            <img src={require(`assets/images/${ele.key}.png`)} alt="" />
+                            <img src={require(`assets/images/${ele.name}.png`)} alt="" />
                         </div>
                     ))}
                 </div>

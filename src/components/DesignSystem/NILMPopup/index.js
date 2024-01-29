@@ -5,15 +5,7 @@ import UiButton from 'components/DesignSystem/Button';
 
 // antd
 // import { Rate } from 'antd';
-import {
-    BellOutlined,
-    CloudUploadOutlined,
-    SearchOutlined,
-    WarningOutlined,
-    CalculatorOutlined,
-    CheckCircleOutlined,
-    CloseCircleOutlined
-} from '@ant-design/icons';
+import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 // css
 import classes from './style_module.scss';
@@ -46,7 +38,7 @@ const NILMPopup = ({ data, closeMessage }) => {
                     })}
                 </div>
                 <div className={cx('btn')}>
-                    <UiButton onClick={closeMessage} />
+                    <UiButton onClick={() => closeMessage('CLOSE_NILM_REPORT')} />
                 </div>
             </div>
         </div>
