@@ -44,15 +44,6 @@ const NILMPopup = ({ data, closeMessage }) => {
                             </div>
                         );
                     })}
-
-                    {/* <div className={cx('fun', 'danger')}>
-                        <SearchOutlined />
-                        <p>電器運轉辨識</p>
-                        <p className={cx('time')}>2023/12/12 00:00</p>
-                        <p className={cx('result')}>
-                            <CloseCircleOutlined /> WARNING
-                        </p>
-                    </div> */}
                 </div>
                 <div className={cx('btn')}>
                     <UiButton onClick={closeMessage} />

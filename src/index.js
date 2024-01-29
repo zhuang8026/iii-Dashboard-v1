@@ -15,7 +15,7 @@ import AdminContainer from 'contexts/admin';
 import { ConfigProvider } from 'antd';
 
 // 默认语言为 en-US，如果你需要设置其他语言，推荐在入口文件全局设置 locale
-import moment from 'moment';
+// import moment from 'moment';
 import 'moment/locale/zh-tw';
 import locale from 'antd/es/locale/zh_TW';
 

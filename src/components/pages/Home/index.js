@@ -1,7 +1,6 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Input, InputNumber, Select, Tag, Alert, Popconfirm, Form, Table, Typography, Button, Space } from 'antd';
-import { CloudUploadOutlined, SearchOutlined, WarningOutlined, CalculatorOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
 // DesignSystem
@@ -17,7 +16,7 @@ import TableSearch from 'components/DesignSystem/TableSearch';
 // Context
 import GlobalContainer, { GlobalContext } from 'contexts/global';
 // API
-import { getProblemStatus001API, getProblemStatus002API, postProblemStatus003API, getNilmReport001API } from 'api/api';
+import { getProblemStatus001API, getProblemStatus002API, postProblemStatus003API } from 'api/api';
 
 // css
 import classes from './style.module.scss';
@@ -37,7 +36,7 @@ const Home = ({ match, history, location }) => {
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
-    const { REACT_APP_VERSION_3 } = useContext(GlobalContext);
+    const { REACT_APP_VERSION_3, GETNILM001API } = useContext(GlobalContext);
 
     const isEditing = record => record.key === editingKey;
     const edit = record => {
@@ -106,8 +105,10 @@ const Home = ({ match, history, location }) => {
     // close loading
     const closeLoading = () => closeAnimate();
 
-    // 開啟提視窗（nilm result）
-    const openNILMPopup = data => {
+    // open nilm report popup
+    const openNILMReportPopup = async () => {
+        let data = await GETNILM001API(); // from global context API
+        // 開啟提視窗（nilm result）
         openDialog({
             component: <NILMPopup data={data} closeMessage={closeMessage} />
         });
@@ -365,48 +366,13 @@ const Home = ({ match, history, location }) => {
         }
     };
 
-    const GETNILM001API = async () => {
-        const res = await getNilmReport001API();
-        if (res.code === 200) {
-            let nilmData = res.data.map((val, i) => {
-                const isToday = moment(val.updateTime).isSame(moment(), 'day');
-                const iconDOM =
-                    val.type === 'daily_backup' ? (
-                        <CloudUploadOutlined />
-                    ) : val.type === 'nilm' ? (
-                        <SearchOutlined />
-                    ) : val.type === 'dev_pub' ? (
-                        <WarningOutlined />
-                    ) : val.type === 'energy_track' ? (
-                        <CalculatorOutlined />
-                    ) : (
-                        ''
-                    );
-                return {
-                    queue: val.queue,
-                    type: val.type,
-                    status: isToday ? 'PASS' : 'WARNING',
-                    icon: iconDOM,
-                    updateTime: moment(val.updateTime).format('YYYY/MM/DD HH:mm')
-                };
-            })
-            .sort((a,b) => a.queue - b.queue);
-
-            console.log('GET001API success:', nilmData);
-            openNILMPopup(nilmData);
-        } else {
-            console.log('GET001API error:', res);
-        }
-    };
-
     // call API's
     const asyncAllAPI = async () => {
         // version 1
         await GET001API();
         // version 2
         await GET002API();
-        // version 2
-        await GETNILM001API();
+        await openNILMReportPopup();
     };
 
     // table 所有欄位 設定

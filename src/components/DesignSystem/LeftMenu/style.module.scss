@@ -80,6 +80,10 @@
     }
 
     .bottom {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
         height: 140px;
         padding-left: 24px;
         font-size: 18px;
@@ -90,6 +94,8 @@
             margin-right: 8px;
         }
         .setting {
+            display: flex;
+            align-items: center;
             margin-bottom: 6px;
             cursor: pointer;
         }

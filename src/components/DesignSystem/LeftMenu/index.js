@@ -12,6 +12,9 @@ import user from 'assets/images/user.svg';
 import notification from 'assets/images/notification.svg';
 import settings from 'assets/images/settings.svg';
 
+// DesignSystem
+import NILMPopup from 'components/DesignSystem/NILMPopup';
+import { PopWindowAnimateStorage } from 'components/DesignSystem/PopWindow';
 // css
 import classes from './style.module.scss';
 import classNames from 'classnames/bind';
@@ -21,7 +24,8 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
     const [list, setList] = useState([]);
     const [isClick, setIsClick] = useState('/main');
 
-    const { REACT_APP_VERSION_3 } = useContext(GlobalContext);
+    const { REACT_APP_VERSION_2, REACT_APP_VERSION_3, GETNILM001API } = useContext(GlobalContext);
+    const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
 
     const clickMenu = (key, path) => {
         let parts = path.split('/');
@@ -36,6 +40,17 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
     const logout = () => {
         logoutAPI();
     };
+
+    // open nilm report popup
+    const openNILMReportPopup = async () => {
+        let data = await GETNILM001API(); // from global context API
+        // 開啟提視窗（nilm result）
+        openDialog({
+            component: <NILMPopup data={data} closeMessage={closeMessage} />
+        });
+    };
+    // 關閉提視窗（400、500、ERROR win）
+    const closeMessage = () => closeDialog();
 
     useEffect(() => {
         setList(menuList);
@@ -85,22 +100,26 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
                         })}
                 </ul>
             </div>
-            {REACT_APP_VERSION_3 && (
-                <div className={cx('bottom')}>
+            <div className={cx('bottom')}>
+                {REACT_APP_VERSION_2 && (
+                    <div className={cx('setting', 'user')} onClick={() => openNILMReportPopup()}>
+                        <img alt="" src={notification} />
+                        Notification
+                    </div>
+                )}
+                {REACT_APP_VERSION_3 && (
                     <div className={cx('setting', 'user')} onClick={() => logout()}>
                         <img alt="" src={user} />
                         Account Logout
                     </div>
-                    <div className={cx('setting', 'user')}>
-                        <img alt="" src={notification} />
-                        Notification
-                    </div>
+                )}
+                {REACT_APP_VERSION_3 && (
                     <div className={cx('setting', 'user')}>
                         <img alt="" src={settings} />
                         Settings
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };

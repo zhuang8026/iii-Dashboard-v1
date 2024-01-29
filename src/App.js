@@ -34,22 +34,7 @@ function App({ match, location, history }) {
 
     const isAuth = getCookie('iii_token'); // cookie testing
 
-    // all route
-    const PrivateRoutes = () => {
-        return privateRoutes.map((route, key) => (
-            <Route
-                key={`route_${key}`}
-                path={`${route.path}`}
-                exact={route.exact}
-                sensitive
-                render={() => {
-                    document.title = `III Dashboard | ${route.title}`;
-                    return <route.component localeMatch={match} routeData={route} />;
-                }}
-            />
-        ));
-    };
-
+    // 不需要 auth 的路由
     const OutsideRoutes = () => {
         return outsideRoutes.map((route, key) => (
             <Route
@@ -65,29 +50,50 @@ function App({ match, location, history }) {
         ));
     };
 
-    const Routes = () => {
-        // version 2
-        if (REACT_APP_VERSION_2) {
-            if (!isAuth) {
-                return <Redirect to="/login" />;
-            }
-        }
-
-        return PrivateRoutes();
+    // 需要 auth 的路由
+    const PrivateRoutes = () => {
+        return privateRoutes.map((route, key) => (
+            <Route
+                key={`route_${key}`}
+                path={`${route.path}`}
+                exact={route.exact}
+                sensitive
+                render={() => {
+                    document.title = `III Dashboard | ${route.title}`;
+                    return <route.component localeMatch={match} routeData={route} />;
+                }}
+            />
+        ));
     };
 
-    // layout & url
+    // 重定向 路由
+    const RedirectRouter = () => {
+        // version 2
+        if (REACT_APP_VERSION_2) {
+            // 已登出 -> 重定向 "/login"
+            if (isAuth == null) {
+                return <Redirect to="/login" />;
+            } else {
+                // 已登入 -> 重定向 "/main"
+                return <Redirect from="*" to="/main" />;
+            }
+        }
+    };
+
+    // menu (layout & url)
     const getLayoutsCallBack = () => {
         if (REACT_APP_VERSION_3) {
             if (isAuth) {
                 privateRoutes.map((route, key) => {
                     let layoutPath = [];
                     layoutPath.push(route.path.split('/')[1]);
-
-                    if (layoutPath[0].toUpperCase() === location.pathname.split('/')[1].toUpperCase()) {
-                        setLayouts(route.layouts);
+                    if (layoutPath[0].toUpperCase() === history.location.pathname.split('/')[1].toUpperCase()) {
+                        setLayouts(prev => {
+                            return [...prev, ...route.layouts];
+                        });
+                        console.log('get menu');
                     } else {
-                        // console.log('no fund');
+                        console.log('no fund');
                     }
                 });
             } else {
@@ -176,11 +182,14 @@ function App({ match, location, history }) {
             console.log('REACT_APP_VERSION_3:', REACT_APP_VERSION_3);
             if (REACT_APP_VERSION_1) {
                 if (REACT_APP_VERSION_2) {
-                    if (REACT_APP_VERSION_3) {
-                        prev = [v2, v3];
-                    } else {
-                        prev = [v2];
-                    }
+                    prev = [v2];
+
+                    // 用戶資訊 暫未規劃，先隱藏
+                    // if (REACT_APP_VERSION_3) {
+                    //     prev = [v2, v3];
+                    // } else {
+                    //     prev = [v2];
+                    // }
                 } else {
                     prev = [v1];
                 }
@@ -208,11 +217,9 @@ function App({ match, location, history }) {
                 {/* 路由頁面 */}
                 <Suspense fallback={<></>}>
                     <Switch location={location}>
-                        {/* <Route exact path="/">
-                            <Redirect to="/login" />
-                        </Route> */}
                         {OutsideRoutes()}
-                        {Routes()}
+                        {PrivateRoutes()}
+                        {RedirectRouter()}
                         <Route component={NoMatch} />
                     </Switch>
                 </Suspense>
