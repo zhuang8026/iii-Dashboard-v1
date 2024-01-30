@@ -317,8 +317,11 @@ const Home = ({ match, history, location }) => {
     const getAreaCount = async apiData => {
         // 提取所有 "deviceSource" 的值
         let area = apiData.map(user => {
-            let area_split = user.area.split(/市|縣/)[0].trim()
-            return area_split + (user.area.includes("市") ? "市" : "縣");
+            if(user.area) {
+                let area_split = user.area.split(/市|縣/)[0].trim();
+                return area_split + (user.area.includes("市") ? "市" : "縣");
+            }
+            return 'NULL';
         });
 
         // 統計每個 "deviceSource" 的數量
