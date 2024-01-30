@@ -335,11 +335,14 @@ const Home = ({ match, history, location }) => {
         }, {});
 
         // 將統計結果轉換為所需的格式
-        let result = Object.keys(areaCounts).map(key => ({
-            name: key,
-            num: areaCounts[key]
-        }));
-        console.log(result);
+        let result = Object.keys(areaCounts).map(key => {
+            return {
+                name: key,
+                num: areaCounts[key],
+                // img: key ? <img src={require(`assets/images/${key}.png`)} alt="" /> : <div/>,
+            }
+        });
+
         // 打印結果
         setCity([...result]);
     };
@@ -722,7 +725,8 @@ const Home = ({ match, history, location }) => {
                                 {ele.num}
                                 {/* <span>/次</span> */}
                             </div>
-                            <img src={require(`assets/images/${ele.name}.png`)} alt="" />
+                            {ele.img}
+                            {/* <img src={require(`assets/images/${ele.name}.png`)} alt="" /> */}
                         </div>
                     ))}
                 </div>
