@@ -34,8 +34,13 @@ const Home = ({ match, history, location }) => {
     const [lastTime, setLastTime] = useState('');
     const [card, setCard] = useState([]);
     const [editingKey, setEditingKey] = useState('');
-
     const [cardFilter, setCardFilter] = useState({ type: [], status: [] });
+    const [city, setCity] = useState([
+        { text: '台北市', num: 0, value: '台北市' },
+    ]);
+    const [device, setDevice] = useState([
+        { text: 'insynerger_1', num: 0, value: 'insynerger_1' },
+    ]);
 
     // const fetchListener = useRef();
 
@@ -287,6 +292,55 @@ const Home = ({ match, history, location }) => {
         })
     };
 
+    // 計算 設備異常次數
+    const getFaultCount = async apiData => {
+        // 提取所有 "deviceSource" 的值
+        let deviceSources = apiData.map(user => user.deviceSource);
+
+        // 統計每個 "deviceSource" 的數量
+        let deviceSourceCounts = deviceSources.reduce((counts, source) => {
+            counts[source] = (counts[source] || 0) + 1;
+            return counts;
+        }, {});
+
+        // 將統計結果轉換為所需的格式
+        let result = Object.keys(deviceSourceCounts).map(key => ({
+            text: key,
+            value: key,
+            num: deviceSourceCounts[key]
+        }));
+        // 打印結果
+        setDevice([...result]);
+    };
+
+    // 計算 設備異常次數
+    const getAreaCount = async apiData => {
+        // 提取所有 "deviceSource" 的值
+        let area = apiData.map(user => {
+            let area_split = user.area.split(/市|縣/)[0].trim()
+            return area_split + (user.area.includes("市") ? "市" : "縣");
+        });
+
+        // 統計每個 "deviceSource" 的數量
+        let areaCounts = area.reduce((counts, source) => {
+            counts[source] = (counts[source] || 0) + 1;
+            return counts;
+        }, {});
+
+        // 將統計結果轉換為所需的格式
+        let result = Object.keys(areaCounts).map(key => {
+            return {
+                text: key,
+                value: key,
+                num: areaCounts[key],
+                // img: key ? <img src={require(`assets/images/${key}.png`)} alt="" /> : <div/>,
+            }
+        });
+
+        // 打印結果
+        setCity([...result]);
+    };
+
     // get API 001
     const GET001API = async () => {
         openLoading();
@@ -317,6 +371,10 @@ const Home = ({ match, history, location }) => {
 
             // 計算卡片總和
             getCardStatus(res.data);
+
+            // 計算 設備異常次數
+            await getFaultCount(res.data);
+            await getAreaCount(res.data);
 
             // 關閉 loading
             closeLoading();
@@ -456,14 +514,7 @@ const Home = ({ match, history, location }) => {
             dataIndex: 'area',
             width: '6%',
             editable: false, // 編輯控制
-            filters: [
-                { text: '台北市', value: '台北市' },
-                { text: '新北市', value: '新北市' },
-                { text: '桃園市', value: '桃園市' },
-                { text: '新竹縣', value: '新竹縣' },
-                { text: '台中市', value: '台中市' },
-                { text: '花蓮縣', value: '花蓮縣' }
-            ],
+            filters: [...city],
             onFilter: (value, record) => {
                 return record.area.startsWith(value);
             }
@@ -480,11 +531,7 @@ const Home = ({ match, history, location }) => {
             dataIndex: 'deviceSource',
             width: '8%',
             editable: false, // 編輯控制
-            filters: [
-                { text: 'insynerger_3', value: 'insynerger_3' },
-                { text: 'insynerger_2', value: 'insynerger_2' },
-                { text: 'insynerger_1', value: 'insynerger_1' }
-            ],
+            filters: [...device],
             // filterMode: 'tree',
             // filterSearch: true,
             onFilter: (value, record) => record.deviceSource.startsWith(value)

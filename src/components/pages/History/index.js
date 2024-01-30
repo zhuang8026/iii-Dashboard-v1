@@ -36,18 +36,18 @@ const Home = ({ match, history, location }) => {
     const [faultData, setFaultData] = useState([]);
     const [color, setColor] = useState('ff7c32');
     const [city, setCity] = useState([
-        { name: '台北市', num: 0, key: 'taipei' },
-        { name: '新北市', num: 1, key: 'TaipeiCity' },
-        { name: '桃園市', num: 2, key: 'taoyuan' },
-        { name: '新竹縣', num: 3, key: 'xinzhu' },
-        { name: '台中市', num: 4, key: 'taichong' },
-        { name: '花蓮縣', num: 5, key: 'hualian' }
+        { text: '台北市', num: 0, value: '台北市' },
+        { text: '新北市', num: 1, value: '新北市' },
+        { text: '桃園市', num: 2, value: '桃園市' },
+        { text: '新竹縣', num: 3, value: '新竹縣' },
+        { text: '台中市', num: 4, value: '台中市' },
+        { text: '花蓮縣', num: 5, value: '花蓮縣' }
     ]);
     const [device, setDevice] = useState([
-        { name: 'insynerger_1', num: 0 },
-        { name: 'insynerger_2', num: 1 },
-        { name: 'insynerger_3', num: 2 },
-        { name: '3Egreen', num: 3 }
+        { text: 'insynerger_1', num: 0, value: 'insynerger_1' },
+        { text: 'insynerger_2', num: 1, value: 'insynerger_2' },
+        { text: 'insynerger_3', num: 2, value: 'insynerger_3' },
+        { text: '3Egreen',      num: 3, value: '3Egreen' }
     ]);
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
@@ -313,7 +313,8 @@ const Home = ({ match, history, location }) => {
 
         // 將統計結果轉換為所需的格式
         let result = Object.keys(deviceSourceCounts).map(key => ({
-            name: key,
+            text: key,
+            value: key,
             num: deviceSourceCounts[key]
         }));
         // 打印結果
@@ -337,7 +338,8 @@ const Home = ({ match, history, location }) => {
         // 將統計結果轉換為所需的格式
         let result = Object.keys(areaCounts).map(key => {
             return {
-                name: key,
+                text: key,
+                value: key,
                 num: areaCounts[key],
                 // img: key ? <img src={require(`assets/images/${key}.png`)} alt="" /> : <div/>,
             }
@@ -471,14 +473,7 @@ const Home = ({ match, history, location }) => {
             dataIndex: 'area',
             width: '6%',
             editable: false, // 編輯控制
-            filters: [
-                { text: '台北市', value: '台北市' },
-                { text: '新北市', value: '新北市' },
-                { text: '桃園市', value: '桃園市' },
-                { text: '新竹縣', value: '新竹縣' },
-                { text: '台中市', value: '台中市' },
-                { text: '花蓮縣', value: '花蓮縣' }
-            ],
+            filters: [...city],
             onFilter: (value, record) => record.area.startsWith(value)
         },
         {
@@ -493,12 +488,7 @@ const Home = ({ match, history, location }) => {
             dataIndex: 'deviceSource',
             width: '8%',
             editable: false, // 編輯控制
-            filters: [
-                { text: 'insynerger_1', value: 'insynerger_1' },
-                { text: 'insynerger_2', value: 'insynerger_2' },
-                { text: 'insynerger_3', value: 'insynerger_3' },
-                { text: '3Egreen', value: '3Egreen' }
-            ],
+            filters: [...device],
             // filterMode: 'tree',
             // filterSearch: true,
             onFilter: (value, record) => record.deviceSource.startsWith(value)
@@ -720,7 +710,7 @@ const Home = ({ match, history, location }) => {
                 <div className={cx('table_body')}>
                     {city.map((ele, index) => (
                         <div className={cx('card', 'city')} key={index}>
-                            <h3>{ele.name}</h3>
+                            <h3>{ele.text}</h3>
                             <div className={cx('num')}>
                                 {ele.num}
                                 {/* <span>/次</span> */}
@@ -736,7 +726,7 @@ const Home = ({ match, history, location }) => {
                 <div className={cx('table_body')}>
                     {device.map((ele, index) => (
                         <div className={cx('card', 'device')} key={index}>
-                            <h3>{ele.name}</h3>
+                            <h3>{ele.text}</h3>
                             <div className={cx('num')}>
                                 {ele.num}
                                 {/* <span>/次</span> */}
