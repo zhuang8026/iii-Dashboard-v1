@@ -12,7 +12,7 @@
             "status": "已通知",
             "statusUpdateTime": "",
             "note": "用戶已搬家",
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
             "area": "台北市"
@@ -27,7 +27,7 @@
             "status": "未通知",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
             "note": null,
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
             "area": "新北市泰山區"
@@ -42,7 +42,7 @@
             "status": "已完成",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
             "note": null,
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
             "area": "台北市"
@@ -57,7 +57,7 @@
             "status": "等待維護",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
             "note": "用戶已搬家",
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
             "area": "新北市板橋區"
@@ -72,10 +72,10 @@
             "status": "等待維護",
             "statusUpdateTime": "2023-12-14T10:30:00.000+08:00",
             "note": "20231218",
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
-            "area": "花蓮市石頭區"
+            "area": "花蓮縣石頭區"
         },
         {
             "serialNumber": 1,
@@ -87,7 +87,7 @@
             "status": "未通知",
             "statusUpdateTime": "2023-12-07T00:00:00.000+08:00",
             "note": "用戶已搬家",
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
             "area": "台北市"
@@ -102,7 +102,7 @@
             "status": "已完成",
             "statusUpdateTime": "2023-12-11T00:00:00.000+08:00",
             "note": null,
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
             "area": "台中市城中區"
@@ -117,7 +117,7 @@
             "status": "未通知",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
             "note": null,
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
             "area": "新竹縣住北區"
@@ -132,7 +132,7 @@
             "status": "已拆除",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
             "note": null,
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
             "area": "台北市"
@@ -147,7 +147,7 @@
             "status": "不接受維護",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
             "note": "用戶已搬家",
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
             "area": "台北市"
@@ -162,7 +162,7 @@
             "status": "等待維護",
             "statusUpdateTime": "2023-12-14T10:30:00.000+08:00",
             "note": "20231218",
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
             "area": "台北市"
@@ -177,7 +177,7 @@
             "status": "未通知",
             "statusUpdateTime": "2023-12-07T00:00:00.000+08:00",
             "note": "用戶已搬家",
-            "deviceId":"IN10----344CA40174C5",
+            "deviceId": "IN10----344CA40174C5",
             "deviceSource": "insynerger_2",
             "community": "幸福小區",
             "area": "台北市"

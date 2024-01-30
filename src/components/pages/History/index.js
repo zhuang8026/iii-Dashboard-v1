@@ -41,7 +41,7 @@ const Home = ({ match, history, location }) => {
         { name: '桃園市', num: 2, key: 'taoyuan' },
         { name: '新竹縣', num: 3, key: 'xinzhu' },
         { name: '台中市', num: 4, key: 'taichong' },
-        { name: '花蓮市', num: 5, key: 'hualian' }
+        { name: '花蓮縣', num: 5, key: 'hualian' }
     ]);
     const [device, setDevice] = useState([
         { name: 'insynerger_1', num: 0 },
@@ -323,7 +323,10 @@ const Home = ({ match, history, location }) => {
     // 計算 設備異常次數
     const getAreaCount = async apiData => {
         // 提取所有 "deviceSource" 的值
-        let area = apiData.map(user => user.area);
+        let area = apiData.map(user => {
+            let area_split = user.area.split(/市|縣/)[0].trim()
+            return area_split + (user.area.includes("市") ? "市" : "縣");
+        });
 
         // 統計每個 "deviceSource" 的數量
         let areaCounts = area.reduce((counts, source) => {
@@ -336,9 +339,9 @@ const Home = ({ match, history, location }) => {
             name: key,
             num: areaCounts[key]
         }));
-        console.log(result)
+        console.log(result);
         // 打印結果
-        // setCity([...result]);
+        setCity([...result]);
     };
 
     // table 批量選區
@@ -471,7 +474,7 @@ const Home = ({ match, history, location }) => {
                 { text: '桃園市', value: '桃園市' },
                 { text: '新竹縣', value: '新竹縣' },
                 { text: '台中市', value: '台中市' },
-                { text: '花蓮市', value: '花蓮市' }
+                { text: '花蓮縣', value: '花蓮縣' }
             ],
             onFilter: (value, record) => record.area.startsWith(value)
         },
@@ -710,7 +713,7 @@ const Home = ({ match, history, location }) => {
             </div>
             <div className={cx('history_table')}>
                 <h1 className={cx('table_title')}>地區異常次數</h1>
-                {/* 台北市, 新北市, 桃園市, 新竹縣, 台中市, 花蓮市 */}
+                {/* 台北市, 新北市, 桃園市, 新竹縣, 台中市, 花蓮縣 */}
                 <div className={cx('table_body')}>
                     {city.map((ele, index) => (
                         <div className={cx('card', 'city')} key={index}>

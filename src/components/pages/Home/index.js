@@ -462,7 +462,7 @@ const Home = ({ match, history, location }) => {
                 { text: '桃園市', value: '桃園市' },
                 { text: '新竹縣', value: '新竹縣' },
                 { text: '台中市', value: '台中市' },
-                { text: '花蓮市', value: '花蓮市' }
+                { text: '花蓮縣', value: '花蓮縣' }
             ],
             onFilter: (value, record) => {
                 return record.area.startsWith(value);

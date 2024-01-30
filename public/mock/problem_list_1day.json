@@ -12,8 +12,10 @@
             "status": "已通知",
             "statusUpdateTime": "",
             "note": "用戶已搬家",
-            "deviceId": "0081F9250CB4",
-            "deviceSource": "3Egreen"
+            "deviceId": "IN10----344CA40174C5",
+            "deviceSource": "insynerger_3",
+            "community": "幸福小區",
+            "area": "台北市"
         }
     ]
 }

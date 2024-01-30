@@ -114,8 +114,8 @@
             display: flex;
             .city {
                 flex-grow: 1;
-                // background: $bg_color_bottom;
-                background: url('../../../assets/images/card_bg.svg') center center no-repeat;
+                background: $bg_color_top;
+                // background: url('../../../assets/images/card_bg.svg') center center no-repeat;
                 img {
                     position: absolute;
                     top: -10px;

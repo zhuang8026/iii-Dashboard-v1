@@ -12,8 +12,10 @@
             "status": "已通知",
             "statusUpdateTime": "",
             "note": "用戶已搬家",
-            "deviceId": "II09000D6F0005FE6073",
-            "deviceSource": "insynerger_1"
+            "deviceId": "IN10----344CA40174C5",
+            "deviceSource": "insynerger_3",
+            "community": "幸福小區",
+            "area": "台北市"
         },
         {
             "serialNumber": 4,
@@ -25,8 +27,10 @@
             "status": "未通知",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
             "note": null,
-            "deviceId": "II09000D6F0005FE6073",
-            "deviceSource": "3Egreen"
+            "deviceId": "IN10----344CA40174C5",
+            "deviceSource": "insynerger_3",
+            "community": "幸福小區",
+            "area": "台北市"
         },
         {
             "serialNumber": 5,
@@ -38,8 +42,10 @@
             "status": "已完成",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
             "note": null,
-            "deviceId": "II09000D6F0005FE6073",
-            "deviceSource": "insynerger_1"
+            "deviceId": "IN10----344CA40174C5",
+            "deviceSource": "insynerger_3",
+            "community": "幸福小區",
+            "area": "台北市"
         },
         {
             "serialNumber": 6,
@@ -51,8 +57,10 @@
             "status": "等待維護",
             "statusUpdateTime": "2023-12-12T00:00:00.000+08:00",
             "note": "用戶已搬家",
-            "deviceId": "II09000D6F0005FE6073",
-            "deviceSource": "insynerger_1"
+            "deviceId": "IN10----344CA40174C5",
+            "deviceSource": "insynerger_3",
+            "community": "幸福小區",
+            "area": "台北市"
         },
         {
             "serialNumber": 3,
@@ -64,8 +72,10 @@
             "status": "等待維護",
             "statusUpdateTime": "2023-12-14T10:30:00.000+08:00",
             "note": "20231218",
-            "deviceId": "II09000D6F0005FE6073",
-            "deviceSource": "insynerger_1"
+            "deviceId": "IN10----344CA40174C5",
+            "deviceSource": "insynerger_3",
+            "community": "幸福小區",
+            "area": "台北市"
         }
     ]
 }
