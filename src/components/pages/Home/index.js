@@ -136,21 +136,26 @@ const Home = ({ match, history, location }) => {
     const openNotification = async () => {
         const key = `open${Date.now()}`;
         const btn = (
-            <Button type="primary" size="middle"  style={{ backgroundColor: '#129797' }} onClick={ async () => {
-                notification.close(key);
-                await openNILMReportPopup();
-            }}>
+            <Button
+                type="primary"
+                size="middle"
+                style={{ backgroundColor: '#129797' }}
+                onClick={async () => {
+                    notification.close(key);
+                    await openNILMReportPopup();
+                }}
+            >
                 查詢
             </Button>
         );
         notification.info({
             message: `NILM 報告通知`,
-            description: '每日NILM報告已更新，請點擊本彈窗查詢，謝謝。',
+            description: '每日NILM報告已更新，請點擊本彈窗查詢，謝謝。🙂',
             placement: 'topRight',
             duration: 20,
             btn,
             key,
-            icon: <BellOutlined style={{ color: '#129797' }} />,
+            icon: <BellOutlined style={{ color: '#129797' }} />
             // onClick: async () => {
             //     await openNILMReportPopup();
             // }
@@ -459,7 +464,9 @@ const Home = ({ match, history, location }) => {
                 { text: '台中市', value: '台中市' },
                 { text: '花蓮市', value: '花蓮市' }
             ],
-            onFilter: (value, record) => record.area.startsWith(value)
+            onFilter: (value, record) => {
+                return record.area.startsWith(value);
+            }
         },
         {
             title: '社區',

@@ -104,7 +104,7 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
                 {REACT_APP_VERSION_2 && (
                     <div className={cx('setting', 'user')} onClick={() => openNILMReportPopup()}>
                         <img alt="" src={notification} />
-                        Notification
+                        通知
                     </div>
                 )}
                 {REACT_APP_VERSION_3 && (
