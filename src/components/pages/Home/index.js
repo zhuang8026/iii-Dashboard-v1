@@ -515,7 +515,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '地區',
             dataIndex: 'area',
-            width: '6%',
+            width: '8%',
             editable: false, // 編輯控制
             filters: [...city],
             onFilter: (value, record) => {
@@ -525,7 +525,7 @@ const Home = ({ match, history, location }) => {
         {
             title: '社區',
             dataIndex: 'apartment',
-            width: '8%',
+            width: '6%',
             editable: false, // 編輯控制
             ...TableSearch('apartment').getColumnSearchProps // 模糊搜索
         },
