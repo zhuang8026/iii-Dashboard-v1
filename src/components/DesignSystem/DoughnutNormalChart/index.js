@@ -41,11 +41,12 @@ const DoughnutNormalChart = ({ data }) => {
                 labelLine: {
                     show: false
                 },
-                data: [
-                    { value: Number(data[0].val), name: `離線` },
-                    { value: Number(data[1].val), name: '連線' }
-                    // { value: Number(data[0].val) + Number(data[1].val), name: '總計' }
-                ]
+                data: data.map((ele)=> ({ value: Number(ele.val), name: ele.type })),
+                // data: [
+                //     { value: Number(data[0].val), name: `離線` },
+                //     { value: Number(data[1].val), name: '連線' }
+                //     // { value: Number(data[0].val) + Number(data[1].val), name: '總計' }
+                // ]
             }
         ]
     });

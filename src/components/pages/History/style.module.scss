@@ -144,10 +144,10 @@
                 margin-right: 10px;
                 margin-bottom: 5px;
                 overflow: hidden;
-                &:last-child {
-                    /* 最后一行的 border-bottom 设置为透明或与背景颜色相同 */
-                    margin-right: 0px;
-                }
+                // &:last-child {
+                //     /* 最后一行的 border-bottom 设置为透明或与背景颜色相同 */
+                //     margin-right: 0px;
+                // }
                 h3 {
                     position: absolute;
                     top: 5px;

@@ -4,28 +4,34 @@
     "size": 3,
     "data": [
         {
-            "serialNumber": 11,
-            "userCategory": "others",
-            "connectCounts": 1,
-            "disconnectCounts": 2,
-            "detectedDate": "2024-01-09T00:00:00.000+08:00",
-            "note": null
+            "connectCounts": 61,
+            "detectedDate": "2024-02-01T00:00:00.000+08:00",
+            "disconnectCounts": 231,
+            "notActive": 999,
+            "note": null,
+            "serialNumber": 201,
+            "uninstalled": 91,
+            "userCategory": "user_nt"
         },
         {
-            "serialNumber": 12,
-            "userCategory": "user_111_361",
-            "connectCounts": 1,
-            "disconnectCounts": 3,
-            "detectedDate": "2024-01-09T00:00:00.000+08:00",
-            "note": null
+            "connectCounts": 2631,
+            "detectedDate": "2024-02-01T00:00:00.000+08:00",
+            "disconnectCounts": 961,
+            "notActive": 1,
+            "note": null,
+            "serialNumber": 221,
+            "uninstalled": 21,
+            "userCategory": "user_111_361"
         },
         {
-            "serialNumber": 13,
-            "userCategory": "user_112_400",
-            "connectCounts": 1,
-            "disconnectCounts": 3,
-            "detectedDate": "2024-01-09T00:00:00.000+08:00",
-            "note": null
+            "connectCounts": 2791,
+            "detectedDate": "2024-02-01T00:00:00.000+08:00",
+            "disconnectCounts": 641,
+            "notActive": 581,
+            "note": null,
+            "serialNumber": 211,
+            "uninstalled": 31,
+            "userCategory": "user_112_404"
         }
     ]
 }

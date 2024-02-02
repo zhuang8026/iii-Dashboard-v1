@@ -386,7 +386,7 @@ const Home = ({ match, history, location }) => {
         }
     };
 
-    // get API 002
+    // get API 002 (異常卡片資訊)
     const GET002API = async () => {
         const res = await getProblemStatus002API();
         if (res.code === 200) {
@@ -394,9 +394,9 @@ const Home = ({ match, history, location }) => {
                 let title =
                     data.userCategory === 'user_111_361'
                         ? '361戶'
-                        : data.userCategory === 'user_112_400'
-                        ? '400戶'
-                        : data.userCategory === 'others'
+                        : data.userCategory === 'user_112_404'
+                        ? '404戶'
+                        : data.userCategory === 'user_nt'
                         ? '新北市'
                         : 'none';
                 return {
@@ -404,28 +404,30 @@ const Home = ({ match, history, location }) => {
                     title: title,
                     content: [
                         { type: '離線', val: data.disconnectCounts },
-                        { type: '連線', val: data.connectCounts }
+                        { type: '連線', val: data.connectCounts },
+                        { type: '已拆除', val: data.uninstalled },
+                        { type: '未開通', val: data.notActive },
+                        // { type: '不接受維護', val: data.connectCounts },
                     ]
                 };
             });
 
             // 計算總和
-            const totalConnectCounts = res.data.reduce((sum, entry) => sum + entry.connectCounts, 0);
-            const totalDisconnectCounts = res.data.reduce((sum, entry) => sum + entry.disconnectCounts, 0);
+            const totalConnectCounts     = res.data.reduce((sum, entry) => sum + entry.connectCounts, 0);
+            const totalDisconnectCounts  = res.data.reduce((sum, entry) => sum + entry.disconnectCounts, 0);
+            const totalUninstalledCounts = res.data.reduce((sum, entry) => sum + entry.uninstalled, 0);
+            const totalNotActiveCounts   = res.data.reduce((sum, entry) => sum + entry.notActive, 0);
             // 轉換成所需的格式
             const total = [
                 {
                     type: 'Total',
                     title: '總用戶',
                     content: [
-                        {
-                            type: '離線',
-                            val: totalDisconnectCounts.toString()
-                        },
-                        {
-                            type: '連線',
-                            val: totalConnectCounts.toString()
-                        }
+                        {type: '離線',   val: totalDisconnectCounts.toString(),  color:'#ff7c32'},
+                        {type: '連線',   val: totalConnectCounts.toString(),     color:'#ffcb01'},
+                        {type: '已拆除', val: totalUninstalledCounts.toString(), color:'#4bd0ce'},
+                        {type: '未開通', val: totalNotActiveCounts.toString(),   color:'#2EA9DF'},
+                        // {type: '不接受維護', val: totalConnectCounts.toString()}
                     ]
                 }
             ];

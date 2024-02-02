@@ -59,36 +59,15 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
                 ) : type == 'Compare' ? (
                     <div className={cx('cardContent')}>
                         <div className={cx('cardCompare')}>
-                            <div className={cx('user')}>
-                                <span>{`${content[0].type}`}</span>
+                        {console.log(content)}
+                            {content.map((ele)=> (
+                                <div className={cx('user')}>
+                                <span>{`${ele.type}`}</span>
                                 <span>
-                                    <p>{content[0].val}</p> /戶
+                                    <p>{ele.val}</p> /戶
                                 </span>
                             </div>
-                            <div className={cx('user')}>
-                                <span>{`${content[1].type}`}</span>
-                                <span>
-                                    <p>{content[1].val}</p> /戶
-                                </span>
-                            </div>
-                            <div className={cx('user')}>
-                                <span>已拆除</span>
-                                <span>
-                                    <p>{content[1].val}</p> /戶
-                                </span>
-                            </div>
-                            <div className={cx('user')}>
-                                <span>未開通</span>
-                                <span>
-                                    <p>{content[1].val}</p> /戶
-                                </span>
-                            </div>
-                            <div className={cx('user')}>
-                                <span>不接受維護</span>
-                                <span>
-                                    <p>{content[1].val}</p> /戶
-                                </span>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 ) : type == 'Total' ? (
@@ -97,83 +76,22 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
                             <UiDoughnutNormalChart data={content} />
                         </div>
                         <div className={cx('cardTotal')}>
-                            <div className={cx('user')}>
+                            {content.map((ele)=> (
+                                <div className={cx('user')}>
                                 <div className={cx('type')}>
                                     <div
                                         className={cx('user_color')}
                                         style={{
-                                            backgroundColor: '#ff7c32'
+                                            backgroundColor: ele.color
                                         }}
                                     />
-                                    {`${content[0].type}`}
+                                    {`${ele.type}`}
                                 </div>
                                 <div className={cx('val')}>
-                                    {content[0].val}
-                                    <span> 戶</span>
+                                    {ele.val} <span> 戶</span>
                                 </div>
                             </div>
-                            <div className={cx('user')}>
-                                <div className={cx('type')}>
-                                    <div
-                                        className={cx('user_color')}
-                                        style={{
-                                            backgroundColor: '#ffcb01'
-                                        }}
-                                    />
-                                    {`${content[1].type}`}
-                                </div>
-                                <div className={cx('val')}>
-                                    {content[1].val}
-                                    <span> 戶</span>
-                                </div>
-                            </div>
-
-                            <div className={cx('user')}>
-                                <div className={cx('type')}>
-                                    <div
-                                        className={cx('user_color')}
-                                        style={{
-                                            backgroundColor: '#4bd0ce'
-                                        }}
-                                    />
-                                    已拆除
-                                </div>
-                                <div className={cx('val')}>
-                                    {content[1].val}
-                                    <span> 戶</span>
-                                </div>
-                            </div>
-                            <div className={cx('user')}>
-                                <div className={cx('type')}>
-                                    <div
-                                        className={cx('user_color')}
-                                        style={{
-                                            backgroundColor: '#2EA9DF'
-                                        }}
-                                    />
-                                    未開通
-                                </div>
-                                <div className={cx('val')}>
-                                    {content[1].val}
-                                    <span> 戶</span>
-                                </div>
-                            </div>
-                            <div className={cx('user')}>
-                                <div className={cx('type')}>
-                                    <div
-                                        className={cx('user_color')}
-                                        style={{
-                                            backgroundColor: '#86C166'
-                                        }}
-                                    />
-                                    不接受維護
-                                </div>
-                                <div className={cx('val')}>
-                                    {content[1].val}
-                                    <span> 戶</span>
-                                </div>
-                            </div>
-
+                            ))}
                             <div className={cx('user')}>
                                 <div className={cx('type')}>
                                     <div
@@ -185,7 +103,7 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
                                     {`總計`}
                                 </div>
                                 <div className={cx('val')}>
-                                    {Number(content[0].val) + Number(content[1].val)}
+                                    {Number(content[0].val) + Number(content[1].val) + Number(content[2].val) + Number(content[3].val)}
                                     <span> 戶</span>
                                 </div>
                             </div>
