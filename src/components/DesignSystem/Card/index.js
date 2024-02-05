@@ -59,7 +59,6 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
                 ) : type == 'Compare' ? (
                     <div className={cx('cardContent')}>
                         <div className={cx('cardCompare')}>
-                        {console.log(content)}
                             {content.map((ele)=> (
                                 <div className={cx('user')}>
                                 <span>{`${ele.type}`}</span>
@@ -97,7 +96,7 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
                                     <div
                                         className={cx('user_color')}
                                         style={{
-                                            backgroundColor: '#F17C67'
+                                            backgroundColor: '#6fff00'
                                         }}
                                     />
                                     {`總計`}

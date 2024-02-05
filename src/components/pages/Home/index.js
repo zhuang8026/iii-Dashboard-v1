@@ -210,11 +210,14 @@ const Home = ({ match, history, location }) => {
     // 卡片所有狀態
     const getCardStatus = apiData => {
         // 使用 reduce 函數對 problem 進行加總
-        const problemSummary = apiData.reduce((summary, item) => {
-            const { problem } = item;
-            // 如果 problem 已經存在於加總中，則增加其數量；否則，初始化為 1
-            summary[problem] = (summary[problem] || 0) + 1;
-            return summary;
+        const problemSummary = apiData.reduce((accumulator, entry) => {
+            // Check if status is not '已排外' or '已拆除'
+            if (!["已排外", "已拆除"].includes(entry.status)) {
+                // Increment the count for the specific problem type
+                const problemType = entry.problem;
+                accumulator[problemType] = (accumulator[problemType] || 0) + 1;
+            }
+            return accumulator;
         }, {});
 
         // 將加總結果轉換為指定格式的陣列
@@ -243,6 +246,7 @@ const Home = ({ match, history, location }) => {
                     case '已拆除':
                     case '等待維護':
                     case '不接受維護':
+                    case '已排外':
                         status = 'warning';
                         break;
                     case '未通知':
@@ -407,7 +411,7 @@ const Home = ({ match, history, location }) => {
                         { type: '連線', val: data.connectCounts },
                         { type: '已拆除', val: data.uninstalled },
                         { type: '未開通', val: data.notActive },
-                        // { type: '不接受維護', val: data.connectCounts },
+                        { type: '已排外', val: 1},
                     ]
                 };
             });
@@ -427,7 +431,7 @@ const Home = ({ match, history, location }) => {
                         {type: '連線',   val: totalConnectCounts.toString(),     color:'#ffcb01'},
                         {type: '已拆除', val: totalUninstalledCounts.toString(), color:'#4bd0ce'},
                         {type: '未開通', val: totalNotActiveCounts.toString(),   color:'#2EA9DF'},
-                        // {type: '不接受維護', val: totalConnectCounts.toString()}
+                        {type: '已排外', val: '1111', color:'#86C166'}
                     ]
                 }
             ];
@@ -567,7 +571,8 @@ const Home = ({ match, history, location }) => {
                 { text: '已通知', value: '已通知' },
                 { text: '已拆除', value: '已拆除' },
                 { text: '等待維護', value: '等待維護' },
-                { text: '不接受維護', value: '不接受維護' }
+                { text: '不接受維護', value: '不接受維護'},
+                { text: '已排外', value: '已排外' }
             ],
             // filterMode: 'tree',
             // filterSearch: true,

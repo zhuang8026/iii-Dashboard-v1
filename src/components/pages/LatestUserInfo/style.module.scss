@@ -1,0 +1,84 @@
+@import 'assets/scss/_variables';
+
+.eventDetail {
+    width: calc(100vw - 248px);
+    .d_header {
+        width: 100%;
+        height: 33px;
+        margin: 20px 20px 0 20px;
+        display: flex;
+        .title {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 0;
+            span {
+                font-size: 14px;
+                font-weight: normal;
+                color: $menu_color_2;
+                // margin-left: 5px;
+            }
+        }
+        .d_icon {
+            font-size: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .chart {
+        width: calc(100% - 40px);
+        // height: 500px;
+        margin: 10px auto;
+        // padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .chart_bg {
+            height: 420px;
+            background: #fff;
+            margin: 0 5px;
+            padding: 10px;
+        }
+        .chart_30 {
+            width: 33%;
+        }
+        .chart_40 {
+            width: 40%;
+        }
+        .chart_50 {
+            width: 50%;
+        }
+        .chart_60 {
+            width: 60%;
+        }
+    }
+    .detail_table {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        padding: 0 5px;
+        .table_title {
+            width: 100%;
+            margin: 0;
+            padding: 15px;
+            background: $table_color;
+            font-weight: bold;
+            // border-radius: 5px 5px 0 0;
+            overflow: hidden;
+        }
+        .editable-row .ant-form-item-explain {
+            position: absolute;
+            top: 100%;
+            font-size: 14px;
+        }
+        td {
+            font-size: 16px;
+        }
+    }
+    .margin_top {
+        margin-top: 20px;
+    }
+}

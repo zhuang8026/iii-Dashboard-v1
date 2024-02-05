@@ -1,7 +1,7 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
-import { AreaChartOutlined, HistoryOutlined, SettingOutlined } from '@ant-design/icons';
+import { AreaChartOutlined, HistoryOutlined, TeamOutlined } from '@ant-design/icons';
 
 // DesignSystem
 import NoMatch from 'components/DesignSystem/NoMatch';
@@ -160,19 +160,14 @@ function App({ match, location, history }) {
                 }
             ]
         };
-        let v3 = {
+        let v2_1 = {
             title: '用戶資訊',
             children: [
                 {
-                    name: 'demo1',
-                    path: '/demo1',
-                    icon: <SettingOutlined style={{ fontSize: '20px' }} />
+                    name: '今日用戶資訊',
+                    path: '/latestUserInfo',
+                    icon: <TeamOutlined style={{ fontSize: '20px' }} />
                 },
-                {
-                    name: 'demo2',
-                    path: '/demo2',
-                    icon: <SettingOutlined style={{ fontSize: '20px' }} />
-                }
             ]
         };
 
@@ -182,7 +177,7 @@ function App({ match, location, history }) {
             console.log('REACT_APP_VERSION_3:', REACT_APP_VERSION_3);
             if (REACT_APP_VERSION_1) {
                 if (REACT_APP_VERSION_2) {
-                    prev = [v2];
+                    prev = [v2, v2_1];
 
                     // 用戶資訊 暫未規劃，先隱藏
                     // if (REACT_APP_VERSION_3) {

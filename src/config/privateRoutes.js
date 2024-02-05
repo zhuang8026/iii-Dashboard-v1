@@ -3,6 +3,7 @@ import React, { lazy } from 'react';
 import Home from 'components/pages/Home';
 import EventDetail from 'components/pages/EventDetail';
 import History from 'components/pages/History';
+import LatestUserInfo from 'components/pages/LatestUserInfo';
 
 const privateRoutes = [
     {
@@ -22,7 +23,7 @@ const privateRoutes = [
         layouts: ['NavLeft']
     },
 
-    // version 2
+    // version 2 - data analysis
     {
         path: '/history',
         title: 'History',
@@ -39,6 +40,17 @@ const privateRoutes = [
         authRequired: false,
         layouts: ['NavLeft']
     },
+
+    // version 2 - user analysis
+    {
+        path: '/latestUserInfo',
+        title: 'Latest User Info',
+        component: LatestUserInfo,
+        exact: true,
+        authRequired: false,
+        layouts: ['NavLeft']
+    },
+
 ];
 
 export default privateRoutes;

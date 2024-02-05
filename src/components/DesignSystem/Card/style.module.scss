@@ -41,6 +41,16 @@
                 //     /* 最后一行的 border-bottom 设置为透明或与背景颜色相同 */
                 //     border-bottom: 1px solid transparent; /* 或使用与背景颜色相同的颜色 */
                 // }
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 4px;
+                    left: 0;
+                    display: block;
+                    width: 10px;
+                    height: 25px;
+                    border-radius: 10px;
+                }
             }
             .cardCompare {
                 display: flex;
@@ -49,7 +59,7 @@
                 flex-direction: column;
                 // font-size: 37px;
                 line-height: normal;
-                height: 100px;
+                height: 136px;
                 overflow-y: auto;
                 overflow-x: hidden;
 
@@ -70,6 +80,9 @@
                     padding: 4.5px 10px 4.5px 0;
                     margin: 0 10px 0 0;
                     border-bottom: 1px dashed $menu_color_1;
+                    &:last-child {
+                        border-bottom: 1px dashed transparent;
+                    }
                 }
             }
 
@@ -77,13 +90,6 @@
                 position: relative;
                 padding-left: 15px;
                 &::after {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    display: block;
-                    width: 10px;
-                    height: 31px;
                     background: $danger;
                     animation: breathe 0.5s infinite alternate; /* 呼吸閃爍動畫 */
                 }
@@ -92,13 +98,6 @@
                 position: relative;
                 padding-left: 15px;
                 &::after {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    display: block;
-                    width: 10px;
-                    height: 31px;
                     background: $warning;
                     // animation: expand 2s forwards; /* 動畫2秒，最後保持最終狀態 */
                 }
@@ -107,13 +106,6 @@
                 position: relative;
                 padding-left: 15px;
                 &::after {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    display: block;
-                    width: 10px;
-                    height: 31px;
                     background: $safe;
                     // animation: expand 2s forwards; /* 動畫2秒，最後保持最終狀態 */
                 }
