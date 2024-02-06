@@ -19,6 +19,7 @@ import outsideRoutes from 'config/routes';
 import { getCookie, eraseCookie } from 'utils/cookie';
 
 // Context
+import AdminContainer, { AdminContext } from 'contexts/admin';
 import GlobalContainer, { GlobalContext } from 'contexts/global';
 
 // css
@@ -29,6 +30,7 @@ const cx = classNames.bind(classes);
 function App({ match, location, history }) {
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { REACT_APP_VERSION_1, REACT_APP_VERSION_2, REACT_APP_VERSION_3 } = useContext(GlobalContext);
+    const { admin } = useContext(AdminContext);
     const [layouts, setLayouts] = useState([]);
     const [menuList, setMenuList] = useState([]);
 

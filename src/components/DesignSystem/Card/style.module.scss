@@ -16,7 +16,7 @@
         // overflow-x: hidden;
         // overflow-y: auto;
         .cardTitle {
-            max-width: 70px;
+            max-width: 90px;
             margin-bottom: 5px;
             font-size: 14px;
             border-radius: 10px;
@@ -158,6 +158,26 @@
                             font-size: 16px;
                         }
                     }
+                }
+            }
+        }
+        .numberContent {
+            height: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .num {
+                font-size: 54px;
+                font-weight: bold;
+                span {
+                    font-size: 14px;
+                    margin: 0;
+                    padding: 0;
+                }
+                p {
+                    font-size: 14px;
+                    margin: 0;
+                    padding: 0;
                 }
             }
         }

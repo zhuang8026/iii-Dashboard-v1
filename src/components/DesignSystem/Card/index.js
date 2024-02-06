@@ -33,7 +33,12 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
     };
 
     return (
-        <div className={cx('card', type == 'Table' ? 'table' : type == 'Compare' ? 'compare' : 'total')}>
+        <div
+            className={cx(
+                'card',
+                type == 'Table' || type == 'Number' ? 'table' : type == 'Compare' ? 'compare' : 'total'
+            )}
+        >
             <div className={cx('inner')}>
                 <div className={cx('cardTitle')}>{title}</div>
                 {type == 'Table' ? (
@@ -51,7 +56,7 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
                                             {obj.type}
                                         </Checkbox>
                                     </p>
-                                    {obj.val}
+                                    {obj.val} 件
                                 </div>
                             );
                         })}
@@ -59,13 +64,13 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
                 ) : type == 'Compare' ? (
                     <div className={cx('cardContent')}>
                         <div className={cx('cardCompare')}>
-                            {content.map((ele)=> (
-                                <div className={cx('user')}>
-                                <span>{`${ele.type}`}</span>
-                                <span>
-                                    <p>{ele.val}</p> /戶
-                                </span>
-                            </div>
+                            {content.map((ele, index) => (
+                                <div className={cx('user')} key={index}>
+                                    <span>{`${ele.type}`}</span>
+                                    <span>
+                                        <p>{ele.val}</p> 戶
+                                    </span>
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -75,21 +80,21 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
                             <UiDoughnutNormalChart data={content} />
                         </div>
                         <div className={cx('cardTotal')}>
-                            {content.map((ele)=> (
+                            {content.map(ele => (
                                 <div className={cx('user')}>
-                                <div className={cx('type')}>
-                                    <div
-                                        className={cx('user_color')}
-                                        style={{
-                                            backgroundColor: ele.color
-                                        }}
-                                    />
-                                    {`${ele.type}`}
+                                    <div className={cx('type')}>
+                                        <div
+                                            className={cx('user_color')}
+                                            style={{
+                                                backgroundColor: ele.color
+                                            }}
+                                        />
+                                        {`${ele.type}`}
+                                    </div>
+                                    <div className={cx('val')}>
+                                        {ele.val} <span> 戶</span>
+                                    </div>
                                 </div>
-                                <div className={cx('val')}>
-                                    {ele.val} <span> 戶</span>
-                                </div>
-                            </div>
                             ))}
                             <div className={cx('user')}>
                                 <div className={cx('type')}>
@@ -102,10 +107,21 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
                                     {`總計`}
                                 </div>
                                 <div className={cx('val')}>
-                                    {Number(content[0].val) + Number(content[1].val) + Number(content[2].val) + Number(content[3].val)}
+                                    {Number(content[0].val) +
+                                        Number(content[1].val) +
+                                        Number(content[2].val) +
+                                        Number(content[3].val)}
                                     <span> 戶</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                ) : type == 'Number' ? (
+                    <div className={cx('cardContent', 'numberContent')}>
+                        <div className={cx('num')}>
+                            {content.val}  
+                            <span>戶</span>
+                            <p>(共: {content.total} 戶)</p>
                         </div>
                     </div>
                 ) : (

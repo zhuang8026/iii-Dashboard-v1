@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 
+// antd
+import { notification } from 'antd';
+
+// Context
+import AdminContainer, { AdminContext } from 'contexts/admin';
+
+// utils
 import { setCookie } from 'utils/cookie';
 
 // DesignSystem
@@ -13,12 +20,14 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
 const Login = ({ history }) => {
+    const { admin } = useContext(AdminContext);
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const [seeType, setSeeType] = useState('password');
     const [info, setInfo] = useState({
         user: '',
         pwd: '',
-        token: '0987654321poiuytrewqlkjhgfdsamnbvcxz'
+        role: '',
+        token: ''
     });
 
     const setAdminInfo = (type, value) => {
@@ -28,12 +37,31 @@ const Login = ({ history }) => {
     const loginin = () => {
         openLoading();
 
-        setTimeout(() => {
-            // testing, must wirte to API
-            setCookie('iii_token', info.token); // 設定cookie
+        let checkUser = admin.filter(ele => ele.user === `${info.user}` && ele.pwd === `${info.pwd}`);
+        if (checkUser.length > 0) {
+            setCookie('iii_token', checkUser[0].token); // 設定cookie
+            setCookie('iii_role', checkUser[0].role); // 設定cookie
+
+            notification['success']({
+                message: 'Success',
+                description: 'Login successfully.'
+            });
+
             history.replace('/main');
             closeLoading();
-        }, 1000);
+        } else {
+            notification['error']({
+                message: 'Error',
+                description: 'Username or Password is wrong.'
+            });
+            closeLoading();
+        }
+        // setTimeout(() => {
+        //     // testing, must wirte to API
+        //     setCookie('iii_token', info.token); // 設定cookie
+        //     history.replace('/main');
+        //     closeLoading();
+        // }, 1000);
     };
 
     // open loading

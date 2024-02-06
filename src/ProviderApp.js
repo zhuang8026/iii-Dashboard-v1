@@ -4,7 +4,7 @@ import React from 'react';
 import App from './App';
 
 // contexts
-// import AdminContainer from 'contexts/admin';
+import AdminContainer from 'contexts/admin';
 
 /**
  * desc:
@@ -12,7 +12,11 @@ import App from './App';
  *
  */
 function ProviderApp() {
-  return <App />;
+    return (
+        <AdminContainer>
+            <App />
+        </AdminContainer>
+    );
 }
 
 export default ProviderApp;

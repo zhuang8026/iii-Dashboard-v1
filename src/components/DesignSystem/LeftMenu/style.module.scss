@@ -108,3 +108,20 @@
         font-size: 14px;
     }
 }
+.admin_menu {
+    background-image: linear-gradient(to bottom, #4E4394, #4E4394);
+    .top {
+        .menu_Logo {
+            height: auto;
+            img {
+                width: 100%;
+            }
+            p {
+                margin: 0;
+            }
+            .logo_name {
+                color: #fff;
+            }
+        }
+    }
+}

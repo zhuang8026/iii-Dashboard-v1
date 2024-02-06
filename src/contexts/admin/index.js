@@ -8,11 +8,20 @@ export const AdminContext = createContext();
 
 const AdminContainer = props => {
     const { history, location, match } = props;
-    const [admin, setAdmin] = useState({
-        user: 'test@iii.org.tw',
-        pwd: '0987654321',
-        token: '0987654321poiuytrewqlkjhgfdsamnbvcxz'
-    });
+    const [admin, setAdmin] = useState([
+        {
+            user: 'energy',
+            pwd: '123456',
+            token: '123456_abcdefghijk',
+            role: 'normal'
+        },
+        {
+            user: 'admin',
+            pwd: '0987654321',
+            token: '0987654321_abcdefghijk',
+            role: 'admin'
+        }
+    ]);
     // const [isLoggedIn, setIsLoggedIn] = useState(false); // 載入專用
 
     // const isAuth = getCookie('iii_token'); // cookie testing

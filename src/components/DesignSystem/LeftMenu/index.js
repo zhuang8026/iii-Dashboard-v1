@@ -7,10 +7,13 @@ import GlobalContainer, { GlobalContext } from 'contexts/global';
 // config
 import { III_VERSION } from 'config';
 
+// utils
+import { getCookie } from 'utils/cookie';
+
 // icon
 import user from 'assets/images/user.svg';
 import notification from 'assets/images/notification.svg';
-import settings from 'assets/images/settings.svg';
+// import settings from 'assets/images/settings.svg';
 
 // DesignSystem
 import NILMPopup from 'components/DesignSystem/NILMPopup';
@@ -21,6 +24,7 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
 const Menu = ({ match, location, history, menuList, logoutAPI }) => {
+    const CookiesRole = getCookie('iii_role');
     const [list, setList] = useState([]);
     const [isClick, setIsClick] = useState('/main');
 
@@ -63,12 +67,21 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
     }, [location]);
 
     return (
-        <div className={cx('menu')}>
+        <div className={cx('menu', CookiesRole === 'admin' && 'admin_menu')}>
             <div className={cx('top')}>
                 <div className={cx('menu_Logo')}>
-                    <img src={require(`assets/images/iii.png`)} alt="logo" />
-                    <p className={cx('logo_name')}>財團法人資訊工業策進會</p>
-                    <p className={cx('line')} />
+                    {CookiesRole === 'admin' ? (
+                        <>
+                            <img src={require(`assets/images/develop1.gif`)} alt="logo" />
+                            {/* <p className={cx('logo_name')}>RD開發環境</p> */}
+                        </>
+                    ) : (
+                        <>
+                            <img src={require(`assets/images/iii.png`)} alt="logo" />
+                            <p className={cx('logo_name')}>財團法人資訊工業策進會</p>
+                            <p className={cx('line')} />
+                        </>
+                    )}
                     <p>故障檢測與資料品質管理系統</p>
                     {/* Prognostic and Data Quality Management */}
                     <span>v.{III_VERSION}</span>
@@ -110,15 +123,16 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
                 {REACT_APP_VERSION_3 && (
                     <div className={cx('setting', 'user')} onClick={() => logout()}>
                         <img alt="" src={user} />
-                        Account Logout
+                        登出
                     </div>
                 )}
-                {REACT_APP_VERSION_3 && (
+                {/* 暫時隱藏 */}
+                {/* {REACT_APP_VERSION_3 && (
                     <div className={cx('setting', 'user')}>
                         <img alt="" src={settings} />
                         Settings
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );

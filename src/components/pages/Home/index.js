@@ -35,13 +35,10 @@ const Home = ({ match, history, location }) => {
     const [card, setCard] = useState([]);
     const [editingKey, setEditingKey] = useState('');
     const [cardFilter, setCardFilter] = useState({ type: [], status: [] });
-    const [city, setCity] = useState([
-        { text: '台北市', num: 0, value: '台北市' },
-    ]);
-    const [device, setDevice] = useState([
-        { text: 'insynerger_1', num: 0, value: 'insynerger_1' },
-    ]);
-
+    const [city, setCity] = useState([{ text: '台北市', num: 0, value: '台北市' }]);
+    const [device, setDevice] = useState([{ text: 'insynerger_1', num: 0, value: 'insynerger_1' }]);
+    const CookiesRole = getCookie('iii_role');
+    // const [role, setRole] = useState(getCookie('iii_role') || '');
     // const fetchListener = useRef();
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
@@ -209,10 +206,46 @@ const Home = ({ match, history, location }) => {
 
     // 卡片所有狀態
     const getCardStatus = apiData => {
+        // 创建一个 Map 来存储合并后的数据，键为名称，值为相应名称的问题类型计数
+        const mergedDataMap = new Map();
+        // 遍历数据数组
+        apiData.forEach(entry => {
+            // 如果 Map 中已存在该名称，则不做处理
+            if (!mergedDataMap.has(entry.name)) {
+                mergedDataMap.set(entry.name, 1);
+            }
+        });
+
+        // 计算合并后的数据总数
+        const totalMergedCount = Array.from(mergedDataMap.values()).reduce((acc, count) => acc + count, 0);
+        console.log('用戶總數:', totalMergedCount);
+
+        // 將加總結果轉換為指定格式的陣列
+        const completedCount = Object.values(
+            apiData.reduce((groups, entry) => {
+                if (entry.status === '已完成' || 
+                    entry.status === '已拆除' ||
+                    entry.status === '已排外' ||
+                    entry.status === '不接受維護'
+                    ) {
+                    groups[entry.name] = groups[entry.name] || [];
+                    groups[entry.name].push(entry);
+                }
+                return groups;
+            }, {})
+        ).filter(group => group.length > 1).length;
+        console.log('已完成數量:', completedCount);
+
+        const FaultyUser = {
+            type: '待維修戶數',
+            val: totalMergedCount - completedCount, // 计算总数减去已完成的数量
+            total: totalMergedCount
+        };
+
         // 使用 reduce 函數對 problem 進行加總
         const problemSummary = apiData.reduce((accumulator, entry) => {
             // Check if status is not '已排外' or '已拆除'
-            if (!["已排外", "已拆除"].includes(entry.status)) {
+            if (!['已完成', '已拆除'].includes(entry.status)) {
                 // Increment the count for the specific problem type
                 const problemType = entry.problem;
                 accumulator[problemType] = (accumulator[problemType] || 0) + 1;
@@ -271,14 +304,22 @@ const Home = ({ match, history, location }) => {
         // 綠色開發區塊（2塊）
         let card = [
             {
-                type: 'Table',
-                title: '故障類別',
-                content: resultProblem
+                type: 'Number',
+                title: '待維修戶數',
+                content: FaultyUser,
+                role: ['normal', 'admin']
             },
             {
                 type: 'Table',
-                title: '故障狀態',
-                content: resultStatus
+                title: '故障類別',
+                content: resultProblem,
+                role: ['admin']
+            },
+            {
+                type: 'Table',
+                title: '處理狀態',
+                content: resultStatus,
+                role: ['normal', 'admin']
             }
         ];
         setCard([...card]);
@@ -321,9 +362,9 @@ const Home = ({ match, history, location }) => {
     const getAreaCount = async apiData => {
         // 提取所有 "deviceSource" 的值
         let area = apiData.map(user => {
-            if(user.area) {
+            if (user.area) {
                 let area_split = user.area.split(/市|縣/)[0].trim();
-                return area_split + (user.area.includes("市") ? "市" : "縣");
+                return area_split + (user.area.includes('市') ? '市' : '縣');
             }
             return 'NULL';
         });
@@ -339,9 +380,9 @@ const Home = ({ match, history, location }) => {
             return {
                 text: key,
                 value: key,
-                num: areaCounts[key],
+                num: areaCounts[key]
                 // img: key ? <img src={require(`assets/images/${key}.png`)} alt="" /> : <div/>,
-            }
+            };
         });
 
         // 打印結果
@@ -407,32 +448,34 @@ const Home = ({ match, history, location }) => {
                     type: 'Compare',
                     title: title,
                     content: [
-                        { type: '離線', val: data.disconnectCounts },
+                        { type: '斷線', val: data.disconnectCounts },
                         { type: '連線', val: data.connectCounts },
                         { type: '已拆除', val: data.uninstalled },
                         { type: '未開通', val: data.notActive },
-                        { type: '已排外', val: 1},
-                    ]
+                        { type: '已排外', val: 1 }
+                    ],
+                    role: ['normal', 'admin']
                 };
             });
 
             // 計算總和
-            const totalConnectCounts     = res.data.reduce((sum, entry) => sum + entry.connectCounts, 0);
-            const totalDisconnectCounts  = res.data.reduce((sum, entry) => sum + entry.disconnectCounts, 0);
+            const totalConnectCounts = res.data.reduce((sum, entry) => sum + entry.connectCounts, 0);
+            const totalDisconnectCounts = res.data.reduce((sum, entry) => sum + entry.disconnectCounts, 0);
             const totalUninstalledCounts = res.data.reduce((sum, entry) => sum + entry.uninstalled, 0);
-            const totalNotActiveCounts   = res.data.reduce((sum, entry) => sum + entry.notActive, 0);
+            const totalNotActiveCounts = res.data.reduce((sum, entry) => sum + entry.notActive, 0);
             // 轉換成所需的格式
             const total = [
                 {
                     type: 'Total',
                     title: '總用戶',
                     content: [
-                        {type: '離線',   val: totalDisconnectCounts.toString(),  color:'#ff7c32'},
-                        {type: '連線',   val: totalConnectCounts.toString(),     color:'#ffcb01'},
-                        {type: '已拆除', val: totalUninstalledCounts.toString(), color:'#4bd0ce'},
-                        {type: '未開通', val: totalNotActiveCounts.toString(),   color:'#2EA9DF'},
-                        {type: '已排外', val: '1111', color:'#86C166'}
-                    ]
+                        { type: '斷線', val: totalDisconnectCounts.toString(), color: '#ff7c32' },
+                        { type: '連線', val: totalConnectCounts.toString(), color: '#ffcb01' },
+                        { type: '已拆除', val: totalUninstalledCounts.toString(), color: '#4bd0ce' },
+                        { type: '未開通', val: totalNotActiveCounts.toString(), color: '#2EA9DF' },
+                        { type: '已排外', val: '1111', color: '#86C166' }
+                    ],
+                    role: ['normal', 'admin']
                 }
             ];
 
@@ -571,7 +614,7 @@ const Home = ({ match, history, location }) => {
                 { text: '已通知', value: '已通知' },
                 { text: '已拆除', value: '已拆除' },
                 { text: '等待維護', value: '等待維護' },
-                { text: '不接受維護', value: '不接受維護'},
+                { text: '不接受維護', value: '不接受維護' },
                 { text: '已排外', value: '已排外' }
             ],
             // filterMode: 'tree',
@@ -688,15 +731,19 @@ const Home = ({ match, history, location }) => {
             </h1>
             <div className={cx('top_card')}>
                 {card.length > 0
-                    ? card.map((item, index) => (
-                          <UiCard
-                              type={item.type}
-                              title={item.title}
-                              content={item.content}
-                              key={index}
-                              onClick={val => handleStatusClick(val)}
-                          />
-                      ))
+                    ? card.map((item, index) => {
+                          if (item.role.includes(CookiesRole)) {
+                              return (
+                                  <UiCard
+                                      type={item.type}
+                                      title={item.title}
+                                      content={item.content}
+                                      key={index}
+                                      onClick={val => handleStatusClick(val)}
+                                  />
+                              );
+                          }
+                      })
                     : ''}
             </div>
             <div className={cx('home')}>

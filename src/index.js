@@ -5,7 +5,8 @@ import ReactDOM from 'react-dom';
 // BrowserRouter: 頁面路徑不會有井字，但換url時會發送request。
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import App from './App';
+// import App from './App';
+import ProviderApp from './ProviderApp';
 import * as serviceWorker from './serviceWorker';
 
 // contexts
@@ -30,7 +31,7 @@ ReactDOM.render(
             <ConfigProvider locale={locale}>
                 <GlobalContainer>
                     <AdminContainer>
-                        <App />
+                        <ProviderApp />
                     </AdminContainer>
                 </GlobalContainer>
             </ConfigProvider>
