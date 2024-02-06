@@ -211,8 +211,8 @@ const Home = ({ match, history, location }) => {
         // 遍历数据数组
         apiData.forEach(entry => {
             // 如果 Map 中已存在该名称，则不做处理
-            if (!mergedDataMap.has(entry.name)) {
-                mergedDataMap.set(entry.name, 1);
+            if (!mergedDataMap.has(entry.userId)) {
+                mergedDataMap.set(entry.userId, 1);
             }
         });
 
@@ -228,8 +228,8 @@ const Home = ({ match, history, location }) => {
                     entry.status === '已排外' ||
                     entry.status === '不接受維護'
                     ) {
-                    groups[entry.name] = groups[entry.name] || [];
-                    groups[entry.name].push(entry);
+                    groups[entry.userId] = groups[entry.userId] || [];
+                    groups[entry.userId].push(entry);
                 }
                 return groups;
             }, {})
