@@ -120,7 +120,7 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
                         通知
                     </div>
                 )}
-                {REACT_APP_VERSION_3 && (
+                {REACT_APP_VERSION_2 && (
                     <div className={cx('setting', 'user')} onClick={() => logout()}>
                         <img alt="" src={user} />
                         登出

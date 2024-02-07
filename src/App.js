@@ -84,7 +84,7 @@ function App({ match, location, history }) {
 
     // menu (layout & url)
     const getLayoutsCallBack = () => {
-        if (REACT_APP_VERSION_3) {
+        // if (REACT_APP_VERSION_3) {
             if (isAuth) {
                 privateRoutes.map((route, key) => {
                     let layoutPath = [];
@@ -102,18 +102,18 @@ function App({ match, location, history }) {
                 // no auth (token error)
                 setLayouts([]);
             }
-        } else {
-            privateRoutes.map((route, key) => {
-                let layoutPath = [];
-                layoutPath.push(route.path.split('/')[1]);
+        // } else {
+        //     privateRoutes.map((route, key) => {
+        //         let layoutPath = [];
+        //         layoutPath.push(route.path.split('/')[1]);
 
-                if (layoutPath[0].toUpperCase() === location.pathname.split('/')[1].toUpperCase()) {
-                    setLayouts(route.layouts);
-                } else {
-                    console.log('no fund');
-                }
-            });
-        }
+        //         if (layoutPath[0].toUpperCase() === location.pathname.split('/')[1].toUpperCase()) {
+        //             setLayouts(route.layouts);
+        //         } else {
+        //             console.log('no fund');
+        //         }
+        //     });
+        // }
     };
 
     // open loading
