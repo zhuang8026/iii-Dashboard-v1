@@ -54,6 +54,11 @@ function App({ match, location, history }) {
 
     // 需要 auth 的路由
     const PrivateRoutes = () => {
+        // Redirect if not authenticated
+        if (!isAuth) {
+            return <Redirect to="/login" />;
+        }
+
         return privateRoutes.map((route, key) => (
             <Route
                 key={`route_${key}`}
@@ -214,9 +219,9 @@ function App({ match, location, history }) {
                 {/* 路由頁面 */}
                 <Suspense fallback={<></>}>
                     <Switch location={location}>
-                        {OutsideRoutes()}
-                        {PrivateRoutes()}
-                        {RedirectRouter()}
+                        {OutsideRoutes()}  {/* 不需要 auth 的路由 */}
+                        {PrivateRoutes()}  {/* 需要 auth 的路由 */}
+                        {RedirectRouter()} {/* 重定向 */}
                         <Route component={NoMatch} />
                     </Switch>
                 </Suspense>

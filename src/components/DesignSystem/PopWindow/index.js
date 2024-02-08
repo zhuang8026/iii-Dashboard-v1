@@ -13,6 +13,7 @@ export const withPopWindowProvider = WrappedComponent => {
         };
 
         const closeDialog = () => {
+            console.log('closeDialog')
             setAnimateObj(null);
         };
 

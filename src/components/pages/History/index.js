@@ -347,7 +347,7 @@ const Home = ({ match, history, location }) => {
                 // img: key ? <img src={require(`assets/images/${key}.png`)} alt="" /> : <div/>,
             }
         });
-
+        console.log(result)
         // 打印結果
         setCity([...result]);
     };
