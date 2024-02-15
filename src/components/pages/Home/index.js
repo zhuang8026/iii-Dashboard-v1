@@ -216,11 +216,11 @@ const Home = ({ match, history, location }) => {
             }
         });
 
-        // 计算合并后的数据总数
+        // [全部] 计算合并后的数据总数
         const totalMergedCount = Array.from(mergedDataMap.values()).reduce((acc, count) => acc + count, 0);
         console.log('用戶總數:', totalMergedCount);
 
-        // 將加總結果轉換為指定格式的陣列
+        // [已完成] 將加總結果轉換為指定格式的陣列
         const completedCount = Object.values(
             apiData.reduce((groups, entry) => {
                 if (entry.status === '已完成' || 
@@ -239,6 +239,7 @@ const Home = ({ match, history, location }) => {
         const FaultyUser = {
             type: '待維修戶數',
             val: totalMergedCount - completedCount, // 计算总数减去已完成的数量
+            complete: completedCount,
             total: totalMergedCount
         };
 
@@ -473,7 +474,7 @@ const Home = ({ match, history, location }) => {
                         { type: '連線', val: totalConnectCounts.toString(), color: '#ffcb01' },
                         { type: '已拆除', val: totalUninstalledCounts.toString(), color: '#4bd0ce' },
                         { type: '未開通', val: totalNotActiveCounts.toString(), color: '#2EA9DF' },
-                        { type: '已排外', val: '1111', color: '#86C166' }
+                        { type: '已排外', val: 3, color: '#86C166' }
                     ],
                     role: ['normal', 'admin']
                 }

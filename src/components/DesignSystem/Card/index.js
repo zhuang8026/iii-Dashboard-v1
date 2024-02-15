@@ -119,9 +119,10 @@ const Card = ({ type = 'Table', title = 'TEST', content = [], onClick }) => {
                 ) : type == 'Number' ? (
                     <div className={cx('cardContent', 'numberContent')}>
                         <div className={cx('num')}>
-                            {content.val}  
-                            <span>戶</span>
-                            <p>(共: {content.total} 戶)</p>
+                            <span>剩 </span>
+                            {content.val}
+                            <span> 戶</span>
+                            <p>已完成 {content.complete} / {content.total} 戶</p>
                         </div>
                     </div>
                 ) : (
