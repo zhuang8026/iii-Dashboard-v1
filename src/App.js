@@ -171,7 +171,7 @@ function App({ match, location, history }) {
             title: '用戶資訊',
             children: [
                 {
-                    name: '今日用戶資訊',
+                    name: '每日用戶資訊',
                     path: '/latestUserInfo',
                     icon: <TeamOutlined style={{ fontSize: '20px' }} />
                 },

@@ -38,9 +38,11 @@
         align-items: center;
         .chart_bg {
             height: 420px;
+            margin: 0px;
+            padding: 0px;
+        }
+        .bg_white {
             background: #fff;
-            margin: 0 5px;
-            padding: 10px;
         }
         .chart_30 {
             width: 33%;
@@ -53,6 +55,24 @@
         }
         .chart_60 {
             width: 60%;
+        }
+        .chart_100 {
+            width: 100%;
+        }
+        .download {
+            margin-bottom: 20px;
+            .inner {
+                width: 100px;
+            }
+        }
+        h2 {
+            font-size: 16px;
+            font-weight: bold;
+            span {
+                font-size: 12px;
+                font-weight: normal;
+                color: $text;
+            }
         }
     }
     .detail_table {

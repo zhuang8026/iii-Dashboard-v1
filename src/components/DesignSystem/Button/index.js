@@ -10,10 +10,10 @@ import classes from './style_module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
-const Button = ({onClick}) => {
+const Button = ({ onClick = () => {}, text = 'OK' }) => {
     return (
         <div className={cx('button')} onClick={() => onClick()}>
-            OK
+            {text}
         </div>
     );
 };
