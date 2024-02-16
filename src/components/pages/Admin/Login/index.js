@@ -39,8 +39,10 @@ const Login = ({ history }) => {
 
         let checkUser = admin.filter(ele => ele.user === `${info.user}` && ele.pwd === `${info.pwd}`);
         if (checkUser.length > 0) {
+            console.log(checkUser)
             setCookie('iii_token', checkUser[0].token); // 設定cookie
-            setCookie('iii_role', checkUser[0].role); // 設定cookie
+            setCookie('iii_role', checkUser[0].role); // 設定role
+            setCookie('iii_user', checkUser[0].user); // 設定role
 
             notification['success']({
                 message: 'Success',

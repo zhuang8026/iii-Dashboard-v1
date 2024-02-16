@@ -13,7 +13,7 @@ import { getCookie } from 'utils/cookie';
 // icon
 import user from 'assets/images/user.svg';
 import notification from 'assets/images/notification.svg';
-// import settings from 'assets/images/settings.svg';
+import { LogoutOutlined } from '@ant-design/icons';
 
 // DesignSystem
 import NILMPopup from 'components/DesignSystem/NILMPopup';
@@ -25,6 +25,7 @@ const cx = classNames.bind(classes);
 
 const Menu = ({ match, location, history, menuList, logoutAPI }) => {
     const CookiesRole = getCookie('iii_role');
+    const CookiesUser = getCookie('iii_user');
     const [list, setList] = useState([]);
     const [isClick, setIsClick] = useState('/main');
 
@@ -123,7 +124,10 @@ const Menu = ({ match, location, history, menuList, logoutAPI }) => {
                 {REACT_APP_VERSION_2 && (
                     <div className={cx('setting', 'user')} onClick={() => logout()}>
                         <img alt="" src={user} />
-                        登出
+                        <p className={cx('name')}>
+                            {CookiesUser}
+                            <span>{CookiesRole}</span>
+                        </p>
                     </div>
                 )}
                 {/* 暫時隱藏 */}

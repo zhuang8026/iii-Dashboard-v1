@@ -107,9 +107,22 @@
     span {
         font-size: 14px;
     }
+    p {
+        margin: 0;
+        font-weight: bold;
+    }
+    .name {
+        display: flex;
+        flex-direction: column;
+        text-transform:uppercase;
+        span {
+            font-weight: 100;
+            font-size: 12px;
+        }
+    }
 }
 .admin_menu {
-    background-image: linear-gradient(to bottom, #4E4394, #4E4394);
+    background-image: linear-gradient(to bottom, #4e4394, #4e4394);
     .top {
         .menu_Logo {
             height: auto;

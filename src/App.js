@@ -135,6 +135,8 @@ function App({ match, location, history }) {
         openLoading();
         setTimeout(() => {
             eraseCookie('iii_token');
+            eraseCookie('iii_role');
+            eraseCookie('iii_user');
             history.replace('/login');
             closeLoading();
         }, 1000);
