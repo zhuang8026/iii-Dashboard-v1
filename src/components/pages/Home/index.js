@@ -18,7 +18,7 @@ import TableSearch from 'components/DesignSystem/TableSearch';
 import GlobalContainer, { GlobalContext } from 'contexts/global';
 
 // API
-import { getProblemStatus001API, getProblemStatus002API, postProblemStatus003API } from 'api/api';
+import { getHistory001API, getProblemStatus001API, getProblemStatus002API, postProblemStatus003API } from 'api/api';
 
 // utils
 import { setCookie, getCookie } from 'utils/cookie';
@@ -218,28 +218,47 @@ const Home = ({ match, history, location }) => {
 
         // [全部] 计算合并后的数据总数
         const totalMergedCount = Array.from(mergedDataMap.values()).reduce((acc, count) => acc + count, 0);
-        console.log('用戶總數:', totalMergedCount);
+        // console.log('用戶總數:', totalMergedCount);
 
-        // [已完成] 將加總結果轉換為指定格式的陣列
-        const completedCount = Object.values(
-            apiData.reduce((groups, entry) => {
-                if (entry.status === '已完成' || 
-                    entry.status === '已拆除' ||
-                    entry.status === '已排外' ||
-                    entry.status === '不接受維護'
-                    ) {
-                    groups[entry.userId] = groups[entry.userId] || [];
-                    groups[entry.userId].push(entry);
-                }
-                return groups;
-            }, {})
-        ).filter(group => group.length > 1).length;
-        console.log('已完成數量:', completedCount);
+        // // [已完成] 將加總結果轉換為指定格式的陣列
+        // const completedCount = Object.values(
+        //     apiData.reduce((groups, entry) => {
+        //         if (
+        //             entry.status === '已完成' ||
+        //             entry.status === '已拆除' ||
+        //             entry.status === '已排外' ||
+        //             entry.status === '不接受維護'
+        //         ) {
+        //             groups[entry.userId] = groups[entry.userId] || [];
+        //             groups[entry.userId].push(entry);
+        //         }
+        //         return groups;
+        //     }, {})
+        // ).filter(group => group.length >= 1).length;
+
+        // [已完成] 多用戶相同狀態計算已完成的数量    
+        let completedUser = []; // 存储已经计数过的userId
+        apiData.filter(
+            entry =>
+                entry.status === '已完成' &&
+                !completedUser.includes(entry.userId) &&
+                apiData
+                    .filter(e => e.userId === entry.userId)
+                    .every(
+                        e =>
+                            e.status === '已完成' ||
+                            e.status === '已拆除' ||
+                            e.status === '已排外' ||
+                            e.status === '不接受維護'
+                    ) &&
+                (completedUser.push(entry.userId) || true) // 添加userId到已计数数组中，返回true以继续筛选
+        );
+        // console.log('已完成或已拆除的数量:', completedUser);
 
         const FaultyUser = {
             type: '待維修戶數',
-            val: totalMergedCount - completedCount, // 计算总数减去已完成的数量
-            complete: completedCount,
+            val: totalMergedCount - completedUser.length, // 计算总数减去已完成的数量
+            complete: completedUser.length,
             total: totalMergedCount
         };
 
@@ -392,8 +411,17 @@ const Home = ({ match, history, location }) => {
 
     // get API 001
     const GET001API = async () => {
+        let days = 1;
+        let unixStart = ''; // 开始时间戳
+        let unixEnd = ''; // 結束时间戳
+        // 获取今天的开始时间（00:00:00）
+        const today = moment();
+        // 转换为Unix时间戳，包括到毫秒的信息
+        unixStart = today.startOf('day').valueOf(); // 获取今天的开始时间（00:00:00）
+        unixEnd = today.endOf('day').valueOf(); // 获取今天的结束时间（23:59:59）
+
         openLoading();
-        const res = await getProblemStatus001API();
+        const res = await getHistory001API(days, unixStart, unixEnd);
         if (res.code === 200) {
             let tableItem = res.data.map((val, i) => {
                 let updateTime = val.statusUpdateTime ? moment(val.statusUpdateTime).format('YYYY/MM/DD HH:mm') : '';
@@ -415,7 +443,8 @@ const Home = ({ match, history, location }) => {
                 };
             });
             setData([...tableItem]);
-            // 將資料轉換為 JSON 字串並存儲在 localStorage 中
+
+            // 點擊filter卡片，改變table資料使用，將資料轉換為 JSON 字串並存儲在 localStorage 中
             localStorage.setItem('currentData', JSON.stringify(tableItem));
 
             // 計算卡片總和
