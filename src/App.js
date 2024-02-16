@@ -1,7 +1,7 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
-import { AreaChartOutlined, HistoryOutlined, TeamOutlined } from '@ant-design/icons';
+import { AreaChartOutlined, HistoryOutlined, TeamOutlined, ThunderboltOutlined, BankOutlined } from '@ant-design/icons';
 
 // DesignSystem
 import NoMatch from 'components/DesignSystem/NoMatch';
@@ -90,23 +90,23 @@ function App({ match, location, history }) {
     // menu (layout & url)
     const getLayoutsCallBack = () => {
         // if (REACT_APP_VERSION_3) {
-            if (isAuth) {
-                privateRoutes.map((route, key) => {
-                    let layoutPath = [];
-                    layoutPath.push(route.path.split('/')[1]);
-                    if (layoutPath[0].toUpperCase() === history.location.pathname.split('/')[1].toUpperCase()) {
-                        setLayouts(prev => {
-                            return [...prev, ...route.layouts];
-                        });
-                        console.log('get menu');
-                    } else {
-                        console.log('no fund');
-                    }
-                });
-            } else {
-                // no auth (token error)
-                setLayouts([]);
-            }
+        if (isAuth) {
+            privateRoutes.map((route, key) => {
+                let layoutPath = [];
+                layoutPath.push(route.path.split('/')[1]);
+                if (layoutPath[0].toUpperCase() === history.location.pathname.split('/')[1].toUpperCase()) {
+                    setLayouts(prev => {
+                        return [...prev, ...route.layouts];
+                    });
+                    console.log('get menu');
+                } else {
+                    console.log('no fund');
+                }
+            });
+        } else {
+            // no auth (token error)
+            setLayouts([]);
+        }
         // } else {
         //     privateRoutes.map((route, key) => {
         //         let layoutPath = [];
@@ -174,7 +174,23 @@ function App({ match, location, history }) {
                     name: '每日用戶資訊',
                     path: '/latestUserInfo',
                     icon: <TeamOutlined style={{ fontSize: '20px' }} />
+                }
+            ]
+        };
+
+        let v3 = {
+            title: '網站品質檢測',
+            children: [
+                {
+                    name: '能源局健康度',
+                    path: '/energy',
+                    icon:<ThunderboltOutlined style={{ fontSize: '20px' }}/>
                 },
+                {
+                    name: '新北市健康度',
+                    path: '/energy',
+                    icon: <BankOutlined style={{ fontSize: '20px' }} />
+                }
             ]
         };
 
@@ -184,7 +200,7 @@ function App({ match, location, history }) {
             console.log('REACT_APP_VERSION_3:', REACT_APP_VERSION_3);
             if (REACT_APP_VERSION_1) {
                 if (REACT_APP_VERSION_2) {
-                    prev = [v2, v2_1];
+                    prev = [v2, v2_1, v3];
 
                     // 用戶資訊 暫未規劃，先隱藏
                     // if (REACT_APP_VERSION_3) {
@@ -219,8 +235,8 @@ function App({ match, location, history }) {
                 {/* 路由頁面 */}
                 <Suspense fallback={<></>}>
                     <Switch location={location}>
-                        {OutsideRoutes()}  {/* 不需要 auth 的路由 */}
-                        {PrivateRoutes()}  {/* 需要 auth 的路由 */}
+                        {OutsideRoutes()} {/* 不需要 auth 的路由 */}
+                        {PrivateRoutes()} {/* 需要 auth 的路由 */}
                         {RedirectRouter()} {/* 重定向 */}
                         <Route component={NoMatch} />
                     </Switch>

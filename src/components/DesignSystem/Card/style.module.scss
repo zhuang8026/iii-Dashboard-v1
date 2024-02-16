@@ -91,6 +91,7 @@
                 padding-left: 15px;
                 &::after {
                     background: $danger;
+                    border: 2px solid $dangerborder;;
                     animation: breathe 0.5s infinite alternate; /* 呼吸閃爍動畫 */
                 }
             }
@@ -99,6 +100,7 @@
                 padding-left: 15px;
                 &::after {
                     background: $warning;
+                    border: 2px solid $warningborder;
                     // animation: expand 2s forwards; /* 動畫2秒，最後保持最終狀態 */
                 }
             }
@@ -107,6 +109,7 @@
                 padding-left: 15px;
                 &::after {
                     background: $safe;
+                    border: 2px solid $safeborder;
                     // animation: expand 2s forwards; /* 動畫2秒，最後保持最終狀態 */
                 }
             }

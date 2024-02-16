@@ -4,34 +4,37 @@
     "size": 3,
     "data": [
         {
-            "connectCounts": 61,
+            "serialNumber": 20,
+            "userCategory": "user_nt",
+            "connectCounts": 6,
+            "disconnectCounts": 23,
+            "notActive": 0,
+            "uninstalled": 7,
+            "exclude": 6,
             "detectedDate": "2024-02-01T00:00:00.000+08:00",
-            "disconnectCounts": 231,
-            "notActive": 999,
-            "note": null,
-            "serialNumber": 201,
-            "uninstalled": 91,
-            "userCategory": "user_nt"
+            "note": null
         },
         {
-            "connectCounts": 2631,
+            "serialNumber": 21,
+            "userCategory": "user_112_404",
+            "connectCounts": 279,
+            "disconnectCounts": 64,
+            "notActive": 58,
+            "uninstalled": 3,
+            "exclude": null,
             "detectedDate": "2024-02-01T00:00:00.000+08:00",
-            "disconnectCounts": 961,
-            "notActive": 1,
-            "note": null,
-            "serialNumber": 221,
-            "uninstalled": 21,
-            "userCategory": "user_111_361"
+            "note": null
         },
         {
-            "connectCounts": 2791,
+            "serialNumber": 22,
+            "userCategory": "user_111_361",
+            "connectCounts": 263,
+            "disconnectCounts": 96,
+            "notActive": 0,
+            "uninstalled": 2,
+            "exclude": null,
             "detectedDate": "2024-02-01T00:00:00.000+08:00",
-            "disconnectCounts": 641,
-            "notActive": 581,
-            "note": null,
-            "serialNumber": 211,
-            "uninstalled": 31,
-            "userCategory": "user_112_404"
+            "note": null
         }
     ]
 }

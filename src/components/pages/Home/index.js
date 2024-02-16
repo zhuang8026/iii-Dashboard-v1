@@ -265,11 +265,11 @@ const Home = ({ match, history, location }) => {
         // 使用 reduce 函數對 problem 進行加總
         const problemSummary = apiData.reduce((accumulator, entry) => {
             // Check if status is not '已排外' or '已拆除'
-            if (!['已完成', '已拆除'].includes(entry.status)) {
+            // if (!['已完成', '已拆除'].includes(entry.status)) {
                 // Increment the count for the specific problem type
                 const problemType = entry.problem;
                 accumulator[problemType] = (accumulator[problemType] || 0) + 1;
-            }
+            // }
             return accumulator;
         }, {});
 
@@ -482,7 +482,7 @@ const Home = ({ match, history, location }) => {
                         { type: '連線', val: data.connectCounts },
                         { type: '已拆除', val: data.uninstalled },
                         { type: '未開通', val: data.notActive },
-                        { type: '已排外', val: 1 }
+                        { type: '已排外', val:  typeof data.exclude === 'number' ? data.exclude : 0 }
                     ],
                     role: ['normal', 'admin']
                 };
@@ -493,6 +493,7 @@ const Home = ({ match, history, location }) => {
             const totalDisconnectCounts = res.data.reduce((sum, entry) => sum + entry.disconnectCounts, 0);
             const totalUninstalledCounts = res.data.reduce((sum, entry) => sum + entry.uninstalled, 0);
             const totalNotActiveCounts = res.data.reduce((sum, entry) => sum + entry.notActive, 0);
+            const totalExcludeCounts = res.data.reduce((sum, entry) => sum + entry.exclude, 0);
             // 轉換成所需的格式
             const total = [
                 {
@@ -503,7 +504,7 @@ const Home = ({ match, history, location }) => {
                         { type: '連線', val: totalConnectCounts.toString(), color: '#ffcb01' },
                         { type: '已拆除', val: totalUninstalledCounts.toString(), color: '#4bd0ce' },
                         { type: '未開通', val: totalNotActiveCounts.toString(), color: '#2EA9DF' },
-                        { type: '已排外', val: 3, color: '#86C166' }
+                        { type: '已排外', val: totalExcludeCounts.toString(), color: '#86C166' }
                     ],
                     role: ['normal', 'admin']
                 }
