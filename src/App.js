@@ -185,14 +185,14 @@ function App({ match, location, history }) {
             children: [
                 {
                     name: '能源局健康度',
-                    path: '/energy',
+                    path: '/energyAnalysis',
                     icon:<ThunderboltOutlined style={{ fontSize: '20px' }}/>
                 },
-                {
-                    name: '新北市健康度',
-                    path: '/energy',
-                    icon: <BankOutlined style={{ fontSize: '20px' }} />
-                }
+                // {
+                //     name: '新北市健康度',
+                //     path: '/energy',
+                //     icon: <BankOutlined style={{ fontSize: '20px' }} />
+                // }
             ]
         };
 

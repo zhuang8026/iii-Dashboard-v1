@@ -4,6 +4,7 @@ import Home from 'components/pages/Home';
 import EventDetail from 'components/pages/EventDetail';
 import History from 'components/pages/History';
 import LatestUserInfo from 'components/pages/LatestUserInfo';
+import EnergyAnalysis from 'components/pages/EnergyAnalysis';
 
 const privateRoutes = [
     {
@@ -11,7 +12,7 @@ const privateRoutes = [
         title: 'Data Analysis',
         component: Home,
         exact: true,
-        authRequired: false,
+        authRequired: true,
         layouts: ['NavLeft']
     },
     {
@@ -19,7 +20,7 @@ const privateRoutes = [
         title: 'Analysis Detail',
         component: EventDetail,
         exact: true,
-        authRequired: false,
+        authRequired: true,
         layouts: ['NavLeft']
     },
 
@@ -29,7 +30,7 @@ const privateRoutes = [
         title: 'History',
         component: History,
         exact: true,
-        authRequired: false,
+        authRequired: true,
         layouts: ['NavLeft']
     },
     {
@@ -37,7 +38,7 @@ const privateRoutes = [
         title: 'Analysis history Detail',
         component: EventDetail,
         exact: true,
-        authRequired: false,
+        authRequired: true,
         layouts: ['NavLeft']
     },
 
@@ -47,7 +48,17 @@ const privateRoutes = [
         title: 'Latest User Info',
         component: LatestUserInfo,
         exact: true,
-        authRequired: false,
+        authRequired: true,
+        layouts: ['NavLeft']
+    },
+
+     // version 3 - energy analysis
+    {
+        path: '/energyAnalysis',
+        title: 'energy analysis',
+        component: EnergyAnalysis,
+        exact: true,
+        authRequired: true,
         layouts: ['NavLeft']
     },
 

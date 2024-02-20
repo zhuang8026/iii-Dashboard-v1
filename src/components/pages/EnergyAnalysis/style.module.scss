@@ -1,0 +1,103 @@
+@import 'assets/scss/_variables';
+
+.energyAnalysis {
+    width: calc(100vw - 248px);
+    .d_header {
+        width: 100%;
+        height: 33px;
+        margin: 20px 20px 0 20px;
+        display: flex;
+        .title {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 0;
+            span {
+                font-size: 14px;
+                font-weight: normal;
+                color: $menu_color_2;
+                // margin-left: 5px;
+            }
+        }
+        .d_icon {
+            font-size: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .chart {
+        width: calc(100% - 40px);
+        // height: 500px;
+        margin: 10px auto;
+        // padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .chart_bg {
+            width: 100%;
+            height: 420px;
+            margin: 0px;
+            padding: 0px;
+        }
+        .download {
+            margin-bottom: 20px;
+            p {
+                margin: 0;
+                padding: 0;
+            }
+            h2 {
+                font-size: 21px;
+                font-weight: bold;
+            }
+            h3 {
+                margin: 0;
+                padding: 0;
+            }
+            .inner {
+                width: 100px;
+                display: flex;
+                .card {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex: 1 0 300px;
+                    background: #ffffff;
+                    padding: 12px;
+                    margin-right: 12px;
+                    border-radius: 5px;
+                    &last-child {
+                        margin-right: 0px;
+                    }
+                    .result {
+                        display: flex;
+                        .status {
+                            width: 25px;
+                            height: 25px;
+                            border-radius: 50%;
+                            margin-left: 6px;
+                        }
+                        .normal {
+                            background: #39b54a;
+                            border: 6px solid #abffb6;
+                        }
+                        .failed  {
+                            background: #FF0000;
+                            border: 6px solid #FFC5C5;
+                        }
+                        .na {
+                            background: #A5A5A5;
+                            border: 6px solid #D6D6D6;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .margin_top {
+        margin-top: 20px;
+    }
+}
