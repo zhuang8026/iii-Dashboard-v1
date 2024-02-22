@@ -38,58 +38,65 @@
         align-items: center;
         .chart_bg {
             width: 100%;
-            height: 420px;
+            // height: 420px;
             margin: 0px;
             padding: 0px;
         }
-        .download {
-            margin-bottom: 20px;
+        .group {
+            margin-bottom: 16px;
             p {
                 margin: 0;
                 padding: 0;
             }
             h2 {
-                font-size: 21px;
+                font-size: 18px;
                 font-weight: bold;
+                color: $text;
             }
             h3 {
                 margin: 0;
                 padding: 0;
             }
             .inner {
-                width: 100px;
+                width: 100%;
                 display: flex;
+                flex-wrap: wrap;
                 .card {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    flex: 1 0 300px;
-                    background: #ffffff;
+                    width: 19%;
+                    // flex: 1 0 300px;
                     padding: 12px;
                     margin-right: 12px;
+                    margin-bottom: 12px;
                     border-radius: 5px;
-                    &last-child {
+                    background: #ffffff;
+                    border: 1px solid $na2;
+                    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+                    &:last-child {
                         margin-right: 0px;
                     }
                     .result {
                         display: flex;
+                        font-weight: bold;
                         .status {
                             width: 25px;
                             height: 25px;
                             border-radius: 50%;
                             margin-left: 6px;
                         }
-                        .normal {
-                            background: #39b54a;
-                            border: 6px solid #abffb6;
+                        .Normal {
+                            background: $normal;
+                            border: 4px solid $normal2;
                         }
-                        .failed  {
-                            background: #FF0000;
-                            border: 6px solid #FFC5C5;
+                        .Failed {
+                            background: $failed;
+                            border: 4px solid $failed2;
                         }
-                        .na {
-                            background: #A5A5A5;
-                            border: 6px solid #D6D6D6;
+                        .NA {
+                            background: $na;
+                            border: 4px solid $na2;
                         }
                     }
                 }

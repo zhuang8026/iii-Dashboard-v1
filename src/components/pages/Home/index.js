@@ -411,7 +411,6 @@ const Home = ({ match, history, location }) => {
 
     // get API 001
     const GET001API = async () => {
-        let days = 1;
         let unixStart = ''; // 开始时间戳
         let unixEnd = ''; // 結束时间戳
         // 获取今天的开始时间（00:00:00）
@@ -421,7 +420,7 @@ const Home = ({ match, history, location }) => {
         unixEnd = today.endOf('day').valueOf(); // 获取今天的结束时间（23:59:59）
 
         openLoading();
-        const res = await getHistory001API(days, unixStart, unixEnd);
+        const res = await getProblemStatus001API(unixStart, unixEnd);
         if (res.code === 200) {
             let tableItem = res.data.map((val, i) => {
                 let updateTime = val.statusUpdateTime ? moment(val.statusUpdateTime).format('YYYY/MM/DD HH:mm') : '';
@@ -763,18 +762,18 @@ const Home = ({ match, history, location }) => {
             <div className={cx('top_card')}>
                 {card.length > 0
                     ? card.map((item, index) => {
-                          if (item.role.includes(CookiesRole)) {
-                              return (
-                                  <UiCard
-                                      type={item.type}
-                                      title={item.title}
-                                      content={item.content}
-                                      key={index}
-                                      onClick={val => handleStatusClick(val)}
-                                  />
-                              );
-                          }
-                      })
+                            if (item.role.includes(CookiesRole)) {
+                                return (
+                                    <UiCard
+                                        type={item.type}
+                                        title={item.title}
+                                        content={item.content}
+                                        key={index}
+                                        onClick={val => handleStatusClick(val)}
+                                    />
+                                );
+                            }
+                        })
                     : ''}
             </div>
             <div className={cx('home')}>

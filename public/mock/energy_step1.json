@@ -1,0 +1,19 @@
+{
+    "code": 200,
+    "message": "操作成功 (Operation Successfully)",
+    "size": 4,
+    "data": [
+        {
+            "stage": 1,
+            "pathName": "忘記密碼",
+            "status": "Normal"
+        },
+        {
+            "stage": 1,
+            "pathName": "用戶登入",
+            "status": "Failed"
+        }
+    ]
+}
+
+

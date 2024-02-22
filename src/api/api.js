@@ -13,9 +13,9 @@ export const getNilmReport001API = async () => {
 };
 
 // main001 獲取即時資料
-export const getProblemStatus001API = async () => {
+export const getProblemStatus001API = async (startTime, endTime) => {
     // 如果是开发环境，直接返回模拟数据
-    const url = isMockEnvironment ? `/mock/problem_status.json` : `/${ad_dashboard}/problem_status`;
+    const url = isMockEnvironment ? `/mock/problem_status.json` : `/${ad_dashboard}/problem_status?startTime=${startTime}&endTime=${endTime}`;
     const res = await apiRequest('GET', url, true);
     return res;
 };
@@ -76,6 +76,16 @@ export const getHistory003API = async (days, startTime, endTime) => {
     const url = isMockEnvironment
         ? `/mock/problem_list.json`
         : `/${ad_dashboard}/problem_list?startTime=${startTime}&endTime=${endTime}`;
+    const res = await apiRequest('GET', url, true);
+    return res;
+};
+
+// getEnergy001API 獲取能源局狀態資料
+export const getEnergy001API = async (stepNumber, date) => {
+    // 如果是开发环境，直接返回模拟数据
+    const url = isMockEnvironment
+        ? `/mock/energy_step${stepNumber}.json`
+        : `/${ad_dashboard}/energy_status?step=${stepNumber}`;
     const res = await apiRequest('GET', url, true);
     return res;
 };

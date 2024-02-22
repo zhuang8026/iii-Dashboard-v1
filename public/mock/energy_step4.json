@@ -1,0 +1,22 @@
+{
+    "code": 200,
+    "message": "操作成功 (Operation Successfully)",
+    "size": 4,
+    "data": [
+        {
+            "stage": 4,
+            "pathName": "智慧插座",
+            "status": "Normal"
+        },
+        {
+            "stage": 4,
+            "pathName": "管理建議",
+            "status": "Normal"
+        },
+        {
+            "stage": 4,
+            "pathName": "新增排程",
+            "status": "Normal"
+        }
+    ]
+}
