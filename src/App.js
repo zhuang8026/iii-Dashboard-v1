@@ -188,12 +188,12 @@ function App({ match, location, history }) {
                     name: '能源局健康度',
                     path: '/energyAnalysis',
                     icon: <ThunderboltOutlined style={{ fontSize: '20px' }} />
+                },
+                {
+                    name: '新北市健康度',
+                    path: '/lowcarbonAnalysis',
+                    icon: <BankOutlined style={{ fontSize: '20px' }} />
                 }
-                // {
-                //     name: '新北市健康度',
-                //     path: '/energy',
-                //     icon: <BankOutlined style={{ fontSize: '20px' }} />
-                // }
             ]
         };
 
@@ -203,11 +203,7 @@ function App({ match, location, history }) {
             console.log('REACT_APP_VERSION_3:', REACT_APP_VERSION_3);
             if (REACT_APP_VERSION_1) {
                 if (REACT_APP_VERSION_2) {
-                    prev = [
-                        v2,
-                        v2_1
-                        // v3
-                    ];
+                    prev = [v2, v2_1, v3];
                     // 用戶資訊 暫未規劃，先隱藏
                     // if (REACT_APP_VERSION_3) {
                     //     prev = [v2, v3];

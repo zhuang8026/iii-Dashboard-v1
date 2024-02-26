@@ -5,6 +5,7 @@ import EventDetail from 'components/pages/EventDetail';
 import History from 'components/pages/History';
 import LatestUserInfo from 'components/pages/LatestUserInfo';
 import EnergyAnalysis from 'components/pages/EnergyAnalysis';
+import LowcarbonAnalysis from 'components/pages/LowcarbonAnalysis';
 
 const privateRoutes = [
     {
@@ -55,13 +56,20 @@ const privateRoutes = [
      // version 3 - energy analysis
     {
         path: '/energyAnalysis',
-        title: 'energy analysis',
+        title: 'Energy Analysis',
         component: EnergyAnalysis,
         exact: true,
         authRequired: true,
         layouts: ['NavLeft']
     },
-
+    {
+        path: '/lowcarbonAnalysis',
+        title: 'Lowcarbon Analysis',
+        component: LowcarbonAnalysis,
+        exact: true,
+        authRequired: true,
+        layouts: ['NavLeft']
+    },
 ];
 
 export default privateRoutes;

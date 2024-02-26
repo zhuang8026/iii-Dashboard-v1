@@ -1,0 +1,126 @@
+@import 'assets/scss/_variables';
+
+.energyAnalysis {
+    width: calc(100vw - 248px);
+    .d_header {
+        width: 100%;
+        height: 33px;
+        margin: 20px 20px 0 20px;
+        display: flex;
+        .title {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 0;
+            span {
+                font-size: 14px;
+                font-weight: normal;
+                color: $menu_color_2;
+                // margin-left: 5px;
+            }
+        }
+        .d_icon {
+            font-size: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .chart {
+        width: calc(100% - 40px);
+        // height: 500px;
+        margin: 10px auto;
+        // padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .chart_bg {
+            width: 100%;
+            // height: 420px;
+            margin: 0px;
+            padding: 0px;
+        }
+        .group {
+            margin-bottom: 16px;
+            p {
+                margin: 0;
+                padding: 0;
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: bold;
+                color: $text;
+            }
+            h3 {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+            }
+            .inner {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                .card {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 23%;
+                    // flex: 1 0 300px;
+                    padding: 12px;
+                    margin-right: 12px;
+                    margin-bottom: 12px;
+                    border-radius: 5px;
+                    background: #ffffff;
+                    border: 1px solid $na2;
+                    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+                    &:last-child {
+                        margin-right: 0px;
+                    }
+                    .result {
+                        display: flex;
+                        font-weight: bold;
+                        .status {
+                            width: 25px;
+                            height: 25px;
+                            border-radius: 50%;
+                            margin-left: 6px;
+                        }
+                        .Normal {
+                            background: $normal;
+                            border: 4px solid $normal2;
+                        }
+                        .Failed {
+                            background: $failed;
+                            border: 4px solid $failed2;
+                        }
+                        .NA {
+                            background: $na;
+                            border: 4px solid $na2;
+                        }
+                    }
+                }
+
+                @media (min-width: 1024px) and (max-width: 1365px) {
+                    .card {
+                        width: 32%;
+                    }
+                } /* 電腦 */
+                @media (min-width: 768px) and (max-width: 1023px) {
+                    .card {
+                        width: 48%;
+                    }
+                } /* iPad */
+            }
+        }
+    }
+
+    .margin_top {
+        margin-top: 20px;
+    }
+}
