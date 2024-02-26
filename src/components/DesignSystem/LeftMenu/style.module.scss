@@ -37,6 +37,9 @@
         }
 
         ul {
+            height: calc(100vh - 385px);
+            overflow-y: auto;
+            overflow-x: hidden;
             li {
                 width: 100%;
                 display: flex;

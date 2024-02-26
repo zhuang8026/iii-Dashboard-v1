@@ -56,6 +56,11 @@
             h3 {
                 margin: 0;
                 padding: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
             }
             .inner {
                 width: 100%;
@@ -65,7 +70,7 @@
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    width: 19%;
+                    width: 23%;
                     // flex: 1 0 300px;
                     padding: 12px;
                     margin-right: 12px;
@@ -100,6 +105,17 @@
                         }
                     }
                 }
+
+                @media (min-width: 1024px) and (max-width: 1365px) {
+                    .card {
+                        width: 32%;
+                    }
+                } /* 電腦 */
+                @media (min-width: 768px) and (max-width: 1023px) {
+                    .card {
+                        width: 48%;
+                    }
+                } /* iPad */
             }
         }
     }
