@@ -17,7 +17,7 @@ import UiLineChart from 'components/DesignSystem/LineChart';
 // Context
 import GlobalContainer, { GlobalContext } from 'contexts/global';
 // API
-import { getHistory001API, postProblemStatus003API } from 'api/api';
+import { getHistory001API, getProblemStatus001API, postProblemStatus003API } from 'api/api';
 
 // css
 import classes from './style.module.scss';
@@ -47,7 +47,7 @@ const Home = ({ match, history, location }) => {
         { text: 'insynerger_1', num: 0, value: 'insynerger_1' },
         { text: 'insynerger_2', num: 1, value: 'insynerger_2' },
         { text: 'insynerger_3', num: 2, value: 'insynerger_3' },
-        { text: '3Egreen',      num: 3, value: '3Egreen' }
+        { text: '3Egreen', num: 3, value: '3Egreen' }
     ]);
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
@@ -99,7 +99,7 @@ const Home = ({ match, history, location }) => {
                 }
 
                 await POST003API(newData[key]);
-                await GETHISTORY001API();
+                await asyncAllAPI();
             } else {
                 newData.push(row);
                 setData(newData);
@@ -172,7 +172,7 @@ const Home = ({ match, history, location }) => {
             setValue(value);
             setDates(value);
 
-            GETHISTORY001API(0, startTime, endTime);
+            GETPROBLEM001API(0, startTime, endTime);
         }
     };
 
@@ -220,7 +220,7 @@ const Home = ({ match, history, location }) => {
             setValue([moment.unix(unixStart / 1000), moment.unix(unixEnd / 1000)]);
             setDates([moment.unix(unixStart / 1000), moment.unix(unixEnd / 1000)]);
 
-            GETHISTORY001API(days, unixStart, unixEnd);
+            GETPROBLEM001API(days, unixStart, unixEnd);
         }
     };
 
@@ -232,7 +232,7 @@ const Home = ({ match, history, location }) => {
         setValue([moment.unix(unixStart / 1000), moment.unix(unixEnd / 1000)]);
         setDates([moment.unix(unixStart / 1000), moment.unix(unixEnd / 1000)]);
 
-        GETHISTORY001API(0, unixStart, unixEnd);
+        GETPROBLEM001API(0, unixStart, unixEnd);
     };
 
     // 取得 故障類別全部資料
@@ -325,9 +325,9 @@ const Home = ({ match, history, location }) => {
     const getAreaCount = async apiData => {
         // 提取所有 "deviceSource" 的值
         let area = apiData.map(user => {
-            if(user.area) {
+            if (user.area) {
                 let area_split = user.area.split(/市|縣/)[0].trim();
-                return area_split + (user.area.includes("市") ? "市" : "縣");
+                return area_split + (user.area.includes('市') ? '市' : '縣');
             }
             return 'NULL';
         });
@@ -343,11 +343,11 @@ const Home = ({ match, history, location }) => {
             return {
                 text: key,
                 value: key,
-                num: areaCounts[key],
+                num: areaCounts[key]
                 // img: key ? <img src={require(`assets/images/${key}.png`)} alt="" /> : <div/>,
-            }
+            };
         });
-        console.log(result)
+        // console.log(result);
         // 打印結果
         setCity([...result]);
     };
@@ -365,9 +365,9 @@ const Home = ({ match, history, location }) => {
     };
 
     // get API 001
-    const GETHISTORY001API = async (days, startTime, endTime) => {
+    const GETPROBLEM001API = async (days, startTime, endTime) => {
         openLoading();
-        const res = await getHistory001API(days, startTime, endTime);
+        const res = await getProblemStatus001API(startTime, endTime, days); // 取得相對應時間資料
         if (res.code === 200) {
             let tableItem = res.data.map((val, i) => {
                 let updateTime = val.statusUpdateTime ? moment(val.statusUpdateTime).format('YYYY/MM/DD HH:mm') : '';
@@ -401,7 +401,7 @@ const Home = ({ match, history, location }) => {
                 closeLoading();
             }, 1000);
         } else {
-            console.log('GETHISTORY001API error:', res);
+            console.log('GETPROBLEM001API error:', res);
         }
     };
 
@@ -435,7 +435,7 @@ const Home = ({ match, history, location }) => {
         // version 1
         let startTime = dates[0].valueOf();
         let endTime = dates[1].valueOf();
-        await GETHISTORY001API(0, startTime, endTime);
+        await GETPROBLEM001API(0, startTime, endTime);
     };
 
     // table 所有欄位 設定

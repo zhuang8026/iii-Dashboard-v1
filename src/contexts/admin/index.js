@@ -10,8 +10,8 @@ const AdminContainer = props => {
     const { history, location, match } = props;
     const [admin, setAdmin] = useState([
         {
-            user: 'energy',
-            pwd: '123456',
+            user: 'Asd@iii.org.tw',
+            pwd: 'a1234567A@',
             token: '123456_abcdefghijk',
             role: 'normal'
         },

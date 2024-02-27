@@ -13,9 +13,19 @@ export const getNilmReport001API = async () => {
 };
 
 // main001 獲取即時資料
-export const getProblemStatus001API = async (startTime, endTime) => {
+export const getProblemStatus001API = async (startTime, endTime, days = 30) => {
     // 如果是开发环境，直接返回模拟数据
-    const url = isMockEnvironment ? `/mock/problem_status.json` : `/${ad_dashboard}/problem_status?startTime=${startTime}&endTime=${endTime}`;
+    const url = isMockEnvironment
+        ? days === 1
+            ? `/mock/problem_list_1day.json`
+            : days === 7
+            ? `/mock/problem_list_7days.json`
+            : days === 30
+            ? `/mock/problem_list_30days.json`
+            : `/mock/problem_list.json`
+        : `/${ad_dashboard}/problem_status?startTime=${startTime}&endTime=${endTime}`;
+    // 如果是开发环境，直接返回模拟数据
+    // const url = isMockEnvironment ? `/mock/problem_status.json` : `/${ad_dashboard}/problem_status?startTime=${startTime}&endTime=${endTime}`;
     const res = await apiRequest('GET', url, true);
     return res;
 };
