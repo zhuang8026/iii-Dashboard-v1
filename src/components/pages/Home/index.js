@@ -43,7 +43,7 @@ const Home = ({ match, history, location }) => {
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
-    const { REACT_APP_VERSION_3, GETNILM001API, nilm } = useContext(GlobalContext);
+    const { REACT_APP_VERSION_3 } = useContext(GlobalContext);
 
     const isEditing = record => record.key === editingKey;
     const edit = record => {
@@ -112,15 +112,6 @@ const Home = ({ match, history, location }) => {
     // close loading
     const closeLoading = () => closeAnimate();
 
-    // open nilm report popup
-    const openNILMReportPopup = async () => {
-        let data = await GETNILM001API(); // from global context API
-        // 開啟提視窗（nilm result）
-        openDialog({
-            component: <NILMPopup data={data} closeMessage={closeMessage} />
-        });
-    };
-
     // 開啟提視窗（400、500、ERROR win）
     const openMessage = (code, msg) => {
         openDialog({
@@ -128,41 +119,7 @@ const Home = ({ match, history, location }) => {
         });
     };
     // 關閉提視窗（400、500、ERROR win）
-    const closeMessage = (data = '') => {
-        if (data === 'CLOSE_NILM_REPORT') {
-            setCookie('CLOSE_NILM_REPORT', true); // 設定cookie
-        }
-        closeDialog();
-    };
-
-    const openNotification = async () => {
-        const key = `open${Date.now()}`;
-        const btn = (
-            <Button
-                type="primary"
-                size="middle"
-                style={{ backgroundColor: '#129797' }}
-                onClick={async () => {
-                    notification.close(key);
-                    await openNILMReportPopup();
-                }}
-            >
-                查詢
-            </Button>
-        );
-        notification.info({
-            message: `NILM 報告通知`,
-            description: '每日NILM報告已更新，請點擊本彈窗查詢，謝謝。🙂',
-            placement: 'topRight',
-            duration: 20,
-            btn,
-            key,
-            icon: <BellOutlined style={{ color: '#129797' }} />
-            // onClick: async () => {
-            //     await openNILMReportPopup();
-            // }
-        });
-    };
+    const closeMessage = () => closeDialog();
 
     // 卡片狀態篩選 改變 table 資料
     const handleStatusClick = obj => {
@@ -236,7 +193,7 @@ const Home = ({ match, history, location }) => {
         //     }, {})
         // ).filter(group => group.length >= 1).length;
 
-        // [已完成] 多用戶相同狀態計算已完成的数量    
+        // [已完成] 多用戶相同狀態計算已完成的数量
         let completedUser = []; // 存储已经计数过的userId
         apiData.filter(
             entry =>
@@ -266,9 +223,9 @@ const Home = ({ match, history, location }) => {
         const problemSummary = apiData.reduce((accumulator, entry) => {
             // Check if status is not '已排外' or '已拆除'
             // if (!['已完成', '已拆除'].includes(entry.status)) {
-                // Increment the count for the specific problem type
-                const problemType = entry.problem;
-                accumulator[problemType] = (accumulator[problemType] || 0) + 1;
+            // Increment the count for the specific problem type
+            const problemType = entry.problem;
+            accumulator[problemType] = (accumulator[problemType] || 0) + 1;
             // }
             return accumulator;
         }, {});
@@ -481,7 +438,7 @@ const Home = ({ match, history, location }) => {
                         { type: '連線', val: data.connectCounts },
                         { type: '已拆除', val: data.uninstalled },
                         { type: '未開通', val: data.notActive },
-                        { type: '已排外', val:  typeof data.exclude === 'number' ? data.exclude : 0 }
+                        { type: '已排外', val: typeof data.exclude === 'number' ? data.exclude : 0 }
                     ],
                     role: ['normal', 'admin']
                 };
@@ -551,11 +508,6 @@ const Home = ({ match, history, location }) => {
         await GET001API();
         // version 2
         await GET002API();
-        // verison 2
-        const CLOSE_NILM_REPORT = getCookie('CLOSE_NILM_REPORT');
-        if (!CLOSE_NILM_REPORT) {
-            openNotification();
-        }
     };
 
     // table 所有欄位 設定
@@ -808,7 +760,7 @@ const Home = ({ match, history, location }) => {
                                             margin: 0
                                         }}
                                     >
-                                        Device ID - {record.deviceId}
+                                        Device ID / {record.deviceId}
                                     </p>
                                 );
                             }

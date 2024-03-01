@@ -57,7 +57,7 @@ const EnergyAnalysis = ({ history }) => {
             closeLoading();
             return res.data;
         } else {
-            console.log('GETDETAIL001API error:', res);
+            console.log('getEnergy001API error:', res);
         }
     };
 

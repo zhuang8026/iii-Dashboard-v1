@@ -1,25 +1,27 @@
 import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
-import { AreaChartOutlined, HistoryOutlined, TeamOutlined, ThunderboltOutlined, BankOutlined } from '@ant-design/icons';
+import { Input, InputNumber, Select, Tag, Popconfirm, Form, Table, Typography, notification, Button } from 'antd';
+import {AreaChartOutlined, HistoryOutlined, TeamOutlined, ThunderboltOutlined, BankOutlined, BellOutlined} from '@ant-design/icons';
 
 // DesignSystem
 import NoMatch from 'components/DesignSystem/NoMatch';
 import Menu from 'components/DesignSystem/LeftMenu';
 import Footer from 'components/DesignSystem/Footer';
 import Loading from 'components/DesignSystem/Loading';
+import NILMPopup from 'components/DesignSystem/NILMPopup';
 import { FullWindowAnimateStorage, withFullWindowProvider, FullPopWindow } from 'components/DesignSystem/FullWindow';
-import { withPopWindowProvider, PopWindow } from 'components/DesignSystem/PopWindow';
+import { PopWindowAnimateStorage, withPopWindowProvider, PopWindow } from 'components/DesignSystem/PopWindow';
 
 // config
 import privateRoutes from 'config/privateRoutes';
 import outsideRoutes from 'config/routes';
 
 // utils
-import { getCookie, eraseCookie } from 'utils/cookie';
+import { getCookie, setCookie, eraseCookie } from 'utils/cookie';
 
 // Context
-import AdminContainer, { AdminContext } from 'contexts/admin';
+// import AdminContainer, { AdminContext } from 'contexts/admin';
 import GlobalContainer, { GlobalContext } from 'contexts/global';
 
 // css
@@ -29,13 +31,15 @@ const cx = classNames.bind(classes);
 
 function App({ match, location, history }) {
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
-    const { REACT_APP_VERSION_1, REACT_APP_VERSION_2, REACT_APP_VERSION_3 } = useContext(GlobalContext);
-    const { admin } = useContext(AdminContext);
+    const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
+
+    const { REACT_APP_VERSION_1, REACT_APP_VERSION_2, REACT_APP_VERSION_3, GETNILM001API } = useContext(GlobalContext);
+    // const { admin } = useContext(AdminContext);
     const [layouts, setLayouts] = useState([]);
     const [menuList, setMenuList] = useState([]);
 
     const isAuth = getCookie('iii_token'); // cookie testing
-    const CookiesRole = getCookie('iii_role');
+    // const CookiesRole = getCookie('iii_role');
 
     // 不需要 auth 的路由
     const OutsideRoutes = () => {
@@ -122,6 +126,52 @@ function App({ match, location, history }) {
         // }
     };
 
+    const openNotification = async () => {
+        const key = `open${Date.now()}`;
+        const btn = (
+            <Button
+                type="primary"
+                size="middle"
+                style={{ backgroundColor: '#129797' }}
+                onClick={async () => {
+                    notification.close(key);
+                    await openNILMReportPopup();
+                }}
+            >
+                查詢
+            </Button>
+        );
+        notification.info({
+            message: `NILM 報告通知`,
+            description: '每日NILM報告已更新，請點擊本彈窗查詢，謝謝。🙂',
+            placement: 'topRight',
+            duration: 20,
+            btn,
+            key,
+            icon: <BellOutlined style={{ color: '#129797' }} />
+            // onClick: async () => {
+            //     await openNILMReportPopup();
+            // }
+        });
+    };
+
+    // open nilm report popup
+    const openNILMReportPopup = async () => {
+        let data = await GETNILM001API(); // from global context API
+        // 開啟提視窗（nilm result）
+        openDialog({
+            component: <NILMPopup data={data} closeMessage={closeMessage} />
+        });
+    };
+
+    // 關閉提視窗（400、500、ERROR win）
+    const closeMessage = (data = '') => {
+        if (data === 'CLOSE_NILM_REPORT') {
+            setCookie('CLOSE_NILM_REPORT', true); // 設定cookie
+        }
+        closeDialog();
+    };
+
     // open loading
     const openLoading = () => {
         openAnimate({
@@ -204,8 +254,9 @@ function App({ match, location, history }) {
             if (REACT_APP_VERSION_1) {
                 if (REACT_APP_VERSION_2) {
                     prev = [
-                        v2,
-                        v2_1, v3
+                        v2, // 戰情室
+                        v2_1, // 網站品質檢測
+                        v3 // 網站品質檢測
                     ];
                     // 用戶資訊 暫未規劃，先隱藏
                     // if (REACT_APP_VERSION_3) {
@@ -224,6 +275,12 @@ function App({ match, location, history }) {
     // check auth render menu dom
     useEffect(() => {
         getLayoutsCallBack();
+        // verison 2
+        const CLOSE_NILM_REPORT = getCookie('CLOSE_NILM_REPORT');
+        const III_TOKEN = getCookie('iii_token');
+        if (!CLOSE_NILM_REPORT && III_TOKEN) {
+            openNotification();
+        }
     }, [isAuth]);
 
     return (
