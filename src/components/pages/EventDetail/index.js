@@ -194,7 +194,8 @@ const EventDetail = ({history}) => {
                 { text: '已通知', value: '已通知' },
                 { text: '已拆除', value: '已拆除' },
                 { text: '等待維護', value: '等待維護' },
-                { text: '不接受維護', value: '不接受維護' }
+                { text: '不接受維護', value: '不接受維護' },
+                { label: '已排外', value: '已排外' }, // oragnge icon
             ],
             // filterMode: 'tree',
             // filterSearch: true,
