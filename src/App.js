@@ -255,8 +255,8 @@ function App({ match, location, history }) {
                 if (REACT_APP_VERSION_2) {
                     prev = [
                         v2, // 戰情室
-                        // v2_1, // 網站品質檢測
-                        // v3 // 網站品質檢測
+                        v2_1, // 網站品質檢測
+                        v3 // 網站品質檢測
                     ];
                     // 用戶資訊 暫未規劃，先隱藏
                     // if (REACT_APP_VERSION_3) {

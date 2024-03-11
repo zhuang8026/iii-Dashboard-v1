@@ -1,0 +1,37 @@
+{
+    "code": 200,
+    "message": "操作成功 (Operation Successfully)",
+    "size": 3,
+    "data": [
+        {
+            "userId": "afra5756@yahoo.com.tw",
+            "joinYear": 107,
+            "name": "廖正儀",
+            "area": "新莊區",
+            "community": "富利.天廈",
+            "deviceSource": "insynerger_1",
+            "latest_daily_result_time": "2023-12-07T00:00:00.000+08:00",
+            "latest_logging_log_time": null
+        },
+        {
+            "userId": "aofu.mc@msa.hinet.net",
+            "joinYear": 107,
+            "name": "蔡美卿",
+            "area": "新莊區",
+            "community": "高財生",
+            "deviceSource": "insynerger_1",
+            "latest_daily_result_time": "2023-06-08T00:00:00.000+08:00",
+            "latest_logging_log_time": null
+        },
+        {
+            "userId": "yzsu03@hotmail.com",
+            "joinYear": null,
+            "name": "胡庭瑞",
+            "area": "台中北屯區",
+            "community": "總太聚作",
+            "deviceSource": "insynerger_3",
+            "latest_daily_result_time": "2023-12-07T00:00:00.000+08:00",
+            "latest_logging_log_time": "2023-06-08T18:43:59.000+08:00"
+        }
+    ]
+}

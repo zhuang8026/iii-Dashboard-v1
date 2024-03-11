@@ -90,7 +90,7 @@ export const getHistory003API = async (days, startTime, endTime) => {
     return res;
 };
 
-// getEnergy001API 獲取能源局狀態資料
+// Energy001API 獲取能源局狀態資料
 export const getEnergy001API = async (stepNumber, date) => {
     // 如果是开发环境，直接返回模拟数据
     const url = isMockEnvironment
@@ -100,6 +100,7 @@ export const getEnergy001API = async (stepNumber, date) => {
     return res;
 };
 
+// Lowcarbon001API 獲取能源局狀態資料
 export const getLowcarbon001API = async (stepNumber, date) => {
     // 如果是开发环境，直接返回模拟数据
     const url = isMockEnvironment
@@ -108,3 +109,14 @@ export const getLowcarbon001API = async (stepNumber, date) => {
     const res = await apiRequest('GET', url, true);
     return res;
 };
+
+// UserData001API 獲取用戶資料，並轉成CSV
+export const getUserData001API = async () => {
+    // 如果是开发环境，直接返回模拟数据
+    const url = isMockEnvironment
+        ? `/mock/user_data.json`
+        : `/${ad_dashboard}/user_data`;
+    const res = await apiRequest('GET', url, true);
+    return res;
+};
+

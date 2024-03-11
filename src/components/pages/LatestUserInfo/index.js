@@ -15,7 +15,7 @@ import Message from 'components/DesignSystem/Message';
 import Loading from 'components/DesignSystem/Loading';
 
 // API
-// import { getProblemStatusDetail001API } from 'api/api';
+import { getUserData001API } from 'api/api';
 
 // css
 import classes from './style.module.scss';
@@ -48,35 +48,48 @@ const LatestUserInfo = ({ history }) => {
 
     const closeMessage = () => closeDialog();
 
-    // get API 001
-    // const GETDETAIL001API = async () => {
-    //     openLoading();
-    //     const res = await getProblemStatusDetail001API();
-    //     if (res.code === 200) {
-    //         let tableItem = res.data.map((val, i) => {
-    //             let updateTime = val.statusUpdateTime ? moment(val.statusUpdateTime).format('YYYY/MM/DD HH:mm') : '';
-    //             return {
-    //                 key: i.toString(),
-    //                 uuid: val.uuid,
-    //                 serialNumber: val.serialNumber,
-    //                 name: val.name,
-    //                 userId: val.userId,
-    //                 detectedDate: moment(val.detectedDate).format('YYYY/MM/DD HH:mm'),
-    //                 problem: val.problem,
-    //                 status: val.status,
-    //                 statusUpdateTime: updateTime,
-    //                 note: val.note
-    //             };
-    //         });
-    //         setData([...tableItem]);
+    // 合併 + 轉 .csv files
+    const convertToCSV = mockData => {
+        const header = Object.keys(mockData[0]).join(',');
+        const rows = mockData.map(obj =>
+            Object.values(obj)
+                .map(val => (val === null ? '' : val))
+                .join(',')
+        );
+        const csv = [header, ...rows].join('\n');
+        // Add UTF-8 BOM to ensure proper encoding
+        const csvContent = '\uFEFF' + csv;
+        return csvContent;
+    };
 
-    //         setTimeout(() => {
-    //             closeLoading();
-    //         }, 1000);
-    //     } else {
-    //         console.log('GETDETAIL001API error:', res);
-    //     }
-    // };
+    // 點擊"下載"用戶資料
+    const clickDownloadCSVFile = async () => {
+        const mockData = await GETDETAIL001API();
+        const csvContent = convertToCSV(mockData);
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const currentDate = moment().format('YYYYMMDD_HHmmss');
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${currentDate}_用戶資料.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    };
+
+    // get API 001
+    const GETDETAIL001API = async () => {
+        openLoading();
+        const res = await getUserData001API();
+        if (res.code === 200) {
+            closeLoading();
+            return res.data;
+        } else {
+            console.log('GETDETAIL001API error:', res);
+            return [];
+        }
+    };
 
     // const asyncAllAPI = async () => {
     //     // version 1
@@ -104,10 +117,10 @@ const LatestUserInfo = ({ history }) => {
                             用戶名單 <span> | 最後一次更新 {lastTime}</span>
                         </h2>
                         <div className={cx('inner')}>
-                            <UiButton text="Download" />
+                            <UiButton text="Download" onClick={() => clickDownloadCSVFile()} />
                         </div>
                     </div>
-                    <div className={cx('download')}>
+                    {/* <div className={cx('download')}>
                         <h2>
                             登入紀錄 <span> | 最後一次更新 {lastTime}</span>
                         </h2>
@@ -122,8 +135,7 @@ const LatestUserInfo = ({ history }) => {
                         <div className={cx('inner')}>
                             <UiButton text="Download" />
                         </div>
-                    </div>
-                    安裝年度、帳號、密碼、用戶姓名、行政區、社區、電力計型號、最後一次數據回傳時間、最近一次登入平台時間
+                    </div> */}
                 </div>
             </div>
         </div>
