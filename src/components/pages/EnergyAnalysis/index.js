@@ -50,9 +50,9 @@ const EnergyAnalysis = ({ history }) => {
     const closeMessage = () => closeDialog();
 
     // get API Energy001API
-    const GETEnergyStatus001API = async stepNumber => {
+    const GETEnergyStatus001API = async (stepNumber, date) => {
         openLoading();
-        const res = await getEnergy001API(stepNumber);
+        const res = await getEnergy001API(stepNumber, date);
         if (res.code === 200) {
             closeLoading();
             return res.data;
@@ -64,9 +64,10 @@ const EnergyAnalysis = ({ history }) => {
     const asyncAllAPI = async () => {
         try {
             const stepTitles = ['用戶管理', '日常用電追蹤', '家庭能源報告', '管理用電', '客戶服務'];
+            const date = moment().format('YYYY-MM-DD');
             const step_all = await Promise.all(
                 [1, 2, 3, 4, 5].map(async index => {
-                    const content = await GETEnergyStatus001API(index);
+                    const content = await GETEnergyStatus001API(index, date);
                     return {
                         title: `Step${index}. ${stepTitles[index - 1]}`,
                         content,

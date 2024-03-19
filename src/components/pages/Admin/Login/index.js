@@ -39,7 +39,6 @@ const Login = ({ history }) => {
 
         let checkUser = admin.filter(ele => ele.user === `${info.user}` && ele.pwd === `${info.pwd}`);
         if (checkUser.length > 0) {
-            console.log(checkUser)
             setCookie('iii_token', checkUser[0].token); // 設定cookie
             setCookie('iii_role', checkUser[0].role); // 設定role
             setCookie('iii_user', checkUser[0].user); // 設定role
@@ -50,20 +49,13 @@ const Login = ({ history }) => {
             });
 
             history.replace('/main');
-            closeLoading();
         } else {
             notification['error']({
                 message: 'Error',
                 description: 'Username or Password is wrong.'
             });
-            closeLoading();
         }
-        // setTimeout(() => {
-        //     // testing, must wirte to API
-        //     setCookie('iii_token', info.token); // 設定cookie
-        //     history.replace('/main');
-        //     closeLoading();
-        // }, 1000);
+        closeLoading();
     };
 
     // open loading
@@ -84,6 +76,22 @@ const Login = ({ history }) => {
         }
     };
 
+    // const handleKeyPress = event => {
+    //     if (event.key === 'Enter') {
+    //         console.log('Enter key pressed');
+    //         // 在这里执行你想要的操作
+
+    //         loginin();
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     document.addEventListener('keydown', handleKeyPress);
+
+    //     return () => {
+    //         document.removeEventListener('keydown', handleKeyPress);
+    //     };
+    // }, []);
     return (
         <div className={cx('login')}>
             <div className={cx('left')}>

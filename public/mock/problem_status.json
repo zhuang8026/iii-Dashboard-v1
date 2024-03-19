@@ -174,7 +174,7 @@
             "userId": "user123456@gmail.com",
             "detectedDate": "2023-12-07T00:00:00.000+08:00",
             "problem": "CT負值",
-            "status": "已排外",
+            "status": "網路問題",
             "statusUpdateTime": "2023-12-07T00:00:00.000+08:00",
             "note": "用戶已搬家",
             "deviceId": "IN10----344CA40174C5",

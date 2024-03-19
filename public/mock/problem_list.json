@@ -159,7 +159,7 @@
             "userId": "user789546@gmail.com",
             "detectedDate": "2023-12-12T00:00:00.000+08:00",
             "problem": "斷線",
-            "status": "已排外",
+            "status": "網路問題",
             "statusUpdateTime": "2023-12-14T10:30:00.000+08:00",
             "note": "20231218",
             "deviceId": "IN10----344CA40174C5",

@@ -183,7 +183,7 @@ const Home = ({ match, history, location }) => {
         //         if (
         //             entry.status === '已完成' ||
         //             entry.status === '已拆除' ||
-        //             entry.status === '已排外' ||
+        //             entry.status === '網路問題' ||
         //             entry.status === '不接受維護'
         //         ) {
         //             groups[entry.userId] = groups[entry.userId] || [];
@@ -205,7 +205,7 @@ const Home = ({ match, history, location }) => {
                         e =>
                             e.status === '已完成' ||
                             e.status === '已拆除' ||
-                            e.status === '已排外' ||
+                            e.status === '網路問題' ||
                             e.status === '不接受維護'
                     ) &&
                 (completedUser.push(entry.userId) || true) // 添加userId到已计数数组中，返回true以继续筛选
@@ -221,7 +221,7 @@ const Home = ({ match, history, location }) => {
 
         // 使用 reduce 函數對 problem 進行加總
         const problemSummary = apiData.reduce((accumulator, entry) => {
-            // Check if status is not '已排外' or '已拆除'
+            // Check if status is not '網路問題' or '已拆除'
             // if (!['已完成', '已拆除'].includes(entry.status)) {
             // Increment the count for the specific problem type
             const problemType = entry.problem;
@@ -256,7 +256,8 @@ const Home = ({ match, history, location }) => {
                     case '已拆除':
                     case '等待維護':
                     case '不接受維護':
-                    case '已排外':
+                    case '網路問題':
+                    case '退用':
                         status = 'warning';
                         break;
                     case '未通知':
@@ -438,7 +439,7 @@ const Home = ({ match, history, location }) => {
                         { type: '連線', val: data.connectCounts },
                         { type: '已拆除', val: data.uninstalled },
                         { type: '未開通', val: data.notActive },
-                        { type: '已排外', val: typeof data.exclude === 'number' ? data.exclude : 0 }
+                        { type: '網路問題', val: typeof data.exclude === 'number' ? data.exclude : 0 }
                     ],
                     role: ['normal', 'admin']
                 };
@@ -460,7 +461,7 @@ const Home = ({ match, history, location }) => {
                         { type: '連線', val: totalConnectCounts.toString(), color: '#ffcb01' },
                         { type: '已拆除', val: totalUninstalledCounts.toString(), color: '#4bd0ce' },
                         { type: '未開通', val: totalNotActiveCounts.toString(), color: '#2EA9DF' },
-                        { type: '已排外', val: totalExcludeCounts.toString(), color: '#86C166' }
+                        { type: '網路問題', val: totalExcludeCounts.toString(), color: '#86C166' }
                     ],
                     role: ['normal', 'admin']
                 }
@@ -597,7 +598,8 @@ const Home = ({ match, history, location }) => {
                 { text: '已拆除', value: '已拆除' },
                 { text: '等待維護', value: '等待維護' },
                 { text: '不接受維護', value: '不接受維護' },
-                { text: '已排外', value: '已排外' }
+                { text: '網路問題', value: '網路問題' },
+                { text: '退用', value: '退用' }
             ],
             // filterMode: 'tree',
             // filterSearch: true,
@@ -714,18 +716,18 @@ const Home = ({ match, history, location }) => {
             <div className={cx('top_card')}>
                 {card.length > 0
                     ? card.map((item, index) => {
-                            if (item.role.includes(CookiesRole)) {
-                                return (
-                                    <UiCard
-                                        type={item.type}
-                                        title={item.title}
-                                        content={item.content}
-                                        key={index}
-                                        onClick={val => handleStatusClick(val)}
-                                    />
-                                );
-                            }
-                        })
+                          if (item.role.includes(CookiesRole)) {
+                              return (
+                                  <UiCard
+                                      type={item.type}
+                                      title={item.title}
+                                      content={item.content}
+                                      key={index}
+                                      onClick={val => handleStatusClick(val)}
+                                  />
+                              );
+                          }
+                      })
                     : ''}
             </div>
             <div className={cx('home')}>

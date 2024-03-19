@@ -3,6 +3,7 @@ import { apiRequest } from 'api/apiRequest.js';
 const isMockEnvironment = process.env.REACT_APP_ENV === 'development';
 
 const ad_dashboard = 'ad_dashboard';
+const autotest = 'autotest';
 
 // nilm001 獲取即時nilm結果
 export const getNilmReport001API = async () => {
@@ -95,7 +96,7 @@ export const getEnergy001API = async (stepNumber, date) => {
     // 如果是开发环境，直接返回模拟数据
     const url = isMockEnvironment
         ? `/mock/energy_step${stepNumber}.json`
-        : `/${ad_dashboard}/energy_status?step=${stepNumber}`;
+        : `/${autotest}/check_result?domain=energy&file_name=${date}_step${stepNumber}.json`;
     const res = await apiRequest('GET', url, true);
     return res;
 };
@@ -113,10 +114,7 @@ export const getLowcarbon001API = async (stepNumber, date) => {
 // UserData001API 獲取用戶資料，並轉成CSV
 export const getUserData001API = async () => {
     // 如果是开发环境，直接返回模拟数据
-    const url = isMockEnvironment
-        ? `/mock/user_data.json`
-        : `/${ad_dashboard}/user_data`;
+    const url = isMockEnvironment ? `/mock/user_data.json` : `/${ad_dashboard}/user_data`;
     const res = await apiRequest('GET', url, true);
     return res;
 };
-
