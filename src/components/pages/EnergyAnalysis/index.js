@@ -53,11 +53,11 @@ const EnergyAnalysis = ({ history }) => {
     const GETEnergyStatus001API = async (stepNumber, date) => {
         openLoading();
         const res = await getEnergy001API(stepNumber, date);
-        if (res.code === 200) {
+        if (res.status === "ok") {
             closeLoading();
             return res.data;
         } else {
-            console.log('getEnergy001API error:', res);
+            console.log('[ERROR] API Energy001API:', res);
         }
     };
 

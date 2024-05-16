@@ -91,7 +91,7 @@ export const getHistory003API = async (days, startTime, endTime) => {
     return res;
 };
 
-// Energy001API 獲取能源局狀態資料
+// [自動化測試結果] Energy001API 獲取能源局狀態資料 
 export const getEnergy001API = async (stepNumber, date) => {
     // 如果是开发环境，直接返回模拟数据
     const url = isMockEnvironment

@@ -37,13 +37,18 @@ export const apiRequest = async (method, url, auth, params = null) => {
             domain = env.REACT_APP_API_DOMAIN_MOCK; // mock data
             break;
         case 'uat':
-            domain = env.REACT_APP_API_UAT;
+            domain = env.REACT_APP_API_UAT; // 測試機
             break;
         case 'prod':
-            domain = env.REACT_APP_API_DOMAIN;
+            domain = env.REACT_APP_API_DOMAIN; // 正式機
             break;
         default:
             break;
+    }
+
+    // 判斷是否為 自動化測試網址
+    if (url.includes('autotest') && env.REACT_APP_ENV != 'development') {
+        domain = env.REACT_APP_API_DOMAIN_AUTOTEST; // 172.16.78.19 為自動化測試網址
     }
 
     try {
