@@ -1,5 +1,26 @@
 @import 'assets/scss/_variables';
 
+.ant-picker {
+    width: 200px;
+    background: transparent;
+    border: 1px solid $iii_color;
+    input::-webkit-input-placeholder {
+        color: $iii_color;
+    }
+
+    input:-moz-placeholder {
+        color: $iii_color;
+    }
+
+    input::-moz-placeholder {
+        color: $iii_color;
+    }
+
+    input:-ms-input-placeholder {
+        color: $iii_color;
+    }
+}
+
 .ant-table-wrapper {
     width: 100%;
 }

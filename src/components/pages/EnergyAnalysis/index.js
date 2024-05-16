@@ -2,7 +2,7 @@ import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } fr
 import { withRouter, Link, Redirect } from 'react-router-dom';
 
 // antd
-// import { Input, InputNumber, Select, Tag, Alert, Popconfirm, Form, Table, Typography, Button, Space } from 'antd';
+import { DatePicker } from 'antd';
 // import { LeftCircleOutlined } from '@ant-design/icons';
 
 import moment from 'moment';
@@ -30,6 +30,11 @@ const EnergyAnalysis = ({ history }) => {
 
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
+
+    const onChange = (date, dateString) => {
+        console.log(date, dateString);
+        asyncAllAPI(dateString);
+    };
 
     // open loading
     const openLoading = () => {
@@ -61,10 +66,10 @@ const EnergyAnalysis = ({ history }) => {
         }
     };
 
-    const asyncAllAPI = async () => {
+    const asyncAllAPI = async date => {
         try {
             const stepTitles = ['用戶管理', '日常用電追蹤', '家庭能源報告', '管理用電', '客戶服務'];
-            const date = moment().format('YYYY-MM-DD');
+
             const step_all = await Promise.all(
                 [1, 2, 3, 4, 5].map(async index => {
                     const content = await GETEnergyStatus001API(index, date);
@@ -82,7 +87,8 @@ const EnergyAnalysis = ({ history }) => {
     };
 
     useEffect(() => {
-        asyncAllAPI();
+        const date = moment().format('YYYY-MM-DD');
+        asyncAllAPI(date);
     }, []);
 
     return (
@@ -90,29 +96,30 @@ const EnergyAnalysis = ({ history }) => {
             <div className={cx('d_header')}>
                 <h1 className={cx('title')}>能源局健康度檢視結果</h1>
             </div>
+            <div className={cx('d_header')}>
+                <DatePicker onChange={onChange} picker="date" defaultValue={moment()} />
+            </div>
             <div className={cx('chart', 'margin_top')}>
                 <div className={cx('chart_bg')}>
-                    <div className={cx('circle')}>
-                        <span className={cx('circle__back-1')} />
-                        <span className={cx('circle__back-2')} />
-                    </div>
                     {step.length > 0 &&
                         step.map(item => {
                             return (
                                 <div className={cx('group')} key={item.key}>
                                     <h2>{item.title}</h2>
                                     <div className={cx('inner')}>
-                                        {item.content.map(el => {
-                                            return (
-                                                <div className={cx('card')}>
-                                                    <h3>{el.pathName}</h3>
-                                                    <div className={cx('result')}>
-                                                        <p>{el.status}</p>
-                                                        <div className={cx('status', el.status)} />
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
+                                        {item.content.length > 0
+                                            ? item.content.map(el => {
+                                                    return (
+                                                        <div className={cx('card')}>
+                                                            <h3>{el.pathName}</h3>
+                                                            <div className={cx('result')}>
+                                                                <p>{el.status}</p>
+                                                                <div className={cx('status', el.status)} />
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })
+                                            : '暫無資料'}
                                     </div>
                                 </div>
                             );
