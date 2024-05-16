@@ -239,11 +239,11 @@ function App({ match, location, history }) {
                     path: '/energyAnalysis',
                     icon: <ThunderboltOutlined style={{ fontSize: '20px' }} />
                 },
-                {
-                    name: '新北市健康度',
-                    path: '/lowcarbonAnalysis',
-                    icon: <BankOutlined style={{ fontSize: '20px' }} />
-                }
+                // {
+                //     name: '新北市健康度',
+                //     path: '/lowcarbonAnalysis',
+                //     icon: <BankOutlined style={{ fontSize: '20px' }} />
+                // }
             ]
         };
 

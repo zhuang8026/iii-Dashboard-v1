@@ -53,7 +53,7 @@ const EnergyAnalysis = ({ history }) => {
     const GETEnergyStatus001API = async (stepNumber, date) => {
         openLoading();
         const res = await getEnergy001API(stepNumber, date);
-        if (res.status === "ok") {
+        if (res.status === 'ok') {
             closeLoading();
             return res.data;
         } else {
@@ -92,6 +92,10 @@ const EnergyAnalysis = ({ history }) => {
             </div>
             <div className={cx('chart', 'margin_top')}>
                 <div className={cx('chart_bg')}>
+                    <div className={cx('circle')}>
+                        <span className={cx('circle__back-1')} />
+                        <span className={cx('circle__back-2')} />
+                    </div>
                     {step.length > 0 &&
                         step.map(item => {
                             return (

@@ -1,5 +1,8 @@
 @import 'assets/scss/_variables';
 
+$shadow: .3rem .3rem .6rem $--greyLight-2, 
+-.2rem -.2rem .5rem $--white;
+
 .energyAnalysis {
     width: calc(100vw - 248px);
     .d_header {
@@ -76,9 +79,9 @@
                     margin-right: 12px;
                     margin-bottom: 12px;
                     border-radius: 5px;
-                    background: #ffffff;
-                    border: 1px solid $na2;
-                    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+                    background: #e3e8eb;
+                    // border: 1px solid $na2;
+                    box-shadow: $shadow;
                     &:last-child {
                         margin-right: 0px;
                     }
@@ -124,3 +127,5 @@
         margin-top: 20px;
     }
 }
+
+
