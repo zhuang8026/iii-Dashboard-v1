@@ -64,6 +64,7 @@ const EnergyAnalysis = ({ history }) => {
         } else {
             console.log('[ERROR] API Energy001API:', res);
         }
+        closeLoading();
     };
 
     const asyncAllAPI = async date => {
@@ -107,18 +108,18 @@ const EnergyAnalysis = ({ history }) => {
                                 <div className={cx('group')} key={item.key}>
                                     <h2>{item.title}</h2>
                                     <div className={cx('inner')}>
-                                        {item.content.length > 0
+                                        {item.content && item.content.length > 0
                                             ? item.content.map(el => {
-                                                    return (
-                                                        <div className={cx('card')}>
-                                                            <h3>{el.pathName}</h3>
-                                                            <div className={cx('result')}>
-                                                                <p>{el.status}</p>
-                                                                <div className={cx('status', el.status)} />
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })
+                                                  return (
+                                                      <div className={cx('card')}>
+                                                          <h3>{el.pathName}</h3>
+                                                          <div className={cx('result')}>
+                                                              <p>{el.status}</p>
+                                                              <div className={cx('status', el.status)} />
+                                                          </div>
+                                                      </div>
+                                                  );
+                                              })
                                             : '暫無資料'}
                                     </div>
                                 </div>

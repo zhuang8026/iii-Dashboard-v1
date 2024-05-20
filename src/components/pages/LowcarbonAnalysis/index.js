@@ -2,7 +2,7 @@ import React, { Fragment, Suspense, useState, useEffect, useContext, useRef } fr
 import { withRouter, Link, Redirect } from 'react-router-dom';
 
 // antd
-// import { Input, InputNumber, Select, Tag, Alert, Popconfirm, Form, Table, Typography, Button, Space } from 'antd';
+import { DatePicker } from 'antd';
 // import { LeftCircleOutlined } from '@ant-design/icons';
 
 import moment from 'moment';
@@ -31,6 +31,11 @@ const LowcarbonAnalysis = ({ history }) => {
     const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
     const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
 
+    const onChange = (date, dateString) => {
+        console.log(date, dateString);
+        asyncAllAPI(dateString);
+    };
+
     // open loading
     const openLoading = () => {
         openAnimate({
@@ -50,23 +55,24 @@ const LowcarbonAnalysis = ({ history }) => {
     const closeMessage = () => closeDialog();
 
     // get API Lowcarbon001API
-    const GETLowcarbonStatus001API = async stepNumber => {
+    const GETLowcarbonStatus001API = async (stepNumber, date) => {
         openLoading();
-        const res = await getLowcarbon001API(stepNumber);
-        if (res.code === 200) {
+        const res = await getLowcarbon001API(stepNumber, date);
+        if (res.status === 'ok') {
             closeLoading();
             return res.data;
         } else {
-            console.log('GETDETAIL001API error:', res);
+            console.log('[ERROR] API Lowcarbon001API:', res);
         }
+        closeLoading();
     };
 
-    const asyncAllAPI = async () => {
+    const asyncAllAPI = async date => {
         try {
             const stepTitles = ['用戶管理', '日常用電追蹤', '家庭能源報告', '管理用電', '客戶服務'];
             const step_all = await Promise.all(
                 [1, 2, 3, 4, 5].map(async index => {
-                    const content = await GETLowcarbonStatus001API(index);
+                    const content = await GETLowcarbonStatus001API(index, date);
                     return {
                         title: `Step${index}. ${stepTitles[index - 1]}`,
                         content,
@@ -74,6 +80,7 @@ const LowcarbonAnalysis = ({ history }) => {
                     };
                 })
             );
+            console.log(step_all);
             setStep(step_all);
         } catch (error) {
             console.error('API 调用出错：', error);
@@ -81,13 +88,17 @@ const LowcarbonAnalysis = ({ history }) => {
     };
 
     useEffect(() => {
-        asyncAllAPI();
+        const date = moment().format('YYYY-MM-DD');
+        asyncAllAPI(date);
     }, []);
 
     return (
         <div className={cx('energyAnalysis')}>
             <div className={cx('d_header')}>
                 <h1 className={cx('title')}>新北市健康度檢視結果</h1>
+            </div>
+            <div className={cx('d_header')}>
+                <DatePicker onChange={onChange} picker="date" defaultValue={moment()} />
             </div>
             <div className={cx('chart', 'margin_top')}>
                 <div className={cx('chart_bg')}>
@@ -97,17 +108,19 @@ const LowcarbonAnalysis = ({ history }) => {
                                 <div className={cx('group')} key={item.key}>
                                     <h2>{item.title}</h2>
                                     <div className={cx('inner')}>
-                                        {item.content.map(el => {
-                                            return (
-                                                <div className={cx('card')}>
-                                                    <h3>{el.pathName}</h3>
-                                                    <div className={cx('result')}>
-                                                        <p>{el.status}</p>
-                                                        <div className={cx('status', el.status)} />
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
+                                        {item.content && item.content.length > 0
+                                            ? item.content.map(el => {
+                                                  return (
+                                                      <div className={cx('card')}>
+                                                          <h3>{el.pathName}</h3>
+                                                          <div className={cx('result')}>
+                                                              <p>{el.status}</p>
+                                                              <div className={cx('status', el.status)} />
+                                                          </div>
+                                                      </div>
+                                                  );
+                                              })
+                                            : '暫無資料'}
                                     </div>
                                 </div>
                             );

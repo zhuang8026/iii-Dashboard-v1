@@ -106,7 +106,7 @@ export const getLowcarbon001API = async (stepNumber, date) => {
     // 如果是开发环境，直接返回模拟数据
     const url = isMockEnvironment
         ? `/mock/energy_step${stepNumber}.json`
-        : `/${ad_dashboard}/lowcarbon_status?step=${stepNumber}`;
+        : `/${autotest}/check_result?domain=lowcarbon&file_name=${date}_step${stepNumber}.json`;
     const res = await apiRequest('GET', url, true);
     return res;
 };
