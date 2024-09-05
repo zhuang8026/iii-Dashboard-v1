@@ -1,7 +1,8 @@
 @import 'assets/scss/_variables';
 
 .menu {
-    background-image: linear-gradient(to bottom, $bg_color_top, $bg_color_bottom);
+    // background-image: linear-gradient(to bottom, $bg_color_top, $bg_color_bottom);
+    background-image: linear-gradient(195deg, $bg_color_top, rgb(26, 115, 232));
     width: 248px;
     height: 100vh;
     display: flex;

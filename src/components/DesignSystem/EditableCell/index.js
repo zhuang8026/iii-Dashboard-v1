@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 
 import { Input, Select, Form } from 'antd';
+import EditInput from 'components/DesignSystem/EditInput';
+
+// DesignSystem
+// import { FullWindowAnimateStorage } from 'components/DesignSystem/FullWindow';
+import { PopWindowAnimateStorage } from 'components/DesignSystem/PopWindow';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -13,6 +18,11 @@ const cx = classNames.bind(classes);
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
     const [startDate, setStartDate] = useState(new Date());
+    const [msg, setMsg] = useState(record?.note);
+
+    // const { closeAnimate, openAnimate } = useContext(FullWindowAnimateStorage);
+    const { closeDialog, openDialog } = useContext(PopWindowAnimateStorage);
+
     // const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
 
     let problem = [
@@ -29,18 +39,26 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
         { label: '等待維護', value: '等待維護' }, // oragnge icon
         { label: '不接受維護', value: '不接受維護' }, // oragnge icon
         { label: '網路問題', value: '網路問題' }, // oragnge icon
-        { label: '退用', value: '退用' }, // oragnge icon
+        { label: '退用', value: '退用' } // oragnge icon
     ];
 
     const inputNode =
         dataIndex == 'problem' || dataIndex == 'status' ? (
-            <Select options={dataIndex == 'problem' ? problem : status} />
+            <Select
+                options={dataIndex == 'problem' ? problem : status}
+                defaultValue={dataIndex == 'problem' ? record?.problem : record?.status}
+                onChange={data => {
+                    console.log(dataIndex, data);
+                    record.status = data;
+                }}
+            />
         ) : dataIndex == 'statusUpdateTime' ? (
             <DatePicker
                 className={cx('datePicker')}
                 selected={startDate}
                 onChange={date => {
                     setStartDate(date);
+                    record.statusUpdateTime = date;
                 }}
                 showTimeSelect
                 // showTimeInput
@@ -49,9 +67,24 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
                 placeholderText="請選擇時間"
             />
         ) : (
-            // <Input placeholder="1987/01/01 00:00" />
-            <Input placeholder="請填寫備註(非必填)" />
+            <Input placeholder="請填寫備註(非必填)" value={msg} defaultValue="" onClick={() => openPopup()} />
         );
+
+    const openPopup = () => {
+        openDialog({
+            component: <EditInput txt={record.note} send={(type, _msg) => sendMsg(type, _msg)} />
+        });
+    };
+
+    const sendMsg = (type, _msg) => {
+        if (type == 'yes') {
+            record.note = _msg;
+            setMsg(_msg);
+        }
+
+        closeDialog();
+    };
+
     useEffect(() => {
         if (editing) {
             if (record.statusUpdateTime != '' && record.statusUpdateTime != 'Invalid date') {
@@ -63,7 +96,7 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
         <td {...restProps}>
             {editing ? (
                 <Form.Item
-                    name={dataIndex}
+                    // name={dataIndex}
                     style={{ margin: 0 }}
                     // rules={[
                     //     {
