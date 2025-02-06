@@ -426,11 +426,15 @@ const Home = ({ match, history, location }) => {
                 let title =
                     data.userCategory === 'user_111_361'
                         ? '361戶'
-                        : data.userCategory === 'user_112_404'
+                            : data.userCategory === 'user_112_404'
                         ? '404戶'
-                        : data.userCategory === 'user_nt'
+                            : data.userCategory === 'user_113_240'
+                        ? '240戶'
+                            : data.userCategory === 'user_other'
+                        ? '其他'
+                            : data.userCategory === 'user_nt'
                         ? '新北市'
-                        : 'none';
+                            : 'none';
                 return {
                     type: 'Compare',
                     title: title,
